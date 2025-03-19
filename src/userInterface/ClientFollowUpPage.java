@@ -1,7 +1,5 @@
 package userInterface;
 
-import java.text.DateFormat;
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,22 +11,20 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-public class CompanySetupPage extends Application {
+public class ClientFollowUpPage extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Label lblHeading, lblCompanyName, lblAddress, lblContactNo, lblRegisteredDate;
-		TextField txtCompanyName, txtAddress, txtContactNo;
-		TextField dfRegisteredDate;
+		Label lblHeading, lblCustomerName, lblFollowUpType, lblFollowUpDate, lblRemarks;
+		TextField txtCustomerName, txtFollowUpType, txtFollowUpDate, txtRemarks;
 
 		Button btnSubmit, btnCancel;
 
 		Pane pane = new Pane();
 		Scene scene = new Scene(pane);
-		primaryStage.setTitle("Company Register");
+		primaryStage.setTitle("Client FollowUp");
 		primaryStage.setScene(scene);
 		primaryStage.setWidth(1440);
 		primaryStage.setHeight(800);
@@ -46,42 +42,44 @@ public class CompanySetupPage extends Application {
 		lblSidebarTitle.setTextFill(Color.WHITE);
 		lblSidebarTitle.relocate(50, 50);
 
-		lblHeading = new Label("Company Setup");
+		lblHeading= new Label("Client Follow Up");
 		lblHeading.relocate(346, 44);
 		lblHeading.setFont(headingFont);
-
-		lblCompanyName = new Label("Company Name");
-		lblCompanyName.relocate(450, 168);
-		lblCompanyName.setFont(font1);
-
-		txtCompanyName = new TextField();
-		txtCompanyName.relocate(645, 168);
-		txtCompanyName.setPrefSize(311, 40);
-
-		lblAddress = new Label("Office Address");
-		lblAddress.relocate(450, 238);
-		lblAddress.setFont(font1);
-
-		txtAddress = new TextField();
-		txtAddress.relocate(645, 238);
-		txtAddress.setPrefSize(311, 40);
-
-		lblContactNo = new Label("Office Address");
-		lblContactNo.relocate(450, 308);
-		lblContactNo.setFont(font1);
-
-		txtContactNo = new TextField();
-		txtContactNo.relocate(645, 308);
-		txtContactNo.setPrefSize(311, 40);
-
-		lblRegisteredDate = new Label("Registered Date");
-		lblRegisteredDate.relocate(450, 380);
-		lblRegisteredDate.setFont(font1);
-
-		dfRegisteredDate = new TextField();
-		dfRegisteredDate.relocate(645, 380);
-		dfRegisteredDate.setPrefSize(311, 40);
-
+		
+		
+		lblCustomerName= new Label("Customer Name");
+		lblCustomerName.relocate(450, 168);
+		lblCustomerName.setFont(font1);
+		
+		txtCustomerName= new TextField();
+		txtCustomerName.relocate(645, 168);
+		txtCustomerName.setPrefSize(310, 40);
+		
+		lblFollowUpType= new Label("Follow Up Type");
+		lblFollowUpType.relocate(450, 238);
+		lblFollowUpType.setFont(font1);
+		
+		txtFollowUpType= new TextField();
+		txtFollowUpType.relocate(645, 238);
+		txtFollowUpType.setPrefSize(310, 40);
+		
+		lblFollowUpDate= new Label("Follow Up Date");
+		lblFollowUpDate.relocate(450, 308);
+		lblFollowUpDate.setFont(font1);
+		
+		txtFollowUpDate= new TextField();
+		txtFollowUpDate.relocate(645, 308);
+		txtFollowUpDate.setPrefSize(310, 40);
+		
+		lblRemarks = new Label("Remarks");
+		lblRemarks.relocate(450, 380);
+		lblRemarks.setFont(font1);
+		
+		txtRemarks= new TextField();
+		txtRemarks.relocate(645,380);
+		txtRemarks.setPrefSize(311, 40);
+		
+		
 		btnSubmit = new Button("Submit");
 		btnSubmit.relocate(645, 580);
 		btnSubmit.setPrefSize(80, 30);
@@ -89,9 +87,9 @@ public class CompanySetupPage extends Application {
 		btnCancel = new Button("Cancel");
 		btnCancel.relocate(768, 580);
 		btnCancel.setPrefSize(80, 30);
-
+		
 		btnCancel.setOnAction(new EventHandler<ActionEvent>() {
-
+			
 			@Override
 			public void handle(ActionEvent actionEvent) {
 				primaryStage.close();
@@ -99,17 +97,17 @@ public class CompanySetupPage extends Application {
 		});
 
 		pane.getChildren().addAll(lblHeading);
-		pane.getChildren().addAll(lblCompanyName, txtCompanyName);
-		pane.getChildren().addAll(lblAddress, txtAddress);
-		pane.getChildren().addAll(lblContactNo, txtContactNo);
-		pane.getChildren().addAll(lblRegisteredDate, dfRegisteredDate);
-		pane.getChildren().addAll(btnSubmit, btnCancel);
-
+		pane.getChildren().addAll(lblCustomerName, txtCustomerName);
+		pane.getChildren().addAll(lblFollowUpType,txtFollowUpType);
+		pane.getChildren().addAll(lblFollowUpDate,txtFollowUpDate);
+		pane.getChildren().addAll(lblRemarks,txtRemarks);
+		pane.getChildren().addAll(btnSubmit,btnCancel);
+		
 		pane.getChildren().add(sidebar);
 		pane.getChildren().add(lblSidebarTitle);
 
 		primaryStage.show();
-
+		
 	}
 
 	public static void main(String[] args) {
