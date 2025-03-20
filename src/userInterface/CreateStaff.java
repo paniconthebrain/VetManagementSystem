@@ -45,13 +45,15 @@ public class CreateStaff extends Application {
 		lblSidebarTitle.setTextFill(Color.WHITE);
 		lblSidebarTitle.relocate(50, 50);
 
+		// Prompt for the users "Staff Setup"
 		lblTitle = new Label("Staff Setup");
-		lblTitle.relocate(347, 44);
-		lblTitle.setFont(font1);
+		lblTitle.relocate(347, 44);// Positioning the label
+		lblTitle.setFont(font1);// Setting font for the title
 
+		// Prompt for users "Staff Full Name"
 		lblfullname = new Label("Staff Full Name");
 		lblfullname.relocate(451, 169);
-		lblfullname.setFont(font);
+		lblfullname.setFont(font);// Setting font for the label
 
 		txtFullname = new TextField();
 		txtFullname.relocate(645, 169);
@@ -81,26 +83,30 @@ public class CreateStaff extends Application {
 		txtStafftype.relocate(645, 376);
 		txtStafftype.setPrefSize(311, 40);
 
+		//Button for users to save
 		btnSubmit = new Button("Submit");
 		btnSubmit.relocate(645, 700);
-//		btnSubmit.setPrefSize(311, 40);
 		
+		//Button for users to close
+		btnCancel = new Button("Cancel");
+		btnCancel.relocate(768, 700);
+		
+		// Event handler for the submit button
 		btnSubmit.setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override
 			public void handle(ActionEvent arg0) {
+				//Created StaffModel object and setting the form values to the model
 				StaffModel staffModel = new StaffModel();
-				staffModel.setFullName(txtFullname.getText());
-				staffModel.setGender(txtGender.getText());
-				staffModel.setContactNo(txtContactno.getText());
-				staffModel.setStaffType(txtStafftype.getText());
+				staffModel.setFullName(txtFullname.getText()); // Get full name from text field
+				staffModel.setGender(txtGender.getText());// Get gender from text field
+				staffModel.setContactNo(txtContactno.getText());// Get contact number from text field
+				staffModel.setStaffType(txtStafftype.getText());// Get staff type from text field
+				// Calling the Insert method from StaffCRUD to insert staff data into the database
 				boolean result = new StaffCRUD().Insert(staffModel);
 			}
 		});
 
-		btnCancel = new Button("Cancel");
-		btnCancel.relocate(768, 700);
-//		btnCancel.setPrefSize(311, 40);
 
 		pane.getChildren().add(lblTitle);
 		pane.getChildren().add(lblfullname);
