@@ -19,10 +19,10 @@ public class StaffCRUD extends DbConnection implements InfStaffCRUD{
 		try {
 			pStat = connect().prepareStatement(sql);
 //			pStat.setInt(1, staffModel.getStaffId());
-			pStat.setString(2, staffModel.getFullName());
-			pStat.setString(3, staffModel.getGender());
-			pStat.setString(4, staffModel.getContactNo());
-			pStat.setString(5, staffModel.getStaffType());
+			pStat.setString(1, staffModel.getFullName());
+			pStat.setString(2, staffModel.getGender());
+			pStat.setString(3, staffModel.getContactNo());
+			pStat.setString(4, staffModel.getStaffType());
 			pStat.executeUpdate();
 			pStat.close();
 		}catch(Exception ex) {
