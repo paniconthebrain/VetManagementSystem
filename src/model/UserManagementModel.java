@@ -1,6 +1,6 @@
-package myLibrary;
+package model;
 
-public class UserManagement {
+public class UserManagementModel {
 
 	private int userId;
 	private String fullName;
@@ -8,7 +8,7 @@ public class UserManagement {
 	private String password;
 
 	// Default Constructor
-	public UserManagement() {
+	public UserManagementModel() {
 		this.userId = 0;
 		this.fullName = "";
 		this.contactNo = "";
@@ -16,14 +16,14 @@ public class UserManagement {
 	}
 
 	// Parameterized Constructor
-	public UserManagement(int userId, String fullName, String contactNo, String password) {
+	public UserManagementModel(int userId, String fullName, String contactNo, String password) {
 		this.userId = userId;
 		this.fullName = fullName;
 		this.contactNo = contactNo;
 		this.password = password;
 	}
 	
-	public UserManagement(UserManagement userManagement) {
+	public UserManagementModel(UserManagementModel userManagement) {
 		this.userId = userManagement.userId;
 		this.fullName = userManagement.fullName;
 		this.contactNo = userManagement.contactNo;
