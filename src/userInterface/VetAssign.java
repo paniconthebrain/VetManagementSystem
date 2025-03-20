@@ -53,7 +53,7 @@ public class VetAssign extends Application {
 		txtOwnername.relocate(645, 169);
 		txtOwnername.setPrefSize(311, 40);
 
-		lblPetname = new Label("Gender");
+		lblPetname = new Label("Pet Name");
 		lblPetname.relocate(451, 238);
 		lblPetname.setFont(font);
 
@@ -61,7 +61,7 @@ public class VetAssign extends Application {
 		txtPetname.relocate(645, 238);
 		txtPetname.setPrefSize(311, 40);
 
-		lblVetstaffname = new Label("Contact No");
+		lblVetstaffname = new Label("Vet Staff Name");
 		lblVetstaffname.relocate(451, 309);
 		lblVetstaffname.setFont(font);
 

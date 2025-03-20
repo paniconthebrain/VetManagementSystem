@@ -3,6 +3,7 @@ package userInterface;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -18,7 +19,8 @@ public class Ownersetup extends Application {
 
 		Label lblTitle, lblOwnerinfo, lblOwnername, lblGender, lblAddress, lblPetinfo, lblNickname, lblPetbreed,
 				lblDateofbirth;
-		TextField txtOwnername, txtGender, txtAddress, txtNickname, txtPetbreed, txtDateofbirth;
+		TextField txtOwnername, txtGender, txtAddress, txtNickname, txtPetbreed;
+		DatePicker datePicker;
 		Button btnSubmit, btnCancel;
 
 		Font font = new Font("Arial", 25);
@@ -99,9 +101,9 @@ public class Ownersetup extends Application {
 		lblDateofbirth.relocate(456, 632);
 		lblDateofbirth.setFont(font);
 
-		txtDateofbirth = new TextField();
-		txtDateofbirth.relocate(650, 616);
-		txtDateofbirth.setPrefSize(311, 40);
+		datePicker = new DatePicker();
+		datePicker.relocate(650, 616);
+		datePicker.setPrefSize(311, 40);
 
 		btnSubmit = new Button("Submit");
 		btnSubmit.relocate(645, 700);
@@ -119,7 +121,7 @@ public class Ownersetup extends Application {
 		pane.getChildren().addAll(lblPetinfo);
 		pane.getChildren().addAll(lblNickname, txtNickname);
 		pane.getChildren().addAll(lblPetbreed, txtPetbreed);
-		pane.getChildren().addAll(lblDateofbirth, txtDateofbirth);
+		pane.getChildren().addAll(lblDateofbirth, datePicker);
 		pane.getChildren().add(btnSubmit);
 		pane.getChildren().add(btnCancel);
 		pane.getChildren().add(sidebar);

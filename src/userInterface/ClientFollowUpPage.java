@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -18,7 +19,8 @@ public class ClientFollowUpPage extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		Label lblHeading, lblCustomerName, lblFollowUpType, lblFollowUpDate, lblRemarks;
-		TextField txtCustomerName, txtFollowUpType, txtFollowUpDate, txtRemarks;
+		DatePicker datePicker;
+		TextField txtCustomerName, txtFollowUpType, txtRemarks;
 
 		Button btnSubmit, btnCancel;
 
@@ -27,7 +29,8 @@ public class ClientFollowUpPage extends Application {
 		primaryStage.setTitle("Client FollowUp");
 		primaryStage.setScene(scene);
 		primaryStage.setWidth(1440);
-		primaryStage.setHeight(800);
+		primaryStage.setHeight(750);
+		primaryStage.setResizable(false);
 
 		Font headingFont = new Font("Inter", 32);
 		Font font1 = new Font("Inter", 24);
@@ -42,54 +45,52 @@ public class ClientFollowUpPage extends Application {
 		lblSidebarTitle.setTextFill(Color.WHITE);
 		lblSidebarTitle.relocate(50, 50);
 
-		lblHeading= new Label("Client Follow Up");
+		lblHeading = new Label("Client Follow Up");
 		lblHeading.relocate(346, 44);
 		lblHeading.setFont(headingFont);
-		
-		
-		lblCustomerName= new Label("Customer Name");
+
+		lblCustomerName = new Label("Customer Name");
 		lblCustomerName.relocate(450, 168);
 		lblCustomerName.setFont(font1);
-		
-		txtCustomerName= new TextField();
+
+		txtCustomerName = new TextField();
 		txtCustomerName.relocate(645, 168);
 		txtCustomerName.setPrefSize(310, 40);
-		
-		lblFollowUpType= new Label("Follow Up Type");
+
+		lblFollowUpType = new Label("Follow Up Type");
 		lblFollowUpType.relocate(450, 238);
 		lblFollowUpType.setFont(font1);
-		
-		txtFollowUpType= new TextField();
+
+		txtFollowUpType = new TextField();
 		txtFollowUpType.relocate(645, 238);
 		txtFollowUpType.setPrefSize(310, 40);
-		
-		lblFollowUpDate= new Label("Follow Up Date");
+
+		lblFollowUpDate = new Label("Follow Up Date");
 		lblFollowUpDate.relocate(450, 308);
 		lblFollowUpDate.setFont(font1);
-		
-		txtFollowUpDate= new TextField();
-		txtFollowUpDate.relocate(645, 308);
-		txtFollowUpDate.setPrefSize(310, 40);
-		
+
+		datePicker = new DatePicker();
+		datePicker.relocate(645, 308);
+		datePicker.setPrefSize(310, 40);
+
 		lblRemarks = new Label("Remarks");
-		lblRemarks.relocate(450, 380);
+		lblRemarks.relocate(451, 575);
 		lblRemarks.setFont(font1);
-		
-		txtRemarks= new TextField();
-		txtRemarks.relocate(645,380);
+
+		txtRemarks = new TextField();
+		txtRemarks.relocate(629, 575);
 		txtRemarks.setPrefSize(311, 40);
-		
-		
+
 		btnSubmit = new Button("Submit");
-		btnSubmit.relocate(645, 580);
+		btnSubmit.relocate(645, 650);
 		btnSubmit.setPrefSize(80, 30);
 
 		btnCancel = new Button("Cancel");
-		btnCancel.relocate(768, 580);
+		btnCancel.relocate(768, 650);
 		btnCancel.setPrefSize(80, 30);
-		
+
 		btnCancel.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent actionEvent) {
 				primaryStage.close();
@@ -98,16 +99,16 @@ public class ClientFollowUpPage extends Application {
 
 		pane.getChildren().addAll(lblHeading);
 		pane.getChildren().addAll(lblCustomerName, txtCustomerName);
-		pane.getChildren().addAll(lblFollowUpType,txtFollowUpType);
-		pane.getChildren().addAll(lblFollowUpDate,txtFollowUpDate);
-		pane.getChildren().addAll(lblRemarks,txtRemarks);
-		pane.getChildren().addAll(btnSubmit,btnCancel);
-		
+		pane.getChildren().addAll(lblFollowUpType, txtFollowUpType);
+		pane.getChildren().addAll(lblFollowUpDate, datePicker);
+		pane.getChildren().addAll(lblRemarks, txtRemarks);
+		pane.getChildren().addAll(btnSubmit, btnCancel);
+
 		pane.getChildren().add(sidebar);
 		pane.getChildren().add(lblSidebarTitle);
 
 		primaryStage.show();
-		
+
 	}
 
 	public static void main(String[] args) {

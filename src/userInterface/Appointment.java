@@ -32,6 +32,8 @@ public class Appointment extends Application {
 		primaryStage.setHeight(800);
 
 		primaryStage.show();
+		primaryStage.setResizable(false);
+
 
 		// Sidebar Background
 		Rectangle sidebar = new Rectangle(0, 0, 250, 800);

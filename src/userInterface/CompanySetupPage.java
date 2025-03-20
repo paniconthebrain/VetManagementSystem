@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -24,8 +25,8 @@ public class CompanySetupPage extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		Label lblHeading, lblCompanyName, lblAddress, lblContactNo, lblRegisteredDate;
+		DatePicker datePicker;
 		TextField txtCompanyName, txtAddress, txtContactNo;
-		TextField dfRegisteredDate;
 
 		Button btnSubmit, btnCancel;
 
@@ -82,12 +83,12 @@ public class CompanySetupPage extends Application {
 		lblRegisteredDate.relocate(450, 380);
 		lblRegisteredDate.setFont(font1);
 
-		dfRegisteredDate = new TextField();
-		dfRegisteredDate.relocate(645, 380);
-		dfRegisteredDate.setPrefSize(311, 40);
+		datePicker = new DatePicker();
+		datePicker.relocate(645, 380);
+		datePicker.setPrefSize(311, 40);
 
 		btnSubmit = new Button("Submit");
-		btnSubmit.relocate(645, 580);
+		btnSubmit.relocate(645, 680);
 		btnSubmit.setPrefSize(80, 30);
 
 		btnSubmit.setOnAction(new EventHandler<ActionEvent>() {
@@ -104,7 +105,7 @@ public class CompanySetupPage extends Application {
 		});
 
 		btnCancel = new Button("Cancel");
-		btnCancel.relocate(768, 580);
+		btnCancel.relocate(768, 680);
 		btnCancel.setPrefSize(80, 30);
 
 		btnCancel.setOnAction(new EventHandler<ActionEvent>() {
@@ -119,7 +120,7 @@ public class CompanySetupPage extends Application {
 		pane.getChildren().addAll(lblCompanyName, txtCompanyName);
 		pane.getChildren().addAll(lblAddress, txtAddress);
 		pane.getChildren().addAll(lblContactNo, txtContactNo);
-		pane.getChildren().addAll(lblRegisteredDate, dfRegisteredDate);
+		pane.getChildren().addAll(lblRegisteredDate, datePicker);
 		pane.getChildren().addAll(btnSubmit, btnCancel);
 
 		pane.getChildren().add(sidebar);
