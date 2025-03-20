@@ -1,6 +1,8 @@
 package userInterface;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -11,6 +13,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import model.OwnerModel;
+import repo.OwnerCRUD;
 
 public class Ownersetup extends Application {
 
@@ -108,6 +112,22 @@ public class Ownersetup extends Application {
 		btnSubmit = new Button("Submit");
 		btnSubmit.relocate(645, 700);
 //		btnSubmit.setPrefSize(311, 40);
+		
+		btnSubmit.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				 OwnerModel ownerModel = new OwnerModel();
+				 ownerModel.setFullName(txtOwnername.getText());;
+				 ownerModel.setAddress(txtAddress.getText());
+				 ownerModel.setPetNickName(txtNickname.getText());
+				 ownerModel.setPetBread(txtPetbreed.getText());
+				 ownerModel.setDate(txtDateofbirth.getText());
+				 
+				 boolean result = new OwnerCRUD().Insert(ownerModel);
+				 
+			}
+		});
 
 		btnCancel = new Button("Cancel");
 		btnCancel.relocate(768, 700);
