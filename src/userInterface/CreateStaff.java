@@ -1,6 +1,8 @@
 package userInterface;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,6 +12,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import model.StaffModel;
+import repo.StaffCRUD;
 
 public class CreateStaff extends Application {
 
@@ -80,6 +84,19 @@ public class CreateStaff extends Application {
 		btnSubmit = new Button("Submit");
 		btnSubmit.relocate(645, 700);
 //		btnSubmit.setPrefSize(311, 40);
+		
+		btnSubmit.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent arg0) {
+				StaffModel staffModel = new StaffModel();
+				staffModel.setFullName(txtFullname.getText());
+				staffModel.setGender(txtGender.getText());
+				staffModel.setContactNo(txtContactno.getText());
+				staffModel.setStaffType(txtStafftype.getText());
+				boolean result = new StaffCRUD().Insert(staffModel);
+			}
+		});
 
 		btnCancel = new Button("Cancel");
 		btnCancel.relocate(768, 700);

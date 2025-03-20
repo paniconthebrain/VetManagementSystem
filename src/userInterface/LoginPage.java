@@ -12,6 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import model.LoginModel;
 
 public class LoginPage extends Application {
 
@@ -65,6 +66,16 @@ public class LoginPage extends Application {
 		btnLogin = new Button("Login");
 		btnLogin.relocate(760, 580);
 		btnLogin.setPrefSize(80, 30);
+		
+		btnLogin.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				LoginModel loginModel = new LoginModel();
+				loginModel.setUserName(txtUsername.getText());
+				loginModel.setPassword(txtPassword.getText());
+			}
+		});
 		
 		btnClose = new Button("Close");
 		btnClose.relocate(580, 580);
