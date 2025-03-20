@@ -20,6 +20,9 @@ public class UserCRUD extends DbConnection implements InfUserManagementCRUD {
 			pStat.setInt(1,user.getUserId());
 			pStat.setString(2, user.getFullName());
 			pStat.setString(3, user.getPassword());
+			pStat.executeUpdate();
+			pStat.close();
+			result = true;
 		}catch(Exception ex) {
 			System.out.println("Error : " +ex.getMessage());
 		}

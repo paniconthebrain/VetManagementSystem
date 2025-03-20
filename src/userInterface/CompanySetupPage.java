@@ -15,6 +15,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import model.CompanySetupModel;
+import repo.CompanyCRUD;
+
 
 public class CompanySetupPage extends Application {
 
@@ -50,6 +53,7 @@ public class CompanySetupPage extends Application {
 		lblHeading.relocate(346, 44);
 		lblHeading.setFont(headingFont);
 
+		
 		lblCompanyName = new Label("Company Name");
 		lblCompanyName.relocate(450, 168);
 		lblCompanyName.setFont(font1);
@@ -85,6 +89,19 @@ public class CompanySetupPage extends Application {
 		btnSubmit = new Button("Submit");
 		btnSubmit.relocate(645, 580);
 		btnSubmit.setPrefSize(80, 30);
+
+		btnSubmit.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent arg0) {
+				 CompanySetupModel companySetup = new CompanySetupModel();
+				 companySetup.setCompanyName(txtCompanyName.getText());;
+				 companySetup.setCompanyAddress(txtAddress.getText());
+				 companySetup.setCompanyContactNo(txtContactNo.getText());
+				 boolean result = new CompanyCRUD().Insert(companySetup);
+				 
+			}
+		});
 
 		btnCancel = new Button("Cancel");
 		btnCancel.relocate(768, 580);

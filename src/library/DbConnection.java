@@ -9,7 +9,7 @@ public class DbConnection {
 	final private String USER = "root";
 	final private String PASS = "1234";
 	final private int PORT = 3306;
-	final private String DBNAME = "mydb";
+	final private String DBNAME = "vetmanagement";
 	final private String DRIVER = "com.mysql.cj.jdbc.Driver";
 	final private String URL = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DBNAME;
 
