@@ -10,8 +10,8 @@ public class StaffModel {
 	private String staffType;
 
 	//Parameterized Constructor
-	public StaffModel(int staffId, String fullName, String gender, String contactNo, String staffType) {
-		this.staffId = staffId;
+	public StaffModel( String fullName, String gender, String contactNo, String staffType) {
+		//this.staffId = staffId;
 		this.fullName = fullName;
 		this.Gender = gender;
 		this.contactNo = contactNo;
@@ -20,7 +20,7 @@ public class StaffModel {
 
 	//Default Constructor
 	public StaffModel() {
-		this.staffId = 0;
+		//this.staffId = 0;
 		this.fullName = "";
 		this.Gender = "";
 		this.contactNo = "";
@@ -29,7 +29,7 @@ public class StaffModel {
 	
 	
 	public StaffModel(StaffModel staffModel) {
-		this.staffId = staffModel.staffId;
+		//this.staffId = staffModel.staffId;
 		this.fullName = staffModel.fullName;
 		this.Gender = staffModel.Gender;
 		this.contactNo = staffModel.contactNo;
@@ -37,13 +37,13 @@ public class StaffModel {
 	}
 
 	//getter and setters
-	public int getStaffId() {
-		return staffId;
-	}
-
-	public void setStaffId(int staffId) {
-		this.staffId = staffId;
-	}
+//	public int getStaffId() {
+//		return staffId;
+//	}
+//
+//	public void setStaffId(int staffId) {
+//		this.staffId = staffId;
+//	}
 
 	public String getFullName() {
 		return fullName;
