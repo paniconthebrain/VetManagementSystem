@@ -1,6 +1,6 @@
-package myLibrary;
+package model;
 
-public class OwnerManagement {
+public class OwnerModel {
 
 	private int ownerId;
 	private String fullName;
@@ -10,7 +10,7 @@ public class OwnerManagement {
 	private String Address;
 	//private String pet;
 	
-	public OwnerManagement() {
+	public OwnerModel() {
 		this.ownerId = 0;
 		this.fullName = "";
 		this.lastName = "";
@@ -19,7 +19,7 @@ public class OwnerManagement {
 		Address = "";
 	}
 	
-	public OwnerManagement(int ownerId, String fullName, String lastName, String contactNo, String email,
+	public OwnerModel(int ownerId, String fullName, String lastName, String contactNo, String email,
 			String address) {
 		this.ownerId = ownerId;
 		this.fullName = fullName;
@@ -29,7 +29,7 @@ public class OwnerManagement {
 		Address = address;
 	}
 
-	public OwnerManagement(OwnerManagement ownerManagement) {
+	public OwnerModel(OwnerModel ownerManagement) {
 		this.ownerId = ownerManagement.ownerId;
 		this.fullName = ownerManagement.fullName;
 		this.lastName = ownerManagement.lastName;
