@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -114,6 +115,8 @@ public class Ownersetup extends Application {
 //		btnSubmit.setPrefSize(311, 40);
 		
 		btnSubmit.setOnAction(new EventHandler<ActionEvent>() {
+
+			private Labeled txtDateofbirth;
 
 			@Override
 			public void handle(ActionEvent actionEvent) {

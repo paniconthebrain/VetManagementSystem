@@ -84,9 +84,9 @@ public class CreateStaff extends Application {
 		btnSubmit = new Button("Submit");
 		btnSubmit.relocate(645, 700);
 //		btnSubmit.setPrefSize(311, 40);
-		
+
 		btnSubmit.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent arg0) {
 				StaffModel staffModel = new StaffModel();
@@ -100,6 +100,14 @@ public class CreateStaff extends Application {
 
 		btnCancel = new Button("Cancel");
 		btnCancel.relocate(768, 700);
+		btnCancel.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				primaryStage.close();
+			}
+		});
+
 //		btnCancel.setPrefSize(311, 40);
 
 		pane.getChildren().add(lblTitle);
