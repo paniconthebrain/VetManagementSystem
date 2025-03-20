@@ -18,8 +18,8 @@ public class LoginPage extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		// Declare UI components
 		Label lblTitle;
-
 		Label lblHeading, lblSubHeading, lblUsername, lblPassword;
 		TextField txtUsername;
 		PasswordField txtPassword;
@@ -31,7 +31,8 @@ public class LoginPage extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.setWidth(1440);
 		primaryStage.setHeight(800);
-
+		
+		// Declaring font styles
 		Font headingFont = new Font("Inter", 32);
 		Font font1 = new Font("Inter", 24);
 
@@ -66,9 +67,9 @@ public class LoginPage extends Application {
 		btnLogin = new Button("Login");
 		btnLogin.relocate(760, 580);
 		btnLogin.setPrefSize(80, 30);
-		
+
 		btnLogin.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent actionEvent) {
 				LoginModel loginModel = new LoginModel();
@@ -76,23 +77,23 @@ public class LoginPage extends Application {
 				loginModel.setPassword(txtPassword.getText());
 			}
 		});
-		
+
 		btnClose = new Button("Close");
 		btnClose.relocate(580, 580);
 		btnClose.setPrefSize(80, 30);
 
 		btnClose.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent actionEvent) {
 				primaryStage.close();
 			}
 		});
-		
+
 		pane.getChildren().addAll(lblHeading, lblSubHeading);
 		pane.getChildren().addAll(lblUsername, txtUsername);
 		pane.getChildren().addAll(lblPassword, txtPassword);
-		pane.getChildren().addAll(btnLogin,btnClose);
+		pane.getChildren().addAll(btnLogin, btnClose);
 
 		primaryStage.show();
 	}

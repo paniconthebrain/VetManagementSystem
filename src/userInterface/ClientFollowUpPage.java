@@ -18,6 +18,7 @@ public class ClientFollowUpPage extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		// Declare UI components
 		Label lblHeading, lblCustomerName, lblFollowUpType, lblFollowUpDate, lblRemarks;
 		DatePicker datePicker;
 		TextField txtCustomerName, txtFollowUpType, txtRemarks;
@@ -32,6 +33,7 @@ public class ClientFollowUpPage extends Application {
 		primaryStage.setHeight(750);
 		primaryStage.setResizable(false);
 
+		// Declaring font styles
 		Font headingFont = new Font("Inter", 32);
 		Font font1 = new Font("Inter", 24);
 
