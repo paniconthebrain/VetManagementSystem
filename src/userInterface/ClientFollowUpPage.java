@@ -4,6 +4,8 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -12,6 +14,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import model.ClientFollowUpModel;
+import repo.ClientFollowUpCRUD;
 
 public class ClientFollowUpPage extends Application {
 
@@ -83,6 +87,25 @@ public class ClientFollowUpPage extends Application {
 		btnSubmit = new Button("Submit");
 		btnSubmit.relocate(645, 580);
 		btnSubmit.setPrefSize(80, 30);
+		btnSubmit.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override
+		    public void handle(ActionEvent actionEvent) {
+		        ClientFollowUpModel followUp = new ClientFollowUpModel();
+		        followUp.setCustomerName(txtCustomerName.getText());
+		        followUp.setFollowUpType(txtFollowUpType.getText());
+		        followUp.setFollowUpDate(txtFollowUpDate.getText());
+		        followUp.setRemarks(txtRemarks.getText());
+
+		        boolean result = new ClientFollowUpCRUD().insert(followUp);
+
+		        Alert alert = new Alert(result ? AlertType.INFORMATION : AlertType.ERROR);
+		        alert.setTitle(result ? "Success" : "Error");
+		        alert.setHeaderText(result ? "Follow-Up Added Successfully" : "Error Adding Follow-Up");
+		        alert.setContentText(result ? "Client follow-up has been added." : "Please try again.");
+		        alert.showAndWait();
+		    }
+		});
+
 
 		btnCancel = new Button("Cancel");
 		btnCancel.relocate(768, 580);
