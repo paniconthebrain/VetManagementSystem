@@ -2,6 +2,7 @@ package library;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DbConnection {
 
@@ -17,15 +18,16 @@ public class DbConnection {
 
 	// Connect with database
 	public Connection connect() {
-		try {
-			Class.forName(DRIVER);
-			conn = DriverManager.getConnection(URL, USER, PASS);
-		} catch (Exception ex) {
-			System.out.println("Error : " + ex.getMessage());
-		}
-		return conn;
-	}
-
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(URL, USER, PASS);
+            System.out.println("Database connected successfully!");
+        } catch (SQLException e) {
+            System.out.println("Failed to connect to the database!");
+            e.printStackTrace();
+        }
+        return conn;
+    }
 	// Close the connection
 	public void close() {
 		try {
