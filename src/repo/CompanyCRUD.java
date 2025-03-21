@@ -25,14 +25,24 @@ public class CompanyCRUD extends DbConnection implements InfCompanyCRUD {
 			pStat.setString(3, company.getCompanyAddress());
 			pStat.setString(4, company.getCompanyContactNo());
 			pStat.setString(5, company.getCompanyRegisteredDate());
-			pStat.executeUpdate();
-			pStat.close();
-			result = true;
-		} catch (Exception ex) {
-			System.out.println("Error : " + ex.getMessage());
-		}
+			
+			  // Convert String date to SQL Date
+	        if (company.getCompanyRegisteredDate() != null) {
+	            java.sql.Date sqlDate = java.sql.Date.valueOf(company.getCompanyRegisteredDate());
+	            pStat.setDate(5, sqlDate);
+	        } else {
+	            pStat.setNull(5, java.sql.Types.DATE);
+	        }
 
-		return false;
+	        int rowsAffected = pStat.executeUpdate();
+	        pStat.close();
+
+	        return rowsAffected > 0; // Return true only if rows were inserted successfully
+
+	    } catch (Exception ex) {
+	        System.out.println("Error : " + ex.getMessage());
+	        return false; // Return false only when an error occurs
+	    }
 	}
 	
 	@Override
