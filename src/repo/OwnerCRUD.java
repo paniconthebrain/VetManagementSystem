@@ -1,6 +1,7 @@
 package repo;
 
-import java.sql.PreparedStatement;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import interfaces.InfOwnerCRUD;
@@ -9,43 +10,128 @@ import model.OwnerModel;
 
 public class OwnerCRUD extends DbConnection implements InfOwnerCRUD {
 
-	@Override
-	public boolean Insert(OwnerModel ownerModel) {
-		boolean result = false;
+    @Override
+    public boolean Insert(OwnerModel ownerModel) {
+        boolean result = false;
 
-		PreparedStatement pStat;
-		String sql = "Insert into customers(Customer_Name,Address,Mobile_No,Email_Address,Status) value(?,?,?,?,?,1);";
-		
-		try {
-			pStat = connect().prepareStatement(sql);
-//			pStat.setInt(1, staffModel.getStaffId());
-			pStat.setString(1, ownerModel.getFullName());
-			pStat.setString(2, ownerModel.getAddress());
-			pStat.setString(3, ownerModel.getContactNo());
-			pStat.setString(4, ownerModel.getEmail());
-			pStat.executeUpdate();
-			pStat.close();
-		}catch(Exception ex) {
-			System.out.println("Error : " + ex.getMessage());
-		}
-		
-		return false;
-	}
+        String sql = "INSERT INTO owners (full_name, contact_no, email, address, pet_nickname, pet_breed, date_of_birth) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?);";
 
-	@Override
-	public OwnerModel search() {
-		return null;
-	}
+        try (PreparedStatement pStat = connect().prepareStatement(sql)) {
+            pStat.setString(1, ownerModel.getFullName());
+            pStat.setString(2, ownerModel.getContactNo());
+            pStat.setString(3, ownerModel.getEmail());
+            pStat.setString(4, ownerModel.getAddress());
+            pStat.setString(5, ownerModel.getPetNickName());
+            pStat.setString(6, ownerModel.getPetBreed());
+            pStat.setString(7, ownerModel.getDateOfBirth());
 
-	@Override
-	public boolean Update(OwnerModel ownerModel) {
-		return false;
-	}
+            int rowsInserted = pStat.executeUpdate();
+            result = rowsInserted > 0;
+        } catch (SQLException ex) {
+            System.out.println("Error inserting owner: " + ex.getMessage());
+        }
 
-	@Override
-	public List All() {
-		return null;
-	}
+        return result;
+    }
 
-	
+    @Override
+    public OwnerModel search(int ownerId) {
+        OwnerModel owner = null;
+        String sql = "SELECT * FROM owners WHERE owner_id = ?;";
+
+        try (PreparedStatement pStat = connect().prepareStatement(sql)) {
+            pStat.setInt(1, ownerId);
+            ResultSet rs = pStat.executeQuery();
+
+            if (rs.next()) {
+                owner = new OwnerModel();
+                owner.setOwnerId(rs.getInt("owner_id"));
+                owner.setFullName(rs.getString("full_name"));
+                owner.setContactNo(rs.getString("contact_no"));
+                owner.setEmail(rs.getString("email"));
+                owner.setAddress(rs.getString("address"));
+                owner.setPetNickName(rs.getString("pet_nickname"));
+                owner.setPetBreed(rs.getString("pet_breed"));
+                owner.setDateOfBirth(rs.getString("date_of_birth"));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error searching owner: " + ex.getMessage());
+        }
+
+        return owner;
+    }
+
+    @Override
+    public boolean Update(OwnerModel ownerModel) {
+        boolean result = false;
+
+        String sql = "UPDATE owners SET full_name = ?, contact_no = ?, email = ?, address = ?, pet_nickname = ?, "
+                   + "pet_breed = ?, date_of_birth = ? WHERE owner_id = ?;";
+
+        try (PreparedStatement pStat = connect().prepareStatement(sql)) {
+            pStat.setString(1, ownerModel.getFullName());
+            pStat.setString(2, ownerModel.getContactNo());
+            pStat.setString(3, ownerModel.getEmail());
+            pStat.setString(4, ownerModel.getAddress());
+            pStat.setString(5, ownerModel.getPetNickName());
+            pStat.setString(6, ownerModel.getPetBreed());
+            pStat.setString(7, ownerModel.getDateOfBirth());
+            pStat.setInt(8, ownerModel.getOwnerId());
+
+            int rowsUpdated = pStat.executeUpdate();
+            result = rowsUpdated > 0;
+        } catch (SQLException ex) {
+            System.out.println("Error updating owner: " + ex.getMessage());
+        }
+
+        return result;
+    }
+
+    @Override
+    public boolean delete(int ownerId) {
+        boolean result = false;
+
+        String sql = "DELETE FROM owners WHERE owner_id = ?;";
+
+        try (PreparedStatement pStat = connect().prepareStatement(sql)) {
+            pStat.setInt(1, ownerId);
+
+            int rowsDeleted = pStat.executeUpdate();
+            result = rowsDeleted > 0;
+        } catch (SQLException ex) {
+            System.out.println("Error deleting owner: " + ex.getMessage());
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<OwnerModel> All() {
+        List<OwnerModel> ownerList = new ArrayList<>();
+        String sql = "SELECT * FROM owners;";
+
+        try (PreparedStatement pStat = connect().prepareStatement(sql)) {
+            ResultSet rs = pStat.executeQuery();
+
+            while (rs.next()) {
+                OwnerModel owner = new OwnerModel();
+                owner.setOwnerId(rs.getInt("owner_id"));
+                owner.setFullName(rs.getString("full_name"));
+                owner.setContactNo(rs.getString("contact_no"));
+                owner.setEmail(rs.getString("email"));
+                owner.setAddress(rs.getString("address"));
+                owner.setPetNickName(rs.getString("pet_nickname"));
+                owner.setPetBreed(rs.getString("pet_breed"));
+                owner.setDateOfBirth(rs.getString("date_of_birth"));
+
+                ownerList.add(owner);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error retrieving all owners: " + ex.getMessage());
+        }
+
+        return ownerList;
+    }
+
 }
