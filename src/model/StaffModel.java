@@ -1,83 +1,69 @@
 package model;
 
 public class StaffModel {
-	
-	
-	private int staffId;
-	private String fullName;
-	private String Gender;
-	private String contactNo;
-	private String staffType;
+    private int staffId;
+    private String fullName;
+    private String gender;
+    private String contactNo;
+    private String staffType;
 
-	//Parameterized Constructor
-	public StaffModel( String fullName, String gender, String contactNo, String staffType) {
-		//this.staffId = staffId;
-		this.fullName = fullName;
-		this.Gender = gender;
-		this.contactNo = contactNo;
-		this.staffType = staffType;
-	}
+    // Default constructor
+    public StaffModel() {
+    }
 
-	//Default Constructor
-	public StaffModel() {
-		//this.staffId = 0;
-		this.fullName = "";
-		this.Gender = "";
-		this.contactNo = "";
-		this.staffType = "";
-	}
-	
-	
-	public StaffModel(StaffModel staffModel) {
-		//this.staffId = staffModel.staffId;
-		this.fullName = staffModel.fullName;
-		this.Gender = staffModel.Gender;
-		this.contactNo = staffModel.contactNo;
-		this.staffType = staffModel.staffType;
-	}
+    // Parameterized constructor
+    public StaffModel(int staffId, String fullName, String gender, String contactNo, String staffType) {
+        this.staffId = staffId;
+        this.fullName = fullName;
+        this.gender = gender;
+        this.contactNo = contactNo;
+        this.staffType = staffType;
+    }
 
-	//getter and setters
-//	public int getStaffId() {
-//		return staffId;
-//	}
-//
-//	public void setStaffId(int staffId) {
-//		this.staffId = staffId;
-//	}
+    // Getters and Setters
+    public int getStaffId() {
+        return staffId;
+    }
 
-	public String getFullName() {
-		return fullName;
-	}
+    public void setStaffId(int staffId) {
+        this.staffId = staffId;
+    }
 
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
+    public String getFullName() {
+        return fullName;
+    }
 
-	public String getGender() {
-		return Gender;
-	}
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
-	public void setGender(String gender) {
-		Gender = gender;
-	}
+    public String getGender() {
+        return gender;
+    }
 
-	public String getContactNo() {
-		return contactNo;
-	}
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
-	public void setContactNo(String contactNo) {
-		this.contactNo = contactNo;
-	}
+    public String getContactNo() {
+        return contactNo;
+    }
 
-	public String getStaffType() {
-		return staffType;
-	}
+    public void setContactNo(String contactNo) {
+        this.contactNo = contactNo;
+    }
 
-	public void setStaffType(String staffType) {
-		this.staffType = staffType;
-	}
-	
-	
-	
+    public String getStaffType() {
+        return staffType;
+    }
 
+    public void setStaffType(String staffType) {
+        this.staffType = staffType;
+    }
+
+    // For debugging or displaying object details
+    @Override
+    public String toString() {
+        return "StaffModel [staffId=" + staffId + ", fullName=" + fullName + ", gender=" + gender + ", contactNo=" + contactNo + ", staffType=" + staffType + "]";
+    }
 }
