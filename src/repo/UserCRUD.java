@@ -1,48 +1,35 @@
 package repo;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.util.List;
-
-import interfaces.InfUserManagementCRUD;
+import java.sql.ResultSet;
 import library.DbConnection;
 import model.UserManagementModel;
 
-public class UserCRUD extends DbConnection implements InfUserManagementCRUD {
+public class UserCRUD extends DbConnection {
 
-	@Override
-	public boolean Insert(UserManagementModel user) {
-		boolean result = false; 
-		PreparedStatement pStat;
-		
-		String SQL = "INSERT INTO USERS VALUES(?,?,?);";
-		try {
-			pStat = connect().prepareStatement(SQL);
-			pStat.setInt(1,user.getUserId());
-			pStat.setString(2, user.getFullName());
-			pStat.setString(3, user.getPassword());
-			pStat.executeUpdate();
-			pStat.close();
-			result = true;
-		}catch(Exception ex) {
-			System.out.println("Error : " +ex.getMessage());
-		}
-		
-		return false;
-	}
-
-	@Override
-	public UserManagementModel Search(int userId) {
-		return null;
-	}
-
-	@Override
-	public boolean Update(UserManagementModel user) {
-		return false;
-	}
-
-	@Override
-	public List All() {
-		return null;
-	}
-
+    // Login method to validate user credentials
+    public UserManagementModel login(String username, String password) {
+        UserManagementModel user = null;
+        String SQL = "SELECT * FROM USERS WHERE USERNAME = ? AND PASSWORD = ?";
+        
+        try (Connection conn = connect(); 
+             PreparedStatement pStat = conn.prepareStatement(SQL)) {
+             
+            pStat.setString(1, username);
+            pStat.setString(2, password);
+            
+            ResultSet resultSet = pStat.executeQuery();
+            if (resultSet.next()) {
+                user = new UserManagementModel();
+                user.setUserId(resultSet.getInt("USER_ID"));
+                user.setUsername(resultSet.getString("USERNAME"));
+                user.setPassword(resultSet.getString("PASSWORD"));
+            }
+            pStat.close();
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return user;
+    }
 }
