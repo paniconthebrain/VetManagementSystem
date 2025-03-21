@@ -1,17 +1,20 @@
 package model;
 
 public class OwnerModel {
-    private int ownerId;
-    private String fullName;
-    private String contactNo;
-    private String email;
-    private String address;
-    private String petNickName;
-    private String petBreed;
-    private String dateOfBirth;
+    private int ownerId;           // Unique identifier for each owner (primary key)
+    private String fullName;        // Owner's full name
+    private String contactNo;       // Owner's contact number
+    private String email;           // Owner's email address
+    private String address;         // Owner's physical address
+    private String petNickName;     // Nickname of the owner's pet
+    private String petBreed;        // Breed of the pet
+    private String dateOfBirth;     // Date of birth of the owner or pet (depending on requirement)
 
-    public OwnerModel() {}
+    // Default constructor
+    public OwnerModel() {
+    }
 
+    // Parameterized constructor
     public OwnerModel(int ownerId, String fullName, String contactNo, String email, String address,
                       String petNickName, String petBreed, String dateOfBirth) {
         this.ownerId = ownerId;
@@ -25,6 +28,7 @@ public class OwnerModel {
     }
 
     // Getters and Setters
+
     public int getOwnerId() {
         return ownerId;
     }
@@ -89,6 +93,7 @@ public class OwnerModel {
         this.dateOfBirth = dateOfBirth;
     }
 
+    // Override the toString method to display object details for debugging or display purposes
     @Override
     public String toString() {
         return "OwnerModel [ownerId=" + ownerId + ", fullName=" + fullName + ", contactNo=" + contactNo +
