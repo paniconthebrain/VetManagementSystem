@@ -1,6 +1,6 @@
 package userInterface;
 
-import interfaces.DefaultLabels;
+import interfaces.AppSettings;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -25,7 +25,7 @@ import javafx.stage.Stage;
 import model.UserManagementModel;
 import repo.UserCRUD;
 
-public class Login extends Application implements DefaultLabels {
+public class Login extends Application implements AppSettings {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -35,8 +35,9 @@ public class Login extends Application implements DefaultLabels {
 		PasswordField txtPassword;
 		Button btnLogin, btnCancel;
 
-		Font font = new Font("Aptos", 25);
-		Font font1 = new Font("Aptos", 30);
+		Font font = new Font("Open Sans", 25);
+		Font font1 = new Font("Open Sans", 30);
+
 		Pane pane = new Pane();
 		Scene scene = new Scene(pane, 600, 350);
 
