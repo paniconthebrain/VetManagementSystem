@@ -1,6 +1,6 @@
 package interfaces;
 
-public interface DefaultLabels {
+public interface AppSettings {
 	
 	final String softwareName = "Vetinary Management System";
 	
