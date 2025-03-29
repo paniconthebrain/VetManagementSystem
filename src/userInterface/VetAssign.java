@@ -10,6 +10,8 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -37,6 +39,8 @@ public class VetAssign extends Application implements AppSettings {
 
 		// ComboBox for Staff
 
+		Alert alert = new Alert(null);
+
 		ComboBox<String> comboStaffNames = new ComboBox<>();
 		Map<String, Integer> staffMap = new HashMap<>();
 
@@ -62,16 +66,13 @@ public class VetAssign extends Application implements AppSettings {
 				String selectedStaffName = comboStaffNames.getValue();
 				if (selectedStaffName != null) {
 					int selectedStaffId11 = staffMap.get(selectedStaffName); // Get ID from map
-					
+
 					sm.setStaffId(selectedStaffId11);
 					System.out.println("Selected Staff: " + selectedStaffName + " (ID: " + selectedStaffId11 + ")");
 				}
 			}
 		});
 		comboStaffNames.setStyle(comboBox);
-		
-		
-
 
 		// Fonts and Layout
 		Font font = new Font(subFont, subFontSize);
@@ -170,14 +171,23 @@ public class VetAssign extends Application implements AppSettings {
 							txtContactNo.setText(ownerModel.getContactNo());
 							txtAddress.setText(ownerModel.getAddress());
 						} else {
-							txtOwnername.setText("Not Found");
+							alert.setAlertType(AlertType.WARNING);
+							alert.setContentText("Owner Not Found in History");
+							;
+							alert.show();
 						}
 
 					} catch (NumberFormatException e) {
-						System.out.println("Invalid owner ID format: " + e.getMessage());
+						alert.setAlertType(AlertType.WARNING);
+						alert.setContentText("Invalid owner ID format: " + e.getMessage());
+						;
+						alert.show();
 					}
 				} else {
-					System.out.println("Owner ID cannot be empty.");
+					alert.setAlertType(AlertType.WARNING);
+					alert.setContentText("Owner ID cannot be empty.");
+					;
+					alert.show();// System.out.println("")
 				}
 			}
 		});
@@ -189,26 +199,32 @@ public class VetAssign extends Application implements AppSettings {
 		btnSubmit.setOnMouseExited(e -> btnSubmit.setEffect(null));
 
 		btnSubmit.setOnAction(new EventHandler<ActionEvent>() {
-			// Store selected staff ID globally
 
 			@Override
 			public void handle(ActionEvent actionEvent) {
 				VetAssignmentModel vam = new VetAssignmentModel();
 				try {
 					if (sm.getStaffId() == -1) {
-						System.out.println("Error: No staff selected!");
+						alert.setAlertType(AlertType.INFORMATION);
+						alert.setContentText("Error: No staff selected!");
+						alert.show();
 						return;
 					}
-					
+
 					vam.setOwnerId(Integer.parseInt(txtOwnerId.getText()));
-					vam.setStaffId(sm.getStaffId()); // Now this will work correctly
+					vam.setStaffId(sm.getStaffId());
 					vam.setAdditionalRemarks(txtRemarks.getText());
 					vam.setAssignedDate(LocalDate.now().toString());
 
 					new VetAssignmentCRUD().insert(vam);
-					System.out.println("Vet assigned successfully!");
+					alert.setAlertType(AlertType.INFORMATION);
+					alert.setContentText("Vet assigned successfully!");
+					alert.show();
 				} catch (Exception ex) {
-					System.out.println("Error assigning vet: " + ex.getMessage());
+
+					alert.setAlertType(AlertType.WARNING);
+					alert.setContentText("Error assigning vet: " + ex.getMessage());
+					alert.show();
 				}
 			}
 
