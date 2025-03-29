@@ -205,8 +205,8 @@ public class Ownersetup extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 try {
-                    int ownerId = Integer.parseInt(txtOwnerID.getText()); // Ensure there is a txtOwnerId input for ID
-                    OwnerModel ownerModel = new OwnerCRUD().searchByName(ownerId);
+                    String ownerName = txtOwnerName.getText(); // Ensure there is a txtOwnerId input for ID
+                    OwnerModel ownerModel = new OwnerCRUD().searchByName(ownerName);
 
                     if (ownerModel != null) {
                         txtOwnerName.setText(ownerModel.getFullName());
@@ -226,7 +226,7 @@ public class Ownersetup extends Application {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error");
                         alert.setHeaderText("Owner Not Found");
-                        alert.setContentText("No owner found with ID " + ownerId + ".");
+                        alert.setContentText("No owner found with ID " + ownerName + ".");
                         alert.showAndWait();
                     }
                 } catch (NumberFormatException e) {

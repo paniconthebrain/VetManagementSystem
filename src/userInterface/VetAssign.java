@@ -1,49 +1,118 @@
 package userInterface;
 
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import interfaces.AppSettings;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import model.OwnerModel;
+import model.StaffModel;
+import model.VetAssignmentModel;
+import repo.OwnerCRUD;
+import repo.StaffCRUD;
+import repo.VetAssignmentCRUD;
 
-public class VetAssign extends Application {
+public class VetAssign extends Application implements AppSettings {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		Label lblTitle, lblOwnerId, lblOwnername, lblContactNo, lblAddress, lblStaff, lblRemarks;
+		TextField txtOwnerId, txtOwnername, txtContactNo, txtAddress, txtRemarks;
+		Button btnSearch, btnSubmit, btnCancel;
 
-		Label lblTitle, lblOwnername, lblPetname, lblVetstaffname, lblStafftype;
-		TextField txtOwnername, txtPetname, txtVetstaffname, txtStafftype;
-		Button btnSubmit, btnCancel;
+		// ComboBox for Staff
 
-		Font font = new Font("Arial", 25);
-		Font font1 = new Font("Arial", 30);
+		ComboBox<String> comboStaffNames = new ComboBox<>();
+		Map<String, Integer> staffMap = new HashMap<>();
+
+		// Fetch staff list and populate ComboBox
+		StaffCRUD staffCRUD = new StaffCRUD();
+		List<StaffModel> staffList = staffCRUD.getAllStaff();
+		staffList.forEach(staff -> {
+			staffMap.put(staff.getFullName(), staff.getStaffId()); // Store Name → ID in Map
+			comboStaffNames.getItems().add(staff.getFullName()); // Populate ComboBox with names
+		});
+
+		// ComboBox selection listener to store the selected Staff ID
+		comboStaffNames.setOnAction(event -> {
+			String selectedStaffName = comboStaffNames.getValue();
+			int selectedStaffId = staffMap.getOrDefault(selectedStaffName, -1); // Store the selected Staff ID
+		});
+		comboStaffNames.setPrefWidth(200);
+		comboStaffNames.relocate(645, 376);
+		StaffModel sm = new StaffModel();
+		comboStaffNames.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				String selectedStaffName = comboStaffNames.getValue();
+				if (selectedStaffName != null) {
+					int selectedStaffId11 = staffMap.get(selectedStaffName); // Get ID from map
+					
+					sm.setStaffId(selectedStaffId11);
+					System.out.println("Selected Staff: " + selectedStaffName + " (ID: " + selectedStaffId11 + ")");
+				}
+			}
+		});
+		comboStaffNames.setStyle(comboBox);
+		
+		
+
+
+		// Fonts and Layout
+		Font font = new Font(subFont, subFontSize);
+		Font font1 = new Font(mainFont1, mainFont1Size);
+		Font font2 = new Font(textBoxFont, textBoxFontSize);
 		Pane pane = new Pane();
 		Scene scene = new Scene(pane);
 
 		primaryStage.setScene(scene);
-		primaryStage.setWidth(1440);
-		primaryStage.setHeight(800);
-
+		primaryStage.setWidth(subPageWidth);
+		primaryStage.setHeight(subPageHeight);
 		primaryStage.show();
+		primaryStage.setResizable(false);
 
 		// Sidebar Background
 		Rectangle sidebar = new Rectangle(0, 0, 250, 800);
 		sidebar.setFill(Color.BLACK);
 
 		// Sidebar Labels
-		Label lblSidebarTitle = new Label("ABC CLINIC");
-		lblSidebarTitle.setFont(new Font("Arial", 24));
+		Label lblSidebarTitle = new Label(companyName);
+		lblSidebarTitle.setFont(new Font("Arial", 30));
 		lblSidebarTitle.setTextFill(Color.WHITE);
+		lblSidebarTitle.setMaxWidth(200);
 		lblSidebarTitle.relocate(50, 50);
+		lblSidebarTitle.setWrapText(true);
 
-		lblTitle = new Label("Vet Assignment");
-		lblTitle.relocate(347, 44);
+		lblTitle = new Label("Assign Vet to Owner");
+		lblTitle.relocate(347, 40);
 		lblTitle.setFont(font1);
+
+		lblOwnerId = new Label("Owner Id");
+		lblOwnerId.relocate(451, 110);
+		lblOwnerId.setFont(font);
+
+		txtOwnerId = new TextField("");
+		txtOwnerId.relocate(645, 110);
+		txtOwnerId.setPrefSize(textBoxWidth, textBoxHeight);
+
+		btnSearch = new Button("Search");
+		btnSearch.relocate(980, 110);
+		btnSearch.setStyle(btnPrimary);
 
 		lblOwnername = new Label("Owner Name");
 		lblOwnername.relocate(451, 169);
@@ -51,54 +120,114 @@ public class VetAssign extends Application {
 
 		txtOwnername = new TextField();
 		txtOwnername.relocate(645, 169);
-		txtOwnername.setPrefSize(311, 40);
+		txtOwnername.setPrefSize(textBoxWidth, textBoxHeight);
+		txtOwnername.setDisable(true);
+		txtOwnername.setFont(font2);
 
-		lblPetname = new Label("Gender");
-		lblPetname.relocate(451, 238);
-		lblPetname.setFont(font);
+		lblContactNo = new Label("Contact No");
+		lblContactNo.relocate(451, 238);
+		lblContactNo.setFont(font);
 
-		txtPetname = new TextField();
-		txtPetname.relocate(645, 238);
-		txtPetname.setPrefSize(311, 40);
+		txtContactNo = new TextField();
+		txtContactNo.relocate(645, 238);
+		txtContactNo.setPrefSize(textBoxWidth, textBoxHeight);
+		txtContactNo.setDisable(true);
+		txtContactNo.setFont(font2);
 
-		lblVetstaffname = new Label("Contact No");
-		lblVetstaffname.relocate(451, 309);
-		lblVetstaffname.setFont(font);
+		lblAddress = new Label("Address");
+		lblAddress.relocate(451, 309);
+		lblAddress.setFont(font);
 
-		txtVetstaffname = new TextField();
-		txtVetstaffname.relocate(645, 309);
-		txtVetstaffname.setPrefSize(311, 40);
+		txtAddress = new TextField();
+		txtAddress.relocate(645, 309);
+		txtAddress.setPrefSize(textBoxWidth, textBoxHeight);
+		txtAddress.setDisable(true);
+		txtAddress.setFont(font2);
 
-		lblStafftype = new Label("Staff type");
-		lblStafftype.relocate(451, 376);
-		lblStafftype.setFont(font);
+		lblStaff = new Label("Staff");
+		lblStaff.relocate(451, 376);
+		lblStaff.setFont(font);
 
-		txtStafftype = new TextField();
-		txtStafftype.relocate(645, 376);
-		txtStafftype.setPrefSize(311, 40);
+		lblRemarks = new Label("Additional Remarks");
+		lblRemarks.relocate(451, 443);
+		lblRemarks.setFont(font);
+
+		txtRemarks = new TextField();
+		txtRemarks.relocate(645, 443);
+		txtRemarks.setPrefSize(textBoxWidth, textBoxHeight);
+
+		btnSearch.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				if (!txtOwnerId.getText().isEmpty()) {
+					try {
+						int ownerId = Integer.parseInt(txtOwnerId.getText()); // Convert text to integer
+						OwnerCRUD ownerCRUD = new OwnerCRUD(); // Use repository class
+						OwnerModel ownerModel = ownerCRUD.getOwnerbyId(ownerId); // Fetch from DB
+
+						if (ownerModel.getFullName() != null) {
+							txtOwnername.setText(ownerModel.getFullName()); // Set text field
+							txtContactNo.setText(ownerModel.getContactNo());
+							txtAddress.setText(ownerModel.getAddress());
+						} else {
+							txtOwnername.setText("Not Found");
+						}
+
+					} catch (NumberFormatException e) {
+						System.out.println("Invalid owner ID format: " + e.getMessage());
+					}
+				} else {
+					System.out.println("Owner ID cannot be empty.");
+				}
+			}
+		});
 
 		btnSubmit = new Button("Submit");
 		btnSubmit.relocate(645, 700);
-//		btnSubmit.setPrefSize(311, 40);
+		btnSubmit.setStyle(btnPrimary);
+		btnSubmit.setOnMouseEntered(e -> btnSubmit.setEffect(new DropShadow()));
+		btnSubmit.setOnMouseExited(e -> btnSubmit.setEffect(null));
 
-		btnCancel = new Button("Cancel");
+		btnSubmit.setOnAction(new EventHandler<ActionEvent>() {
+			// Store selected staff ID globally
+
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				VetAssignmentModel vam = new VetAssignmentModel();
+				try {
+					if (sm.getStaffId() == -1) {
+						System.out.println("Error: No staff selected!");
+						return;
+					}
+					
+					vam.setOwnerId(Integer.parseInt(txtOwnerId.getText()));
+					vam.setStaffId(sm.getStaffId()); // Now this will work correctly
+					vam.setAdditionalRemarks(txtRemarks.getText());
+					vam.setAssignedDate(LocalDate.now().toString());
+
+					new VetAssignmentCRUD().insert(vam);
+					System.out.println("Vet assigned successfully!");
+				} catch (Exception ex) {
+					System.out.println("Error assigning vet: " + ex.getMessage());
+				}
+			}
+
+		});
+
+		btnCancel = new Button("Close");
 		btnCancel.relocate(768, 700);
-//		btnCancel.setPrefSize(311, 40);
+		btnCancel.setStyle(btnSecondary);
+		btnCancel.setOnMouseEntered(event -> btnCancel.setEffect(new DropShadow()));
+		btnCancel.setOnMouseExited(event -> btnCancel.setEffect(null));
+		btnCancel.setOnAction(event -> primaryStage.close());
 
-		pane.getChildren().add(lblTitle);
-		pane.getChildren().addAll(lblOwnername, txtOwnername);
-		pane.getChildren().addAll(lblPetname, txtPetname);
-		pane.getChildren().addAll(lblVetstaffname, txtVetstaffname);
-		pane.getChildren().addAll(lblStafftype, txtStafftype);
-		pane.getChildren().add(btnSubmit);
-		pane.getChildren().add(btnCancel);
-		pane.getChildren().add(sidebar);
-		pane.getChildren().add(lblSidebarTitle);
-
+		// Adding elements to Pane
+		pane.getChildren().addAll(lblTitle, lblOwnerId, txtOwnerId, lblOwnername, txtOwnername, btnSearch);
+		pane.getChildren().addAll(lblContactNo, lblAddress, lblStaff, txtContactNo, txtAddress, comboStaffNames);
+		pane.getChildren().addAll(btnSubmit, btnCancel, sidebar, lblSidebarTitle);
 	}
 
 	public static void main(String[] args) {
 		launch(args);
-
 	}
 }
