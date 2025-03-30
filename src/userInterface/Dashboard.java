@@ -1,6 +1,8 @@
 package userInterface;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -22,20 +24,16 @@ public class Dashboard extends Application {
         // Font settings for buttons and labels
         Font buttonFont = new Font("Arial", 16);
         Font titleFont = new Font("Arial", 20);
-
-        // Logged-in user's name (replace with actual username)
-        String loggedInUser = "";
-        Label lblUserName = new Label("Welcome" + loggedInUser);
-        lblUserName.setFont(titleFont);
-        lblUserName.setTextFill(Color.WHITE);
+        
+        Label lblWelcome = new Label("Welcome" );
+        lblWelcome.setFont(titleFont);
+        lblWelcome.setTextFill(Color.WHITE);
 
         // Top Bar (for user name)
         BorderPane topBar = new BorderPane();
         topBar.setStyle("-fx-background-color: #2c3e50;");
         topBar.setPadding(new Insets(10));
-        topBar.setRight(lblUserName);
-//        topBar.setLeft(lblUserName);
-        
+        topBar.setRight(lblWelcome);
 
         // Sidebar Menu Buttons
         Button btnAppointment = createStyledButton("Appointment", buttonFont);
@@ -43,13 +41,14 @@ public class Dashboard extends Application {
         Button btnClientAppointment = createStyledButton("Client Appointment", buttonFont);
         Button btnCompanySetup = createStyledButton("Company Setup", buttonFont);
         Button btnUserSetup = createStyledButton("User Setup", buttonFont);
+        Button btnLogOut = createLogoutButton("Logout", buttonFont);
 
         // Vertical Box for Sidebar
         VBox sidebar = new VBox(10); // 10px spacing between buttons
         sidebar.setStyle("-fx-background-color: #34495e;");
         sidebar.setPadding(new Insets(20));
         sidebar.setPrefWidth(200); // Set sidebar width
-        sidebar.getChildren().addAll(btnCompanySetup,btnStaffSetup, btnUserSetup,btnAppointment,  btnClientAppointment );
+        sidebar.getChildren().addAll(btnCompanySetup,btnStaffSetup, btnUserSetup,btnAppointment,  btnClientAppointment,btnLogOut);
 
         // Main Content Area (Placeholder for now)
         Label lblContent = new Label("Select an option from the sidebar");
@@ -61,8 +60,6 @@ public class Dashboard extends Application {
         root.setTop(topBar); // Top bar with user name
         root.setLeft(sidebar); // Sidebar with menu buttons
         root.setCenter(lblContent); // Main content area
-
-
 
         Scene scene = new Scene(root, 800, 600);
 
@@ -78,6 +75,14 @@ public class Dashboard extends Application {
         btnCompanySetup.setOnAction(e -> openCompanySetup());
         btnUserSetup.setOnAction(e -> openUserSetup());
 //        btnVeterinary.setOnAction(e -> openVeterinaryWindow());
+        btnLogOut.setOnAction(new EventHandler<ActionEvent>() {
+				
+			@Override
+			public void handle(ActionEvent event) {	
+				logout();
+				primaryStage.close();
+			}
+		});
     }
 
     // Helper method to create styled buttons
@@ -86,6 +91,16 @@ public class Dashboard extends Application {
         button.setPrefSize(160, 40); // Set button size
         button.setFont(font);
         button.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14px;");
+        button.setCursor(Cursor.HAND);
+        button.setOnMouseEntered(e -> button.setEffect(new DropShadow()));
+        button.setOnMouseExited(e -> button.setEffect(null));
+        return button;
+    }
+    private Button createLogoutButton(String text, Font font) {
+        Button button = new Button(text);
+        button.setPrefSize(160, 40); // Set button size
+        button.setFont(font);
+        button.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 16px;");
         button.setCursor(Cursor.HAND);
         button.setOnMouseEntered(e -> button.setEffect(new DropShadow()));
         button.setOnMouseExited(e -> button.setEffect(null));
@@ -159,6 +174,20 @@ public class Dashboard extends Application {
         }
     }
 
+    private void logout() {
+        Stage loginStage = new Stage();
+        loginStage.setTitle("Login");
+
+        // Initialize the existing ClientAppointment page
+        Login login = new Login();
+        try {
+
+        	login.start(loginStage); // Start the existing page in the new window
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     public static void main(String[] args) {
         launch(args);
     }
