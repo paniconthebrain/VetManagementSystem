@@ -1,6 +1,6 @@
 package userInterface;
 
-
+import interfaces.AppSettings;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,235 +17,265 @@ import javafx.stage.Stage;
 import model.OwnerModel;
 import repo.OwnerCRUD;
 
-public class Ownersetup extends Application {
+public class Ownersetup extends Application implements AppSettings {
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Label lblTitle, lblOwnerID,lblOwnerName, lblContactNo, lblEmail, lblAddress, lblNickname, lblPetBreed, lblDateOfBirth;
-        TextField txtOwnerID,txtOwnerName, txtContactNo, txtEmail, txtAddress, txtNickname, txtPetBreed, txtDateOfBirth;
-        Button btnSubmit, btnDelete, btnUpdate, btnView;
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		Label lblTitle, lblOwnerID, lblOwnerName, lblContactNo, lblEmail, lblAddress, lblNickname, lblPetBreed,
+				lblDateOfBirth;
+		TextField txtOwnerID, txtOwnerName, txtContactNo, txtEmail, txtAddress, txtNickname, txtPetBreed,
+				txtDateOfBirth;
+		Button btnSubmit, btnDelete, btnUpdate, btnView,btnClear;
 
-        Font font = new Font("Arial", 18);
-        Pane pane = new Pane();
-        Scene scene = new Scene(pane);
+		Font font = new Font("Arial", 18);
+		Pane pane = new Pane();
+		Scene scene = new Scene(pane);
 
-        primaryStage.setScene(scene);
-        primaryStage.setWidth(800);
-        primaryStage.setHeight(600);
-        primaryStage.show();
+		primaryStage.setScene(scene);
+		primaryStage.setWidth(subPageWidth);
+		primaryStage.setHeight(subPageHeight);
+		primaryStage.show();
 
-        // Sidebar
-        Rectangle sidebar = new Rectangle(0, 0, 250, 600);
-        sidebar.setFill(Color.LIGHTGRAY);
+		// Sidebar Background
+		Rectangle sidebar = new Rectangle(0, 0, 250, 800);
+		sidebar.setFill(Color.BLACK);
 
-        Label lblSidebarTitle = new Label("ABC CLINIC");
-        lblSidebarTitle.setFont(new Font("Arial", 24));
-        lblSidebarTitle.setTextFill(Color.BLACK);
-        lblSidebarTitle.relocate(50, 50);
+		// Sidebar Labels
+		Label lblSidebarTitle = new Label(companyName);
+		lblSidebarTitle.setFont(new Font("Arial", 30));
+		lblSidebarTitle.setTextFill(Color.WHITE);
+		lblSidebarTitle.setMaxWidth(200);
+		lblSidebarTitle.relocate(50, 50);
+		lblSidebarTitle.setWrapText(true);
 
-        // Labels and Text Fields
-        lblTitle = new Label("Owner Setup");
-        lblTitle.relocate(300, 50);
-        lblTitle.setFont(font);
+		// Labels and Text Fields
+		lblTitle = new Label("Owner Setup");
+		lblTitle.relocate(300, 50);
+		lblTitle.setFont(font);
+		
+		int labelX = 300, inputX = 450, startY = 100, spacingY = 50;
 
-        lblOwnerID = new Label("Owner id:");
-        lblOwnerID.relocate(300, 80);
+
+		lblOwnerID = new Label("Owner ID:");
+        lblOwnerID.relocate(labelX, startY);
         lblOwnerID.setFont(font);
-        
-        txtOwnerID = new TextField("");
-        txtOwnerID.relocate(450, 80);
-        txtOwnerID.setPrefSize(200, 25);
-        
-        
+        txtOwnerID = new TextField();
+        txtOwnerID.relocate(inputX, startY);
+        txtOwnerID.setPrefSize(200, 30);
+
         lblOwnerName = new Label("Owner Name:");
-        lblOwnerName.relocate(300, 120);
+        lblOwnerName.relocate(labelX, startY + spacingY);
         lblOwnerName.setFont(font);
         txtOwnerName = new TextField();
-        txtOwnerName.relocate(450, 120);
-        txtOwnerName.setPrefSize(200, 25);
+        txtOwnerName.relocate(inputX, startY + spacingY);
+        txtOwnerName.setPrefSize(200, 30);
 
         lblContactNo = new Label("Contact No:");
-        lblContactNo.relocate(300, 160);
+        lblContactNo.relocate(labelX, startY + 2 * spacingY);
         lblContactNo.setFont(font);
         txtContactNo = new TextField();
-        txtContactNo.relocate(450, 160);
-        txtContactNo.setPrefSize(200, 25);
+        txtContactNo.relocate(inputX, startY + 2 * spacingY);
+        txtContactNo.setPrefSize(200, 30);
 
         lblEmail = new Label("Email:");
-        lblEmail.relocate(300, 200);
+        lblEmail.relocate(labelX, startY + 3 * spacingY);
         lblEmail.setFont(font);
         txtEmail = new TextField();
-        txtEmail.relocate(450, 200);
-        txtEmail.setPrefSize(200, 25);
+        txtEmail.relocate(inputX, startY + 3 * spacingY);
+        txtEmail.setPrefSize(200, 30);
 
         lblAddress = new Label("Address:");
-        lblAddress.relocate(300, 240);
+        lblAddress.relocate(labelX, startY + 4 * spacingY);
         lblAddress.setFont(font);
         txtAddress = new TextField();
-        txtAddress.relocate(450, 240);
-        txtAddress.setPrefSize(200, 25);
+        txtAddress.relocate(inputX, startY + 4 * spacingY);
+        txtAddress.setPrefSize(200, 30);
 
         lblNickname = new Label("Pet Nickname:");
-        lblNickname.relocate(300, 280);
+        lblNickname.relocate(labelX, startY + 5 * spacingY);
         lblNickname.setFont(font);
         txtNickname = new TextField();
-        txtNickname.relocate(450, 280);
-        txtNickname.setPrefSize(200, 25);
+        txtNickname.relocate(inputX, startY + 5 * spacingY);
+        txtNickname.setPrefSize(200, 30);
 
         lblPetBreed = new Label("Pet Breed:");
-        lblPetBreed.relocate(300, 320);
+        lblPetBreed.relocate(labelX, startY + 6 * spacingY);
         lblPetBreed.setFont(font);
         txtPetBreed = new TextField();
-        txtPetBreed.relocate(450, 320);
-        txtPetBreed.setPrefSize(200, 25);
+        txtPetBreed.relocate(inputX, startY + 6 * spacingY);
+        txtPetBreed.setPrefSize(200, 30);
 
         lblDateOfBirth = new Label("Date of Birth:");
-        lblDateOfBirth.relocate(300, 360);
+        lblDateOfBirth.relocate(labelX, startY + 7 * spacingY);
         lblDateOfBirth.setFont(font);
         txtDateOfBirth = new TextField();
-        txtDateOfBirth.relocate(450, 360);
-        txtDateOfBirth.setPrefSize(200, 25);
+        txtDateOfBirth.relocate(inputX, startY + 7 * spacingY);
+        txtDateOfBirth.setPrefSize(200, 30);
 
-        // Buttons
+     // Buttons
+        int btnY = startY + 8 * spacingY;
         btnSubmit = new Button("Insert");
-        btnSubmit.relocate(300, 420);
-        btnSubmit.setPrefSize(100, 25);
+        btnSubmit.relocate(labelX, btnY);
+        btnSubmit.setPrefSize(100, 30);
+        btnSubmit.setStyle(btnPrimary);
 
         btnUpdate = new Button("Update");
-        btnUpdate.relocate(410, 420);
-        btnUpdate.setPrefSize(100, 25);
+        btnUpdate.relocate(labelX + 110, btnY);
+        btnUpdate.setPrefSize(100, 30);
+        btnUpdate.setStyle(btnPrimary);
 
         btnDelete = new Button("Delete");
-        btnDelete.relocate(520, 420);
-        btnDelete.setPrefSize(100, 25);
+        btnDelete.relocate(labelX + 220, btnY);
+        btnDelete.setPrefSize(100, 30);
+        btnDelete.setStyle(btnSecondary);
 
         btnView = new Button("View");
-        btnView.relocate(630, 420);
-        btnView.setPrefSize(100, 25);
-
-        // Event Handlers
-     // Event Handlers
-        btnSubmit.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                OwnerModel ownerModel = new OwnerModel();
-                ownerModel.setFullName(txtOwnerName.getText());
-                ownerModel.setContactNo(txtContactNo.getText());
-                ownerModel.setEmail(txtEmail.getText());
-                ownerModel.setAddress(txtAddress.getText());
-                ownerModel.setPetNickName(txtNickname.getText());
-                ownerModel.setPetBreed(txtPetBreed.getText());
-                ownerModel.setDateOfBirth(txtDateOfBirth.getText());
-
-                boolean result = new OwnerCRUD().Insert(ownerModel);
-
-                Alert alert = new Alert(result ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
-                alert.setTitle(result ? "Success" : "Error");
-                alert.setHeaderText(result ? "Owner Added Successfully" : "Error Adding Owner");
-                alert.setContentText(result ? "Owner details have been added." : "Please try again.");
-                alert.showAndWait();
-            }
+        btnView.relocate(labelX + 330, btnY);
+        btnView.setPrefSize(100, 30);
+        btnView.setStyle(btnStage1);
+        
+        btnClear = new Button("Clear");
+        btnClear.relocate(labelX , 600);
+        btnClear.setPrefSize(100, 30);
+        btnClear.setStyle(btnStage2);
+        
+        btnClear.setOnAction(e -> {
+            txtOwnerID.clear();
+            txtOwnerName.clear();
+            txtContactNo.clear();
+            txtEmail.clear();
+            txtAddress.clear();
+            txtNickname.clear();
+            txtPetBreed.clear();
+            txtDateOfBirth.clear();
         });
 
-        btnDelete.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                try {
-                    int ownerId = Integer.parseInt(txtOwnerID.getText()); // Ensure there is a txtOwnerId input for ID
-                    boolean result = new OwnerCRUD().delete(ownerId);
+		// Event Handlers
+		// Event Handlers
+		btnSubmit.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				OwnerModel ownerModel = new OwnerModel();
+				ownerModel.setFullName(txtOwnerName.getText());
+				ownerModel.setContactNo(txtContactNo.getText());
+				ownerModel.setEmail(txtEmail.getText());
+				ownerModel.setAddress(txtAddress.getText());
+				ownerModel.setPetNickName(txtNickname.getText());
+				ownerModel.setPetBreed(txtPetBreed.getText());
+				ownerModel.setDateOfBirth(txtDateOfBirth.getText());
 
-                    Alert alert = new Alert(result ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
-                    alert.setTitle(result ? "Success" : "Error");
-                    alert.setHeaderText(result ? "Owner Deleted Successfully" : "Error Deleting Owner");
-                    alert.setContentText(result ? "Owner with ID " + ownerId + " has been deleted." : "Please try again.");
-                    alert.showAndWait();
-                } catch (NumberFormatException e) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setHeaderText("Invalid Owner ID");
-                    alert.setContentText("Please provide a valid numeric Owner ID.");
-                    alert.showAndWait();
-                }
-            }
-        });
+				boolean result = new OwnerCRUD().Insert(ownerModel);
 
-        btnUpdate.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                try {
-                    int ownerId = Integer.parseInt(txtOwnerID.getText()); // Ensure there is a txtOwnerId input for ID
-                    OwnerModel ownerModel = new OwnerModel();
-                    ownerModel.setOwnerId(ownerId); // Set the ownerId for update
-                    ownerModel.setFullName(txtOwnerName.getText());
-                    ownerModel.setContactNo(txtContactNo.getText());
-                    ownerModel.setEmail(txtEmail.getText());
-                    ownerModel.setAddress(txtAddress.getText());
-                    ownerModel.setPetNickName(txtNickname.getText());
-                    ownerModel.setPetBreed(txtPetBreed.getText());
-                    ownerModel.setDateOfBirth(txtDateOfBirth.getText());
+				Alert alert = new Alert(result ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
+				alert.setTitle(result ? "Success" : "Error");
+				alert.setHeaderText(result ? "Owner Added Successfully" : "Error Adding Owner");
+				alert.setContentText(result ? "Owner details have been added." : "Please try again.");
+				alert.showAndWait();
+			}
+		});
 
-                    boolean result = new OwnerCRUD().Update(ownerModel);
+		btnDelete.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				try {
+					int ownerId = Integer.parseInt(txtOwnerID.getText()); // Ensure there is a txtOwnerId input for ID
+					boolean result = new OwnerCRUD().delete(ownerId);
 
-                    Alert alert = new Alert(result ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
-                    alert.setTitle(result ? "Success" : "Error");
-                    alert.setHeaderText(result ? "Owner Updated Successfully" : "Error Updating Owner");
-                    alert.setContentText(result ? "Owner details have been updated." : "Please try again.");
-                    alert.showAndWait();
-                } catch (NumberFormatException e) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setHeaderText("Invalid Owner ID");
-                    alert.setContentText("Please provide a valid numeric Owner ID.");
-                    alert.showAndWait();
-                }
-            }
-        });
+					Alert alert = new Alert(result ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
+					alert.setTitle(result ? "Success" : "Error");
+					alert.setHeaderText(result ? "Owner Deleted Successfully" : "Error Deleting Owner");
+					alert.setContentText(
+							result ? "Owner with ID " + ownerId + " has been deleted." : "Please try again.");
+					alert.showAndWait();
+				} catch (NumberFormatException e) {
+					Alert alert = new Alert(Alert.AlertType.ERROR);
+					alert.setTitle("Error");
+					alert.setHeaderText("Invalid Owner ID");
+					alert.setContentText("Please provide a valid numeric Owner ID.");
+					alert.showAndWait();
+				}
+			}
+		});
 
-        btnView.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                try {
-                    String ownerName = txtOwnerName.getText(); // Ensure there is a txtOwnerId input for ID
-                    OwnerModel ownerModel = new OwnerCRUD().searchByName(ownerName);
+		btnUpdate.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				try {
+					int ownerId = Integer.parseInt(txtOwnerID.getText()); // Ensure there is a txtOwnerId input for ID
+					OwnerModel ownerModel = new OwnerModel();
+					ownerModel.setOwnerId(ownerId); // Set the ownerId for update
+					ownerModel.setFullName(txtOwnerName.getText());
+					ownerModel.setContactNo(txtContactNo.getText());
+					ownerModel.setEmail(txtEmail.getText());
+					ownerModel.setAddress(txtAddress.getText());
+					ownerModel.setPetNickName(txtNickname.getText());
+					ownerModel.setPetBreed(txtPetBreed.getText());
+					ownerModel.setDateOfBirth(txtDateOfBirth.getText());
 
-                    if (ownerModel != null) {
-                        txtOwnerName.setText(ownerModel.getFullName());
-                        txtContactNo.setText(ownerModel.getContactNo());
-                        txtEmail.setText(ownerModel.getEmail());
-                        txtAddress.setText(ownerModel.getAddress());
-                        txtNickname.setText(ownerModel.getPetNickName());
-                        txtPetBreed.setText(ownerModel.getPetBreed());
-                        txtDateOfBirth.setText(ownerModel.getDateOfBirth());
+					boolean result = new OwnerCRUD().Update(ownerModel);
 
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Owner Found");
-                        alert.setHeaderText("Owner Details Found");
-                        alert.setContentText("Owner " + ownerModel.getFullName() + " has been found.");
-                        alert.showAndWait();
-                    } else {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error");
-                        alert.setHeaderText("Owner Not Found");
-                        alert.setContentText("No owner found with ID " + ownerName + ".");
-                        alert.showAndWait();
-                    }
-                } catch (NumberFormatException e) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setHeaderText("Invalid Owner ID");
-                    alert.setContentText("Please provide a valid numeric Owner ID.");
-                    alert.showAndWait();
-                }
-            }
-        });
+					Alert alert = new Alert(result ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
+					alert.setTitle(result ? "Success" : "Error");
+					alert.setHeaderText(result ? "Owner Updated Successfully" : "Error Updating Owner");
+					alert.setContentText(result ? "Owner details have been updated." : "Please try again.");
+					alert.showAndWait();
+				} catch (NumberFormatException e) {
+					Alert alert = new Alert(Alert.AlertType.ERROR);
+					alert.setTitle("Error");
+					alert.setHeaderText("Invalid Owner ID");
+					alert.setContentText("Please provide a valid numeric Owner ID.");
+					alert.showAndWait();
+				}
+			}
+		});
 
-        // Add elements to the pane
-        pane.getChildren().addAll(lblTitle,lblOwnerID, txtOwnerID, lblOwnerName, txtOwnerName, lblContactNo, txtContactNo, lblEmail, txtEmail,
-                lblAddress, txtAddress, lblNickname, txtNickname, lblPetBreed, txtPetBreed, lblDateOfBirth,
-                txtDateOfBirth, btnSubmit, btnUpdate, btnDelete, btnView, sidebar, lblSidebarTitle);
-    }
+		btnView.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				try {
+					Integer ownerId = Integer.parseInt(txtOwnerID.getText()); // Ensure there is a txtOwnerId input for
+																				// ID
+					OwnerModel ownerModel = new OwnerCRUD().searchByID(ownerId);
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+					if (ownerModel != null) {
+						txtOwnerName.setText(ownerModel.getFullName());
+						txtContactNo.setText(ownerModel.getContactNo());
+						txtEmail.setText(ownerModel.getEmail());
+						txtAddress.setText(ownerModel.getAddress());
+						txtNickname.setText(ownerModel.getPetNickName());
+						txtPetBreed.setText(ownerModel.getPetBreed());
+						txtDateOfBirth.setText(ownerModel.getDateOfBirth());
+
+						Alert alert = new Alert(Alert.AlertType.INFORMATION);
+						alert.setTitle("Owner Found");
+						alert.setHeaderText("Owner Details Found");
+						alert.setContentText("Owner " + ownerModel.getFullName() + " has been found.");
+						alert.showAndWait();
+					} else {
+						Alert alert = new Alert(Alert.AlertType.ERROR);
+						alert.setTitle("Error");
+						alert.setHeaderText("Owner Not Found");
+						alert.setContentText("No owner found with ID " + ownerId + ".");
+						alert.showAndWait();
+					}
+				} catch (NumberFormatException e) {
+					Alert alert = new Alert(Alert.AlertType.ERROR);
+					alert.setTitle("Error");
+					alert.setHeaderText("Invalid Owner ID");
+					alert.setContentText("Please provide a valid numeric Owner ID.");
+					alert.showAndWait();
+				}
+			}
+		});
+
+		// Add elements to the pane
+		pane.getChildren().addAll(lblTitle, lblOwnerID, txtOwnerID, lblOwnerName, txtOwnerName, lblContactNo,
+				txtContactNo, lblEmail, txtEmail, lblAddress, txtAddress, lblNickname, txtNickname, lblPetBreed,
+				txtPetBreed, lblDateOfBirth, txtDateOfBirth, btnSubmit, btnUpdate, btnDelete, btnView, sidebar,
+				lblSidebarTitle,btnClear);
+	}
+
+	public static void main(String[] args) {
+		launch(args);
+	}
 }
