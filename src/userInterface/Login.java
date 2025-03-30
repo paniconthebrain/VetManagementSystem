@@ -59,7 +59,7 @@ public class Login extends Application implements AppSettings {
 
 		txtUsername = new TextField();
 		txtUsername.relocate(250, 100);
-		txtUsername.setPrefSize(200, 40);
+		txtUsername.setPrefSize(textBoxWidth, textBoxHeight);
 		txtUsername.setPromptText("Enter your username");
 
 		// Password
@@ -69,7 +69,7 @@ public class Login extends Application implements AppSettings {
 
 		txtPassword = new PasswordField();
 		txtPassword.relocate(250, 160);
-		txtPassword.setPrefSize(200, 40);
+		txtPassword.setPrefSize(textBoxWidth, textBoxHeight);
 		txtPassword.setPromptText("Enter your password");
 
 		// Buttons
