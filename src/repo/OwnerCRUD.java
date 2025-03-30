@@ -62,6 +62,34 @@ public class OwnerCRUD extends DbConnection implements InfOwnerCRUD {
 		return ownerModel;
 	}
 
+	// Search for owner by ownerName
+	@Override
+	public OwnerModel searchByID(Integer ownerId) {
+		OwnerModel ownerModel = null;
+		String sql = "SELECT * FROM owners WHERE owner_id = ?";
+
+		try (PreparedStatement pStat = connect().prepareStatement(sql)) {
+			pStat.setInt(1, ownerId);
+			ResultSet rs = pStat.executeQuery();
+
+			if (rs.next()) {
+				ownerModel = new OwnerModel();
+				ownerModel.setOwnerId(rs.getInt("owner_id"));
+				ownerModel.setFullName(rs.getString("full_name"));
+				ownerModel.setContactNo(rs.getString("contact_no"));
+				ownerModel.setEmail(rs.getString("email"));
+				ownerModel.setAddress(rs.getString("address"));
+				ownerModel.setPetNickName(rs.getString("pet_nickname"));
+				ownerModel.setPetBreed(rs.getString("pet_breed"));
+				ownerModel.setDateOfBirth(rs.getString("date_of_birth"));
+			}
+		} catch (SQLException ex) {
+			System.out.println("Error: " + ex.getMessage());
+		}
+
+		return ownerModel;
+	}
+
 	// Update owner by ownerId
 	@Override
 	public boolean Update(OwnerModel ownerModel) {
@@ -142,7 +170,6 @@ public class OwnerCRUD extends DbConnection implements InfOwnerCRUD {
 		try (PreparedStatement pStat = connect().prepareStatement(sql)) {
 			pStat.setInt(1, ownerId);
 			ResultSet rs = pStat.executeQuery();
-
 
 			if (rs.next()) {
 				owner.setOwnerId(rs.getInt("owner_id"));

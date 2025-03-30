@@ -1,5 +1,8 @@
 package userInterface;
 
+import java.time.LocalDate;
+
+import interfaces.AppSettings;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -13,12 +16,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import repo.AppointmentCRUD;
 import model.AppointmentModel;
+import repo.AppointmentCRUD;
 
-import java.time.LocalDate;
-
-public class Appointment extends Application {
+public class Appointment extends Application implements AppSettings {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -113,6 +114,7 @@ public class Appointment extends Application {
 
         btnCancel = new Button("Cancel");
         btnCancel.relocate(768, 700);
+        btnCancel.setStyle(btnSecondary);
 
         pane.getChildren().add(lblTitle);
         pane.getChildren().addAll(lblCustomername, txtCustomername);
