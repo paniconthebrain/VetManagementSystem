@@ -19,7 +19,6 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import model.UserManagementModel;
@@ -110,6 +109,7 @@ public class Login extends Application implements AppSettings {
 					alert.setContentText("Welcome " + user.getUsername() + "!");
 					alert.showAndWait();
 
+					UserManagementModel.getInstance().setUserDetails(user.getUserId(), user.getUsername(), user.getUserType());
 					Dashboard dashboard = new Dashboard();
 					try {
 						dashboard.start(primaryStage);

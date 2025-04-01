@@ -13,17 +13,23 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import model.UserManagementModel;
 
 public class Dashboard extends Application {
-	private String userType = "Admin"; // Change this value to "Vet", "Staff", etc.
-
+	
 	@Override
 	public void start(Stage primaryStage) {
+		
+		UserManagementModel session = UserManagementModel.getInstance();
+        String username = session.getUsername();
+        String userType = session.getUserType();
+        int userId = session.getUserId(); // Hidden value
+        
 		// Font settings for buttons and labels
 		Font buttonFont = new Font("Arial", 16);
 		Font titleFont = new Font("Arial", 20);
 
-		Label lblWelcome = new Label("Welcome, " + userType);
+		Label lblWelcome = new Label("Welcome, " + username);
 		lblWelcome.setFont(titleFont);
 		lblWelcome.setTextFill(Color.WHITE);
 
@@ -34,7 +40,6 @@ public class Dashboard extends Application {
 		topBar.setRight(lblWelcome);
 
 		// Sidebar Buttons
-		Button btnAppointment = createStyledButton("Appointment", buttonFont);
 		Button btnStaffSetup = createStyledButton("Staff Setup", buttonFont);
 		Button btnOwnerSetup = createStyledButton("Owner Setup", buttonFont);
 		Button btnClientAppointment = createStyledButton("Client Appointment", buttonFont);
@@ -59,12 +64,12 @@ public class Dashboard extends Application {
 		sidebar.setPrefWidth(200);
 
 		// Add buttons based on user type
-		if (userType.equals("Admin")) {
-			sidebar.getChildren().addAll(btnCompanySetup, btnStaffSetup, btnUserSetup, btnOwnerSetup, btnAppointment,
+		if (userType.equals("admin")) {
+			sidebar.getChildren().addAll(btnCompanySetup, btnStaffSetup, btnUserSetup, btnOwnerSetup,
 					btnClientAppointment, btnVetAssign, btnPetReport, btnOwnerReport, btnAppointmentReport,
 					btnFieldVisitReport, btnAnalysisReport, spacer, btnLogOut);
-		} else if (userType.equals("Staff")) {
-			sidebar.getChildren().addAll(btnAppointment, btnClientAppointment, btnPetReport, btnAnalysisReport, spacer,
+		} else if (userType.equals("Owner")) {
+			sidebar.getChildren().addAll( btnClientAppointment, btnPetReport, btnAnalysisReport, spacer,
 					btnLogOut);
 		} else if (userType.equals("Staff")) {
 			sidebar.getChildren().addAll(btnStaffSetup, btnOwnerSetup, btnClientAppointment, btnOwnerReport,
@@ -84,23 +89,30 @@ public class Dashboard extends Application {
 		root.setLeft(sidebar);
 		root.setCenter(lblContent);
 
-		Scene scene = new Scene(root, 1000, 800);
+		Scene scene = new Scene(root, 1000, 700);
 		primaryStage.setTitle("Dashboard - " + userType);
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);
 		primaryStage.show();
 
 		// Button Actions
+		btnCompanySetup.setOnAction(e -> openCompanySetup());
+		btnStaffSetup.setOnAction(e -> openStaffSetupWindow());
+		btnUserSetup.setOnAction(e -> openUserSetup());
+		btnOwnerSetup.setOnAction(e -> openOwnerSetup());
+		btnClientAppointment.setOnAction(e -> openClientAppointmentWindow());
+		btnVetAssign.setOnAction(e -> openVetAssignWindow());
+		
 		btnLogOut.setOnAction((ActionEvent event) -> {
 			logout();
 			primaryStage.close();
 		});
 	}
-
+	
 	// Helper method to create styled buttons
 	private Button createStyledButton(String text, Font font) {
 		Button button = new Button(text);
-		button.setPrefSize(160, 40);
+		button.setPrefSize(160, 30);
 		button.setFont(font);
 		button.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14px;");
 		button.setCursor(Cursor.HAND);
@@ -111,7 +123,7 @@ public class Dashboard extends Application {
 
 	private Button createLogoutButton(String text, Font font) {
 		Button button = new Button(text);
-		button.setPrefSize(160, 40);
+		button.setPrefSize(160, 30);
 		button.setFont(font);
 		button.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 16px;");
 		button.setCursor(Cursor.HAND);
@@ -119,6 +131,87 @@ public class Dashboard extends Application {
 		button.setOnMouseExited(e -> button.setEffect(null));
 		return button;
 	}
+	 // Methods to open new windows with existing pages
+   
+
+    private void openStaffSetupWindow() {
+        Stage staffSetupStage = new Stage();
+        staffSetupStage.setTitle("Staff Setup");
+
+        // Initialize the existing StaffSetup page
+        CreateStaff staffSetupPage = new CreateStaff();
+        try {
+            staffSetupPage.start(staffSetupStage); // Start the existing page in the new window
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void openCompanySetup() {
+        Stage companySetupStage = new Stage();
+        companySetupStage.setTitle("Company Setup");
+
+        // Initialize the existing Company page
+        CompanySetupPage companySetupPage = new CompanySetupPage();
+        try {
+        	companySetupPage.start(companySetupStage); // Start the existing page in the new window
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void openUserSetup() {
+        Stage userSetupStage = new Stage();
+        userSetupStage.setTitle("User Setup");
+
+        // Initialize the existing Company page
+        UserSetup userSetupPage = new UserSetup();
+        try {
+        	userSetupPage.start(userSetupStage); // Start the existing page in the new window
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void openOwnerSetup() {
+        Stage ownerSetupStage = new Stage();
+        ownerSetupStage.setTitle("Owner Setup");
+
+        // Initialize the existing Company page
+        Ownersetup ownerSetupPage = new Ownersetup();
+        try {
+        	ownerSetupPage.start(ownerSetupStage); // Start the existing page in the new window
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void openVetAssignWindow() {
+        Stage vetAssignStage = new Stage();
+        vetAssignStage.setTitle("Owner Setup");
+
+        // Initialize the existing Company page
+        VetAssign vetAssignPage = new VetAssign();
+        try {
+        	vetAssignPage.start(vetAssignStage); // Start the existing page in the new window
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void openClientAppointmentWindow() {
+        Stage clientAppointmentStage = new Stage();
+        clientAppointmentStage.setTitle("Client Appointment");
+
+        // Initialize the existing ClientAppointment page
+        Appointment clientAppointmentPage = new Appointment();
+        try {
+            clientAppointmentPage.start(clientAppointmentStage); // Start the existing page in the new window
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 	private void logout() {
 		Stage loginStage = new Stage();
