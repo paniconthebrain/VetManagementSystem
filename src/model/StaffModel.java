@@ -32,9 +32,13 @@ public class StaffModel {
     public String getFullName() {
         return fullName;
     }
-
+    
     public void setFullName(String fullName) {
+        if (fullName == null || fullName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Full name cannot be blank");
+        }
         this.fullName = fullName;
+    
     }
 
     public String getGender() {
@@ -48,8 +52,13 @@ public class StaffModel {
     public String getContactNo() {
         return contactNo;
     }
-
     public void setContactNo(String contactNo) {
+        if (contactNo == null || contactNo.trim().isEmpty()) {
+            throw new IllegalArgumentException("Contact number cannot be blank");
+        }
+        if (!contactNo.matches("\\d{10}")) {
+            throw new IllegalArgumentException("Contact number must be 10 digits");
+        }
         this.contactNo = contactNo;
     }
 
@@ -61,7 +70,7 @@ public class StaffModel {
         this.staffType = staffType;
     }
 
-    // For debugging or displaying object details
+
     @Override
     public String toString() {
         return "StaffModel [staffId=" + staffId + ", fullName=" + fullName + ", gender=" + gender + ", contactNo=" + contactNo + ", staffType=" + staffType + "]";
