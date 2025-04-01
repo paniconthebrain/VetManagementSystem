@@ -9,6 +9,19 @@ public class UserManagementModel {
 	private String fullName;
 	private String userType;
 
+	private static UserManagementModel instance;
+
+	public static UserManagementModel getInstance() {
+		if (instance == null) {
+			instance = new UserManagementModel();
+		}
+		return instance;
+	}
+
+	public void clearSession() {
+		instance = null; // Clear session when logging out
+	}
+
 	// Getters and Setters
 	public int getUserId() {
 		return userId;
@@ -75,6 +88,12 @@ public class UserManagementModel {
 		this.password = "";
 		this.fullName = "";
 		this.userType = "";
+	}
+
+	public void setUserDetails(int userId, String username, String userType) {
+		this.userId = userId;
+		this.username = username;
+		this.userType = userType;
 	}
 
 }
