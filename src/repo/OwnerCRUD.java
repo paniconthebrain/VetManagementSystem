@@ -184,4 +184,29 @@ public class OwnerCRUD extends DbConnection implements InfOwnerCRUD {
 		return owner;
 	}
 
+	public OwnerModel getPetById(int ownerId) {
+		String sql = "select owner_id,full_name, pet_nickname, pet_breed, date_of_birth from owners where owner_id=?;";
+
+		OwnerModel owner = new OwnerModel();
+		try (PreparedStatement pStat = connect().prepareStatement(sql)) {
+			pStat.setInt(1, ownerId);
+			ResultSet rs = pStat.executeQuery();
+
+			if (rs.next()) {
+				owner.setOwnerId(rs.getInt("owner_id"));
+				owner.setFullName(rs.getString("full_name"));
+				owner.setPetNickName(rs.getString("pet_nickname"));
+				owner.setPetBreed(rs.getString("pet_breed"));
+				owner.setDateOfBirth(rs.getString("date_of_birth"));;
+			}
+		} catch (Exception ex) {
+			System.out.println("Error: " + ex.getMessage());
+		}
+
+		return owner;
+	}
+	
+
+
+
 }
