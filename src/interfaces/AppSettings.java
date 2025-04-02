@@ -6,7 +6,7 @@ public interface AppSettings {
 	
 	final String softwareName = "Vetinary Management System";
 	final String companyName = "Mobile Veterinary Consultancy Service";
-	final String logo="/Img/logo.png";
+	final String logo="/img/Vetlogo.jpg";
 	
 	final String btnPrimary = "-fx-background-color: #292F36; -fx-text-fill: white; -fx-font-size: 16px;";
 	final String btnSecondary ="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 16px;";

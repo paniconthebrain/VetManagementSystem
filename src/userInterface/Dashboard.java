@@ -9,11 +9,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import model.UserManagementModel;
+import reports.PetReport;
 
 public class Dashboard extends Application {
 	
@@ -96,17 +100,65 @@ public class Dashboard extends Application {
 		primaryStage.show();
 
 		// Button Actions
-		btnCompanySetup.setOnAction(e -> openCompanySetup());
-		btnStaffSetup.setOnAction(e -> openStaffSetupWindow());
-		btnUserSetup.setOnAction(e -> openUserSetup());
-		btnOwnerSetup.setOnAction(e -> openOwnerSetup());
-		btnClientAppointment.setOnAction(e -> openClientAppointmentWindow());
-		btnVetAssign.setOnAction(e -> openVetAssignWindow());
+		btnCompanySetup.setOnAction(e -> openWindow("Company Setup", () -> {
+			CompanySetupPage companySetupPage = new CompanySetupPage();
+		    try {
+		    	companySetupPage.start(new Stage()); // Start the existing page in the new window
+		    } catch (Exception ex) {
+		        ex.printStackTrace();
+		    }
+		}));
 		
-		btnLogOut.setOnAction((ActionEvent event) -> {
-			logout();
-			primaryStage.close();
-		});
+		btnStaffSetup.setOnAction(e -> openWindow("Staff Setup", () -> {
+		    CreateStaff staffSetupPage = new CreateStaff();
+		    try {
+		        staffSetupPage.start(new Stage()); // Start the existing page in the new window
+		    } catch (Exception ex) {
+		        ex.printStackTrace();
+		    }
+		}));
+		btnUserSetup.setOnAction(e -> openWindow("User Setup", () -> {
+		    UserSetup userSetupPage = new UserSetup();
+		    try {
+		    	userSetupPage.start(new Stage()); // Start the existing page in the new window
+		    } catch (Exception ex) {
+		        ex.printStackTrace();
+		    }
+		}));
+		btnOwnerSetup.setOnAction(e -> openWindow("Owner Setup", () -> {
+		    Ownersetup ownerSetupPage = new Ownersetup();
+		    try {
+		    	ownerSetupPage.start(new Stage()); // Start the existing page in the new window
+		    } catch (Exception ex) {
+		        ex.printStackTrace();
+		    }
+		}));
+		btnClientAppointment.setOnAction(e -> openWindow("Appointment", () -> {
+			Appointment appointmentPage = new Appointment();
+		    try {
+		    	appointmentPage.start(new Stage()); // Start the existing page in the new window
+		    } catch (Exception ex) {
+		        ex.printStackTrace();
+		    }
+		}));
+		
+		btnVetAssign.setOnAction(e -> openWindow("Vet Assign", () -> {
+			VetAssign vetAssignPage = new VetAssign();
+		    try {
+		    	vetAssignPage.start(new Stage()); // Start the existing page in the new window
+		    } catch (Exception ex) {
+		        ex.printStackTrace();
+		    }
+		}));
+		
+		btnPetReport.setOnAction(e -> openWindow("Pet Report", () -> {
+			PetReport petReportPage = new PetReport();
+		    try {
+		    	petReportPage.start(new Stage()); // Start the existing page in the new window
+		    } catch (Exception ex) {
+		        ex.printStackTrace();
+		    }
+		}));
 	}
 	
 	// Helper method to create styled buttons
@@ -132,86 +184,109 @@ public class Dashboard extends Application {
 		return button;
 	}
 	 // Methods to open new windows with existing pages
-   
+	private void openWindow(String title, Runnable pageSetup) {
+	    Stage newStage = new Stage();
+	    newStage.setTitle(title);
 
-    private void openStaffSetupWindow() {
-        Stage staffSetupStage = new Stage();
-        staffSetupStage.setTitle("Staff Setup");
-
-        // Initialize the existing StaffSetup page
-        CreateStaff staffSetupPage = new CreateStaff();
-        try {
-            staffSetupPage.start(staffSetupStage); // Start the existing page in the new window
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	    try {
+	        pageSetup.run();  // Execute the passed Runnable, which will initialize the respective page
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
 
 
-    private void openCompanySetup() {
-        Stage companySetupStage = new Stage();
-        companySetupStage.setTitle("Company Setup");
+//    private void openStaffSetupWindow() {
+//        Stage staffSetupStage = new Stage();
+//        staffSetupStage.setTitle("Staff Setup");
+//
+//        // Initialize the existing StaffSetup page
+//        CreateStaff staffSetupPage = new CreateStaff();
+//        try {
+//            staffSetupPage.start(staffSetupStage); // Start the existing page in the new window
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//
+//    private void openCompanySetup() {
+//        Stage companySetupStage = new Stage();
+//        companySetupStage.setTitle("Company Setup");
+//
+//        // Initialize the existing Company page
+//        CompanySetupPage companySetupPage = new CompanySetupPage();
+//        try {
+//        	companySetupPage.start(companySetupStage); // Start the existing page in the new window
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    private void openUserSetup() {
+//        Stage userSetupStage = new Stage();
+//        userSetupStage.setTitle("User Setup");
+//
+//        // Initialize the existing Company page
+//        UserSetup userSetupPage = new UserSetup();
+//        try {
+//        	userSetupPage.start(userSetupStage); // Start the existing page in the new window
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//    
+//    private void openOwnerSetup() {
+//        Stage ownerSetupStage = new Stage();
+//        ownerSetupStage.setTitle("Owner Setup");
+//
+//        // Initialize the existing Company page
+//        Ownersetup ownerSetupPage = new Ownersetup();
+//        try {
+//        	ownerSetupPage.start(ownerSetupStage); // Start the existing page in the new window
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//    
+//    private void openVetAssignWindow() {
+//        Stage vetAssignStage = new Stage();
+//        vetAssignStage.setTitle("Owner Setup");
+//
+//        // Initialize the existing Company page
+//        VetAssign vetAssignPage = new VetAssign();
+//        try {
+//        	vetAssignPage.start(vetAssignStage); // Start the existing page in the new window
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    private void openClientAppointmentWindow() {
+//        Stage clientAppointmentStage = new Stage();
+//        clientAppointmentStage.setTitle("Client Appointment");
+//
+//        // Initialize the existing ClientAppointment page
+//        Appointment clientAppointmentPage = new Appointment();
+//        try {
+//            clientAppointmentPage.start(clientAppointmentStage); // Start the existing page in the new window
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//    private void openPetReportWindow() {
+//        Stage petReportStage = new Stage();
+//        petReportStage.setTitle("Client Appointment");
+//
+//        // Initialize the existing ClientAppointment page
+//        PetReport petReportPage = new PetReport();
+//        try {
+//        	petReportPage.start(petReportStage); // Start the existing page in the new window
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-        // Initialize the existing Company page
-        CompanySetupPage companySetupPage = new CompanySetupPage();
-        try {
-        	companySetupPage.start(companySetupStage); // Start the existing page in the new window
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void openUserSetup() {
-        Stage userSetupStage = new Stage();
-        userSetupStage.setTitle("User Setup");
-
-        // Initialize the existing Company page
-        UserSetup userSetupPage = new UserSetup();
-        try {
-        	userSetupPage.start(userSetupStage); // Start the existing page in the new window
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-    private void openOwnerSetup() {
-        Stage ownerSetupStage = new Stage();
-        ownerSetupStage.setTitle("Owner Setup");
-
-        // Initialize the existing Company page
-        Ownersetup ownerSetupPage = new Ownersetup();
-        try {
-        	ownerSetupPage.start(ownerSetupStage); // Start the existing page in the new window
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-    private void openVetAssignWindow() {
-        Stage vetAssignStage = new Stage();
-        vetAssignStage.setTitle("Owner Setup");
-
-        // Initialize the existing Company page
-        VetAssign vetAssignPage = new VetAssign();
-        try {
-        	vetAssignPage.start(vetAssignStage); // Start the existing page in the new window
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void openClientAppointmentWindow() {
-        Stage clientAppointmentStage = new Stage();
-        clientAppointmentStage.setTitle("Client Appointment");
-
-        // Initialize the existing ClientAppointment page
-        Appointment clientAppointmentPage = new Appointment();
-        try {
-            clientAppointmentPage.start(clientAppointmentStage); // Start the existing page in the new window
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 	private void logout() {
 		Stage loginStage = new Stage();
