@@ -14,16 +14,16 @@ public interface AppSettings {
 	final String btnStage2 ="-fx-background-color: #E09F3E; -fx-text-fill: white; -fx-font-size: 16px;";
 	final String btnContent ="-fx-background-color: #344966; -fx-text-fill: white; -fx-font-size: 14px;";
 	
-	final Integer subPageWidth =1440;
+	final Integer subPageWidth =1300;
 	final Integer subPageHeight =800;
 	
-	final String subFont="Open Sans";
-	final Integer subFontSize = 25;
+	final String subFont="Roboto";
+	final Integer subFontSize = 24;
 	
-	final String mainFont1="Open Sans";
+	final String mainFont1="Roboto";
 	final Integer mainFont1Size = 38;
 	
-	final String textBoxFont="Open Sans";
+	final String textBoxFont="Roboto";
 	final Integer textBoxFontSize = 18;
 	
 	final String comboBox="-fx-font-size: 14px; -fx-padding: 5px; -fx-background-color: white; -fx-border-color: #4CAF50; -fx-border-radius: 5px;";
