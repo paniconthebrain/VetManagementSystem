@@ -1,60 +1,108 @@
 package reports;
 
 import java.util.Map;
-
+import interfaces.AppSettings;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import library.PDFGeneratorService;
 import model.OwnerModel;
 import repo.OwnerCRUD;
 
-public class AnalysisReport extends Application {
+public class AnalysisReport extends Application implements AppSettings {
 
-	private TableView<OwnerModel>table;
+	Label lblTitle, lblOwnerid, lblFullName, lblPetName, lblBreed, lblDob;
 	private TextField ownerIdInput, fullNameInput, petNameInput, petBreedInput, dobInput;
 	private Button viewButton, printButton;
 
-	public static void main(String[] args) {
-		launch(args);
-	}
-
 	@Override
 	public void start(Stage primaryStage) {
-		primaryStage.setTitle("Pet Management");
+		primaryStage.setTitle("Pet Report");
 
-		// Text Fields (Initially Disabled)
+		Alert alert = new Alert(null);
+		Pane pane = new Pane();
+		Scene scene = new Scene(pane);
+
+		Font font1 = new Font("Arial", 38);
+
+		Font font = new Font("Arial", 18);
+
+		// Sidebar Background
+		Rectangle sidebar = new Rectangle(0, 0, 250, 800);
+		sidebar.setFill(Color.BLACK);
+
+		// Sidebar Labels
+		Label lblSidebarTitle = new Label(companyName);
+		lblSidebarTitle.setFont(new Font("Arial", 30));
+		lblSidebarTitle.setTextFill(Color.WHITE);
+		lblSidebarTitle.setMaxWidth(200);
+		lblSidebarTitle.relocate(50, 50);
+		lblSidebarTitle.setWrapText(true);
+
+		// Labels and Text Fields
+		lblTitle = new Label("Pet Report");
+		lblTitle.relocate(300, 50);
+		lblTitle.setFont(font1);
+
+		int labelX = 300, inputX = 450, startY = 200, spacingY = 50;
+
+		lblOwnerid = new Label("Owner ID:");
+		lblOwnerid.relocate(labelX, startY);
+		lblOwnerid.setFont(font);
 		ownerIdInput = new TextField();
-		ownerIdInput.setPromptText("Owner ID");
+		ownerIdInput.relocate(inputX, startY);
+		ownerIdInput.setPrefSize(textBoxWidth, textBoxHeight);
 
+		lblFullName = new Label("Owner Name:");
+		lblFullName.relocate(labelX, startY + spacingY);
+		lblFullName.setFont(font);
 		fullNameInput = new TextField();
-		fullNameInput.setPromptText("Full Name");
+		fullNameInput.relocate(inputX, startY + spacingY);
+		fullNameInput.setPrefSize(textBoxWidth, textBoxHeight);
 		fullNameInput.setDisable(true);
 
+		lblPetName = new Label("Pet Name:");
+		lblPetName.relocate(labelX, startY + 2 * spacingY);
+		lblPetName.setFont(font);
 		petNameInput = new TextField();
-		petNameInput.setPromptText("Pet Nickname");
+		petNameInput.relocate(inputX, startY + 2 * spacingY);
+		petNameInput.setPrefSize(textBoxWidth, textBoxHeight);
 		petNameInput.setDisable(true);
 
+		lblBreed = new Label("Breed:");
+		lblBreed.relocate(labelX, startY + 3 * spacingY);
+		lblBreed.setFont(font);
 		petBreedInput = new TextField();
-		petBreedInput.setPromptText("Pet Breed");
+		petBreedInput.relocate(inputX, startY + 3 * spacingY);
+		petBreedInput.setPrefSize(textBoxWidth, textBoxHeight);
 		petBreedInput.setDisable(true);
-
+		
+		
+		lblDob = new Label("Date Of Birth:");
+		lblDob.relocate(labelX, startY + 4 * spacingY);
+		lblDob.setFont(font);
 		dobInput = new TextField();
-		dobInput.setPromptText("Date of Birth");
+		dobInput.relocate(inputX, startY + 4 * spacingY);
+		dobInput.setPrefSize(textBoxWidth, textBoxHeight);
 		dobInput.setDisable(true);
-
+		
 		// Buttons
-		viewButton = new Button("View");
-
+        int btnY = startY + 8 * spacingY;
+		viewButton = new Button("Search");
+		viewButton.relocate(780,200);
+		viewButton.setPrefSize(100, 30);
+		viewButton.setStyle(btnPrimary);
 		viewButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -76,6 +124,9 @@ public class AnalysisReport extends Application {
 		});
 
 		printButton = new Button("Print to PDF");
+		printButton.relocate(300, 480);
+		printButton.setPrefSize(100, 30);
+		printButton.setStyle(btnContent);
 		printButton.setDisable(true);
 		printButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -99,12 +150,24 @@ public class AnalysisReport extends Application {
 			}
 		});
 
-		HBox buttonLayout = new HBox(10, viewButton, printButton);
-		VBox layout = new VBox(10, ownerIdInput, fullNameInput, petNameInput, petBreedInput, dobInput, buttonLayout);
-		layout.setPadding(new Insets(10));
+		viewButton.setOnMouseEntered(e -> viewButton.setEffect(new DropShadow()));
+		viewButton.setOnMouseExited(e -> viewButton.setEffect(null));
+		
+		printButton.setOnMouseEntered(e -> viewButton.setEffect(new DropShadow()));
+		printButton.setOnMouseExited(e -> viewButton.setEffect(null));
+		
+		// Adding elements to Pane
+		pane.getChildren().addAll(sidebar,lblSidebarTitle,lblTitle, lblOwnerid, lblFullName, lblPetName, lblBreed, lblDob, ownerIdInput,
+				fullNameInput, petNameInput, petBreedInput, dobInput, viewButton, printButton);
 
-		primaryStage.setScene(new Scene(layout, 400, 300));
+		primaryStage.setScene(scene);
+		primaryStage.setWidth(subPageWidth);
+		primaryStage.setHeight(subPageHeight);
 		primaryStage.show();
+	}
+	
+	public static void main(String[] args) {
+		launch(args);
 	}
 
 }

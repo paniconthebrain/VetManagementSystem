@@ -140,8 +140,7 @@ public class Dashboard extends Application {
 		    } catch (Exception ex) {
 		        ex.printStackTrace();
 		    }
-		}));
-		
+		}));		
 		btnVetAssign.setOnAction(e -> openWindow("Vet Assign", () -> {
 			VetAssign vetAssignPage = new VetAssign();
 		    try {
@@ -149,12 +148,20 @@ public class Dashboard extends Application {
 		    } catch (Exception ex) {
 		        ex.printStackTrace();
 		    }
-		}));
-		
+		}));		
 		btnPetReport.setOnAction(e -> openWindow("Pet Report", () -> {
 			PetReport petReportPage = new PetReport();
 		    try {
 		    	petReportPage.start(new Stage()); // Start the existing page in the new window
+		    } catch (Exception ex) {
+		        ex.printStackTrace();
+		    }
+		}));
+		btnLogOut.setOnAction(e -> openWindow("Log Out", () -> {
+			Login loginPage = new Login();
+		    try {
+		    	loginPage.start(new Stage()); // Start the existing page in the new window
+		    	
 		    } catch (Exception ex) {
 		        ex.printStackTrace();
 		    }

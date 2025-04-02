@@ -37,10 +37,8 @@ public class VetAssign extends Application implements AppSettings {
 		TextField txtOwnerId, txtOwnername, txtContactNo, txtAddress, txtRemarks;
 		Button btnSearch, btnSubmit, btnCancel;
 
-		// ComboBox for Staff
-
 		Alert alert = new Alert(null);
-
+		// ComboBox for Staff
 		ComboBox<String> comboStaffNames = new ComboBox<>();
 		Map<String, Integer> staffMap = new HashMap<>();
 
@@ -58,7 +56,7 @@ public class VetAssign extends Application implements AppSettings {
 			int selectedStaffId = staffMap.getOrDefault(selectedStaffName, -1); // Store the selected Staff ID
 		});
 		comboStaffNames.setPrefWidth(200);
-		comboStaffNames.relocate(645, 376);
+		comboStaffNames.relocate(480, 376);
 		StaffModel sm = new StaffModel();
 		comboStaffNames.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -100,61 +98,61 @@ public class VetAssign extends Application implements AppSettings {
 		lblSidebarTitle.setWrapText(true);
 
 		lblTitle = new Label("Assign Vet to Owner");
-		lblTitle.relocate(347, 40);
+		lblTitle.relocate(300, 40);
 		lblTitle.setFont(font1);
 
 		lblOwnerId = new Label("Owner Id");
-		lblOwnerId.relocate(451, 110);
+		lblOwnerId.relocate(300, 110);
 		lblOwnerId.setFont(font);
 
 		txtOwnerId = new TextField("");
-		txtOwnerId.relocate(645, 110);
+		txtOwnerId.relocate(480, 110);
 		txtOwnerId.setPrefSize(textBoxWidth, textBoxHeight);
 
 		btnSearch = new Button("Search");
-		btnSearch.relocate(980, 110);
+		btnSearch.relocate(800, 110);
 		btnSearch.setStyle(btnPrimary);
 
 		lblOwnername = new Label("Owner Name");
-		lblOwnername.relocate(451, 169);
+		lblOwnername.relocate(300, 169);
 		lblOwnername.setFont(font);
 
 		txtOwnername = new TextField();
-		txtOwnername.relocate(645, 169);
+		txtOwnername.relocate(480, 169);
 		txtOwnername.setPrefSize(textBoxWidth, textBoxHeight);
 		txtOwnername.setDisable(true);
 		txtOwnername.setFont(font2);
 
 		lblContactNo = new Label("Contact No");
-		lblContactNo.relocate(451, 238);
+		lblContactNo.relocate(300, 238);
 		lblContactNo.setFont(font);
 
 		txtContactNo = new TextField();
-		txtContactNo.relocate(645, 238);
+		txtContactNo.relocate(480, 238);
 		txtContactNo.setPrefSize(textBoxWidth, textBoxHeight);
 		txtContactNo.setDisable(true);
 		txtContactNo.setFont(font2);
 
 		lblAddress = new Label("Address");
-		lblAddress.relocate(451, 309);
+		lblAddress.relocate(300, 309);
 		lblAddress.setFont(font);
 
 		txtAddress = new TextField();
-		txtAddress.relocate(645, 309);
+		txtAddress.relocate(480, 309);
 		txtAddress.setPrefSize(textBoxWidth, textBoxHeight);
 		txtAddress.setDisable(true);
 		txtAddress.setFont(font2);
 
 		lblStaff = new Label("Staff");
-		lblStaff.relocate(451, 376);
+		lblStaff.relocate(300, 376);
 		lblStaff.setFont(font);
 
 		lblRemarks = new Label("Additional Remarks");
-		lblRemarks.relocate(451, 443);
+		lblRemarks.relocate(300, 443);
 		lblRemarks.setFont(font);
 
 		txtRemarks = new TextField();
-		txtRemarks.relocate(645, 443);
+		txtRemarks.relocate(480, 443);
 		txtRemarks.setPrefSize(textBoxWidth, textBoxHeight);
 
 		btnSearch.setOnAction(new EventHandler<ActionEvent>() {
@@ -193,13 +191,12 @@ public class VetAssign extends Application implements AppSettings {
 		});
 
 		btnSubmit = new Button("Submit");
-		btnSubmit.relocate(645, 700);
+		btnSubmit.relocate(480, 600);
 		btnSubmit.setStyle(btnPrimary);
 		btnSubmit.setOnMouseEntered(e -> btnSubmit.setEffect(new DropShadow()));
 		btnSubmit.setOnMouseExited(e -> btnSubmit.setEffect(null));
 
 		btnSubmit.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent actionEvent) {
 				VetAssignmentModel vam = new VetAssignmentModel();
@@ -210,7 +207,6 @@ public class VetAssign extends Application implements AppSettings {
 						alert.show();
 						return;
 					}
-
 					vam.setOwnerId(Integer.parseInt(txtOwnerId.getText()));
 					vam.setStaffId(sm.getStaffId());
 					vam.setAdditionalRemarks(txtRemarks.getText());
@@ -221,17 +217,15 @@ public class VetAssign extends Application implements AppSettings {
 					alert.setContentText("Vet assigned successfully!");
 					alert.show();
 				} catch (Exception ex) {
-
 					alert.setAlertType(AlertType.WARNING);
 					alert.setContentText("Error assigning vet: " + ex.getMessage());
 					alert.show();
 				}
 			}
-
 		});
 
 		btnCancel = new Button("Close");
-		btnCancel.relocate(768, 700);
+		btnCancel.relocate(600, 600);
 		btnCancel.setStyle(btnSecondary);
 		btnCancel.setOnMouseEntered(event -> btnCancel.setEffect(new DropShadow()));
 		btnCancel.setOnMouseExited(event -> btnCancel.setEffect(null));
