@@ -3,6 +3,9 @@ package repo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
 import library.DbConnection;
 import model.UserManagementModel;
 
@@ -46,5 +49,25 @@ public class UserCRUD extends DbConnection {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+	
+	public List<UserManagementModel> getAll() {
+		List<UserManagementModel> users = new ArrayList<>();
+		String SQL = "SELECT User_Id, Username, UserType FROM USERS";
+
+		try (Connection conn = connect(); PreparedStatement pStat = conn.prepareStatement(SQL)) {
+			ResultSet resultSet = pStat.executeQuery();
+			while (resultSet.next()) {
+				UserManagementModel user = new UserManagementModel();
+				user.setUserId(resultSet.getInt("User_Id"));
+				user.setUsername(resultSet.getString("Username"));
+				user.setUserType(resultSet.getString("UserType"));
+				users.add(user);
+			}
+			pStat.close();
+		} catch (Exception ex) {
+			System.out.println("Error: " + ex.getMessage());
+		}
+		return users;
 	}
 }

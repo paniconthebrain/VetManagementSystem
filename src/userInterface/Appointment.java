@@ -1,7 +1,9 @@
 package userInterface;
 
 import java.time.LocalDate;
+
 import interfaces.AppSettings;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -15,10 +17,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import library.AppSettings;
 import model.AppointmentModel;
 import repo.AppointmentCRUD;
 
-public class Appointment extends Application implements AppSettings {
+public class Appointment extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -182,6 +185,21 @@ public class Appointment extends Application implements AppSettings {
                          "Operation Failed",
                          "Could not save the appointment. Please try again.");
             }
+
+
+        btnCancel = new Button("Cancel");
+        btnCancel.relocate(768, 700);
+        btnCancel.setStyle(AppSettings.btnSecondary);
+
+        pane.getChildren().add(lblTitle);
+        pane.getChildren().addAll(lblCustomername, txtCustomername);
+        pane.getChildren().addAll(lblAppointmentdate, datePicker);
+        pane.getChildren().addAll(lblRemarks, txtRemarks);
+        pane.getChildren().add(btnSubmit);
+        pane.getChildren().add(btnCancel);
+        pane.getChildren().add(sidebar);
+        pane.getChildren().add(lblSidebarTitle);
+
         } catch (Exception ex) {
             showAlert(AlertType.ERROR,
                      "Error",

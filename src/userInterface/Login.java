@@ -1,6 +1,5 @@
 package userInterface;
 
-import interfaces.AppSettings;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -21,24 +20,32 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import library.AppSettings;
 import model.UserManagementModel;
 import repo.UserCRUD;
 
-public class Login extends Application implements AppSettings {
+public class Login extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
+		// Display label for Title, UserName, Password,
 		Label lblTitle, lblUsername, lblPassword;
+		// TextField for taking input from User for username
 		TextField txtUsername;
+		// PasswordField for taking input from user for password
 		PasswordField txtPassword;
+		// Button to control Login and cancel
 		Button btnLogin, btnCancel;
 
-		Font font = new Font("Open Sans", 25);
-		Font font1 = new Font("Open Sans", 30);
+		// declaring of font style and font face
+		Font font = new Font(AppSettings.subFont, AppSettings.subFontSize);
+		Font font1 = new Font(AppSettings.mainFont1, AppSettings.mainFont1Size);
 
+		// Set a new Layout pane and scene and Height /Length of the primary Stage for
+		// the User Login Page
 		Pane pane = new Pane();
-		Scene scene = new Scene(pane, 600, 350);
+		Scene scene = new Scene(pane, 700, 350);
 
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Login");
@@ -46,7 +53,7 @@ public class Login extends Application implements AppSettings {
 		primaryStage.show();
 
 		// Title
-		lblTitle = new Label(softwareName);
+		lblTitle = new Label(AppSettings.softwareName);
 		lblTitle.relocate(100, 10);
 		lblTitle.setFont(font1);
 		lblTitle.setTextFill(Color.WHITE);
@@ -58,7 +65,7 @@ public class Login extends Application implements AppSettings {
 
 		txtUsername = new TextField();
 		txtUsername.relocate(250, 100);
-		txtUsername.setPrefSize(textBoxWidth, textBoxHeight);
+		txtUsername.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 		txtUsername.setPromptText("Enter your username");
 
 		// Password
@@ -68,27 +75,29 @@ public class Login extends Application implements AppSettings {
 
 		txtPassword = new PasswordField();
 		txtPassword.relocate(250, 160);
-		txtPassword.setPrefSize(textBoxWidth, textBoxHeight);
+		txtPassword.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 		txtPassword.setPromptText("Enter your password");
 
 		// Buttons
 		btnLogin = new Button("Login");
 		btnLogin.relocate(250, 250);
 		btnLogin.setPrefSize(100, 40);
-		btnLogin.setStyle(btnPrimary);
+		btnLogin.setStyle(AppSettings.btnPrimary);
 		btnLogin.setCursor(Cursor.HAND);
 
 		btnLogin.setOnMouseEntered(e -> btnLogin.setEffect(new DropShadow()));
 		btnLogin.setOnMouseExited(e -> btnLogin.setEffect(null));
 
+		// Event handler for login button click
 		btnLogin.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
 				// Get input values
+				// Retrieve user inputs from text fields
 				String username = txtUsername.getText();
 				String password = txtPassword.getText();
 
-				// Input validation
+				// Validate input fields are not empty
 				if (username.isEmpty() || password.isEmpty()) {
 					Alert alert = new Alert(AlertType.ERROR);
 					alert.setTitle("Input Error");
@@ -97,19 +106,22 @@ public class Login extends Application implements AppSettings {
 					alert.showAndWait();
 					return;
 				}
-				// Call the CRUD search operation
+				// Authenticate user using login method from UserCRUD
 				UserCRUD userCRUD = new UserCRUD();
 				UserManagementModel user = userCRUD.login(username, password);
 
 				if (user != null) {
-					// Successful login
+					// If Login credential is correct, Success Message is shown 
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setTitle("Login Successful");
 					alert.setHeaderText(null);
 					alert.setContentText("Welcome " + user.getUsername() + "!");
 					alert.showAndWait();
-
-					UserManagementModel.getInstance().setUserDetails(user.getUserId(), user.getUsername(), user.getUserType());
+					
+					// Set logged-in user details globally
+					UserManagementModel.getInstance().setUserDetails(user.getUserId(), user.getUsername(),
+							user.getUserType());
+					// Redirect to Dashboard interface
 					Dashboard dashboard = new Dashboard();
 					try {
 						dashboard.start(primaryStage);
@@ -133,7 +145,7 @@ public class Login extends Application implements AppSettings {
 		btnCancel = new Button("Cancel");
 		btnCancel.relocate(360, 250);
 		btnCancel.setPrefSize(100, 40);
-		btnCancel.setStyle(btnSecondary);
+		btnCancel.setStyle(AppSettings.btnSecondary);
 		btnCancel.setCursor(Cursor.HAND);
 		btnCancel.setOnMouseEntered(e -> btnCancel.setEffect(new DropShadow()));
 		btnCancel.setOnMouseExited(e -> btnCancel.setEffect(null));
