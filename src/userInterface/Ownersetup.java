@@ -168,7 +168,7 @@ public class Ownersetup extends Application{
 
 				Alert alert = new Alert(result ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
 				alert.setTitle(result ? "Success" : "Error");
-				alert.setHeaderText(result ? "Owner Added Successfully" : "Error Adding Owner");
+				alert.setHeaderText(result ? "Owner Added Successfully" : "Error : Owner Name Cannot Be Empty");
 				alert.setContentText(result ? "Owner details have been added." : "Please try again.");
 				alert.showAndWait();
 			}
