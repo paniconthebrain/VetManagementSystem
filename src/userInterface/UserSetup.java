@@ -1,7 +1,8 @@
 package userInterface;
 
-import interfaces.AppSettings;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -10,12 +11,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import library.AppSettings;
 import model.OwnerModel;
 import model.StaffModel;
 import model.UserManagementModel;
@@ -23,7 +28,7 @@ import repo.OwnerCRUD;
 import repo.StaffCRUD;
 import repo.UserCRUD;
 
-public class UserSetup extends Application implements AppSettings {
+public class UserSetup extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -35,8 +40,8 @@ public class UserSetup extends Application implements AppSettings {
 		Button btnSearch, btnSubmit, btnClose;
 
 		// Fonts
-		Font font = new Font(subFont, subFontSize);
-		Font font1 = new Font(mainFont1, mainFont1Size);
+		Font font = new Font(AppSettings.subFont, AppSettings.subFontSize);
+		Font font1 = new Font(AppSettings.mainFont1, AppSettings.mainFont1Size);
 
 		// Create Pane and Scene
 		Pane pane = new Pane();
@@ -68,7 +73,7 @@ public class UserSetup extends Application implements AppSettings {
 
 		cmUserFor.getItems().addAll("Staff", "Owner");
 		cmUserFor.relocate(645, 168);
-		cmUserFor.setStyle(comboBox);
+		cmUserFor.setStyle(AppSettings.comboBox);
 
 		// Name Label & TextField
 		lblAssignedId = new Label("ID:");
@@ -77,11 +82,11 @@ public class UserSetup extends Application implements AppSettings {
 
 		txtAssignedId = new TextField();
 		txtAssignedId.relocate(645, 220);
-		txtAssignedId.setPrefSize(textBoxWidth, textBoxHeight);
+		txtAssignedId.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 
 		btnSearch = new Button("Search");
 		btnSearch.relocate(980, 220);
-		btnSearch.setStyle(btnContent);
+		btnSearch.setStyle(AppSettings.btnContent);
 
 		// Username Label & TextField
 		lblName = new Label("Name:");
@@ -90,7 +95,7 @@ public class UserSetup extends Application implements AppSettings {
 
 		txtName = new TextField();
 		txtName.relocate(645, 270);
-		txtName.setPrefSize(textBoxWidth, textBoxHeight);
+		txtName.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 		txtName.setDisable(true);
 
 		// Password Label & PasswordField
@@ -100,7 +105,7 @@ public class UserSetup extends Application implements AppSettings {
 
 		txtUserName = new TextField();
 		txtUserName.relocate(645, 320);
-		txtUserName.setPrefSize(textBoxWidth, textBoxHeight);
+		txtUserName.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 
 		// Password Label & PasswordField
 		lblPassword = new Label("Password:");
@@ -109,10 +114,34 @@ public class UserSetup extends Application implements AppSettings {
 
 		txtPassword = new PasswordField();
 		txtPassword.relocate(645, 370);
-		txtPassword.setPrefSize(textBoxWidth, textBoxHeight);
+		txtPassword.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
+		
+		TableView<UserManagementModel> userTable = new TableView<>();
+		userTable.setLayoutX(450);
+		userTable.setLayoutY(480);
+		userTable.setPrefSize(700, 250);
+		TableColumn<UserManagementModel, String> colUsername = new TableColumn<>("Username");
+		colUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
+		colUsername.setPrefWidth(200);
+
+		TableColumn<UserManagementModel, String> colUserType = new TableColumn<>("User Type");
+		colUserType.setCellValueFactory(new PropertyValueFactory<>("userType"));
+		colUserType.setPrefWidth(200);
+
+		TableColumn<UserManagementModel, Integer> colAssignedId = new TableColumn<>("Assigned ID");
+		colAssignedId.setCellValueFactory(new PropertyValueFactory<>("assignedId"));
+		colAssignedId.setPrefWidth(150);
+
+		// Add columns to table
+		userTable.getColumns().addAll(colUsername, colUserType, colAssignedId);
+
+		// Populate table with data
+		ObservableList<UserManagementModel> userList = FXCollections.observableArrayList(new UserCRUD().getAll());
+		userTable.setItems(userList);
+		
 		btnSearch.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent event) {
+			public void handle(ActionEvent actionEvent) {
 				String selectedUser = cmUserFor.getValue();
 				if ("Staff".equals(selectedUser)) {
 					int staffId = Integer.parseInt(txtAssignedId.getText());
@@ -140,7 +169,7 @@ public class UserSetup extends Application implements AppSettings {
 		btnSubmit = new Button("Submit");
 		btnSubmit.relocate(645, 420);
 		btnSubmit.setPrefWidth(100);
-		btnSubmit.setStyle(btnPrimary);
+		btnSubmit.setStyle(AppSettings.btnPrimary);
 
 		btnSubmit.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -168,6 +197,7 @@ public class UserSetup extends Application implements AppSettings {
 					}
 					new UserCRUD().insert(umm);
 					showAlert(Alert.AlertType.INFORMATION, "Success", "User Created Succesfully.");
+					userList.setAll(new UserCRUD().getAll());
 					
 				}catch(Exception ex) {
 					showAlert(Alert.AlertType.ERROR, "Error", ex.getMessage());
@@ -178,7 +208,7 @@ public class UserSetup extends Application implements AppSettings {
 		btnClose = new Button("Close");
 		btnClose.relocate(760, 420);
 		btnClose.setPrefWidth(100);
-		btnClose.setStyle(btnSecondary);
+		btnClose.setStyle(AppSettings.btnSecondary);
 		btnClose.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -189,7 +219,7 @@ public class UserSetup extends Application implements AppSettings {
 		// Add Elements to Pane
 		pane.getChildren().addAll(sidebar, lblSidebarTitle, lblTitle, lblUserFor, cmUserFor, lblAssignedId,
 				txtAssignedId, btnSearch, lblName, txtName, lblUserName, txtUserName, lblPassword, txtPassword,
-				btnSubmit, btnClose);
+				btnSubmit, btnClose,userTable);
 	}
 
 	private void showAlert(Alert.AlertType alertType, String title, String message) {

@@ -1,6 +1,5 @@
 package userInterface;
 
-import interfaces.AppSettings;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,10 +13,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import library.AppSettings;
 import model.OwnerModel;
 import repo.OwnerCRUD;
 
-public class Ownersetup extends Application implements AppSettings {
+public class Ownersetup extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -32,8 +32,8 @@ public class Ownersetup extends Application implements AppSettings {
 		Scene scene = new Scene(pane);
 
 		primaryStage.setScene(scene);
-		primaryStage.setWidth(subPageWidth);
-		primaryStage.setHeight(subPageHeight);
+		primaryStage.setWidth(AppSettings.subPageWidth);
+		primaryStage.setHeight(AppSettings.subPageHeight);
 		primaryStage.show();
 
 		// Sidebar Background
@@ -41,7 +41,7 @@ public class Ownersetup extends Application implements AppSettings {
 		sidebar.setFill(Color.BLACK);
 
 		// Sidebar Labels
-		Label lblSidebarTitle = new Label(companyName);
+		Label lblSidebarTitle = new Label(AppSettings.companyName);
 		lblSidebarTitle.setFont(new Font("Arial", 30));
 		lblSidebarTitle.setTextFill(Color.WHITE);
 		lblSidebarTitle.setMaxWidth(200);
@@ -117,27 +117,27 @@ public class Ownersetup extends Application implements AppSettings {
         btnSubmit = new Button("Insert");
         btnSubmit.relocate(labelX, btnY);
         btnSubmit.setPrefSize(100, 30);
-        btnSubmit.setStyle(btnPrimary);
+        btnSubmit.setStyle(AppSettings.btnPrimary);
 
         btnUpdate = new Button("Update");
         btnUpdate.relocate(labelX + 110, btnY);
         btnUpdate.setPrefSize(100, 30);
-        btnUpdate.setStyle(btnPrimary);
+        btnUpdate.setStyle(AppSettings.btnPrimary);
 
         btnDelete = new Button("Delete");
         btnDelete.relocate(labelX + 220, btnY);
         btnDelete.setPrefSize(100, 30);
-        btnDelete.setStyle(btnSecondary);
+        btnDelete.setStyle(AppSettings.btnSecondary);
 
         btnView = new Button("View");
         btnView.relocate(labelX + 330, btnY);
         btnView.setPrefSize(100, 30);
-        btnView.setStyle(btnStage1);
+        btnView.setStyle(AppSettings.btnStage1);
         
         btnClear = new Button("Clear");
         btnClear.relocate(labelX , 600);
         btnClear.setPrefSize(100, 30);
-        btnClear.setStyle(btnStage2);
+        btnClear.setStyle(AppSettings.btnStage2);
         
         btnClear.setOnAction(e -> {
             txtOwnerID.clear();

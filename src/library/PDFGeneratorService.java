@@ -3,13 +3,11 @@ package library;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 
-import interfaces.AppSettings;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Map;
 
-public class PDFGeneratorService implements AppSettings {
+public class PDFGeneratorService {
 
     // Universal method to generate PDFs dynamically and save them in the Downloads folder
     public static void generatePDF(Map<String, String> data, String fileName, String screenName) {

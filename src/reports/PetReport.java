@@ -1,7 +1,7 @@
 package reports;
 
 import java.util.Map;
-import interfaces.AppSettings;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,11 +16,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import library.AppSettings;
 import library.PDFGeneratorService;
 import model.OwnerModel;
 import repo.OwnerCRUD;
 
-public class PetReport extends Application implements AppSettings {
+public class PetReport extends Application {
 
 	Label lblTitle, lblOwnerid, lblFullName, lblPetName, lblBreed, lblDob;
 	private TextField ownerIdInput, fullNameInput, petNameInput, petBreedInput, dobInput;
@@ -33,17 +34,17 @@ public class PetReport extends Application implements AppSettings {
 		Pane pane = new Pane();
 		Scene scene = new Scene(pane);
 
-		Font font1 = new Font(mainFont1, mainFont1Size);
+		Font font1 = new Font(AppSettings.mainFont1, AppSettings.mainFont1Size);
 
-		Font font = new Font(textBoxFont, textBoxFontSize);
+		Font font = new Font(AppSettings.textBoxFont, AppSettings.textBoxFontSize);
 
 		// Sidebar Background
 		Rectangle sidebar = new Rectangle(0, 0, 250, 800);
 		sidebar.setFill(Color.BLACK);
 
 		// Sidebar Labels
-		Label lblSidebarTitle = new Label(companyName);
-		lblSidebarTitle.setFont(new Font(mainFont1, mainFont1Size));
+		Label lblSidebarTitle = new Label(AppSettings.companyName);
+		lblSidebarTitle.setFont(new Font(AppSettings.mainFont1, AppSettings.mainFont1Size));
 		lblSidebarTitle.setTextFill(Color.WHITE);
 		lblSidebarTitle.setMaxWidth(200);
 		lblSidebarTitle.relocate(50, 50);
@@ -61,14 +62,14 @@ public class PetReport extends Application implements AppSettings {
 		lblOwnerid.setFont(font);
 		ownerIdInput = new TextField();
 		ownerIdInput.relocate(inputX, startY);
-		ownerIdInput.setPrefSize(textBoxWidth, textBoxHeight);
+		ownerIdInput.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 
 		lblFullName = new Label("Owner Name:");
 		lblFullName.relocate(labelX, startY + spacingY);
 		lblFullName.setFont(font);
 		fullNameInput = new TextField();
 		fullNameInput.relocate(inputX, startY + spacingY);
-		fullNameInput.setPrefSize(textBoxWidth, textBoxHeight);
+		fullNameInput.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 		fullNameInput.setDisable(true);
 
 		lblPetName = new Label("Pet Name:");
@@ -76,7 +77,7 @@ public class PetReport extends Application implements AppSettings {
 		lblPetName.setFont(font);
 		petNameInput = new TextField();
 		petNameInput.relocate(inputX, startY + 2 * spacingY);
-		petNameInput.setPrefSize(textBoxWidth, textBoxHeight);
+		petNameInput.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 		petNameInput.setDisable(true);
 
 		lblBreed = new Label("Breed:");
@@ -84,7 +85,7 @@ public class PetReport extends Application implements AppSettings {
 		lblBreed.setFont(font);
 		petBreedInput = new TextField();
 		petBreedInput.relocate(inputX, startY + 3 * spacingY);
-		petBreedInput.setPrefSize(textBoxWidth, textBoxHeight);
+		petBreedInput.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 		petBreedInput.setDisable(true);
 		
 		
@@ -93,14 +94,14 @@ public class PetReport extends Application implements AppSettings {
 		lblDob.setFont(font);
 		dobInput = new TextField();
 		dobInput.relocate(inputX, startY + 4 * spacingY);
-		dobInput.setPrefSize(textBoxWidth, textBoxHeight);
+		dobInput.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 		dobInput.setDisable(true);
 		
 		// Buttons
 		viewButton = new Button("Search");
 		viewButton.relocate(780,200);
 		viewButton.setPrefSize(100, 30);
-		viewButton.setStyle(btnPrimary);
+		viewButton.setStyle(AppSettings.btnPrimary);
 		viewButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -124,7 +125,7 @@ public class PetReport extends Application implements AppSettings {
 		printButton = new Button("Print to PDF");
 		printButton.relocate(300, 480);
 		printButton.setPrefSize(100, 30);
-		printButton.setStyle(btnContent);
+		printButton.setStyle(AppSettings.btnContent);
 		printButton.setDisable(true);
 		printButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -159,8 +160,8 @@ public class PetReport extends Application implements AppSettings {
 				fullNameInput, petNameInput, petBreedInput, dobInput, viewButton, printButton);
 
 		primaryStage.setScene(scene);
-		primaryStage.setWidth(subPageWidth);
-		primaryStage.setHeight(subPageHeight);
+		primaryStage.setWidth(AppSettings.subPageWidth);
+		primaryStage.setHeight(AppSettings.subPageHeight);
 		primaryStage.show();
 	}
 	

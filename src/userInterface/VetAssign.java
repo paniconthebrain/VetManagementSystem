@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import interfaces.AppSettings;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,6 +21,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import library.AppSettings;
 import model.OwnerModel;
 import model.StaffModel;
 import model.VetAssignmentModel;
@@ -29,7 +29,7 @@ import repo.OwnerCRUD;
 import repo.StaffCRUD;
 import repo.VetAssignmentCRUD;
 
-public class VetAssign extends Application implements AppSettings {
+public class VetAssign extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -70,18 +70,18 @@ public class VetAssign extends Application implements AppSettings {
 				}
 			}
 		});
-		comboStaffNames.setStyle(comboBox);
+		comboStaffNames.setStyle(AppSettings.comboBox);
 
 		// Fonts and Layout
-		Font font = new Font(subFont, subFontSize);
-		Font font1 = new Font(mainFont1, mainFont1Size);
-		Font font2 = new Font(textBoxFont, textBoxFontSize);
+		Font font = new Font(AppSettings.subFont, AppSettings.subFontSize);
+		Font font1 = new Font(AppSettings.mainFont1, AppSettings.mainFont1Size);
+		Font font2 = new Font(AppSettings.textBoxFont, AppSettings.textBoxFontSize);
 		Pane pane = new Pane();
 		Scene scene = new Scene(pane);
 
 		primaryStage.setScene(scene);
-		primaryStage.setWidth(subPageWidth);
-		primaryStage.setHeight(subPageHeight);
+		primaryStage.setWidth(AppSettings.subPageWidth);
+		primaryStage.setHeight(AppSettings.subPageHeight);
 		primaryStage.show();
 		primaryStage.setResizable(false);
 
@@ -90,7 +90,7 @@ public class VetAssign extends Application implements AppSettings {
 		sidebar.setFill(Color.BLACK);
 
 		// Sidebar Labels
-		Label lblSidebarTitle = new Label(companyName);
+		Label lblSidebarTitle = new Label(AppSettings.companyName);
 		lblSidebarTitle.setFont(new Font("Arial", 30));
 		lblSidebarTitle.setTextFill(Color.WHITE);
 		lblSidebarTitle.setMaxWidth(200);
@@ -107,11 +107,11 @@ public class VetAssign extends Application implements AppSettings {
 
 		txtOwnerId = new TextField("");
 		txtOwnerId.relocate(480, 110);
-		txtOwnerId.setPrefSize(textBoxWidth, textBoxHeight);
+		txtOwnerId.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 
 		btnSearch = new Button("Search");
 		btnSearch.relocate(800, 110);
-		btnSearch.setStyle(btnPrimary);
+		btnSearch.setStyle(AppSettings.btnPrimary);
 
 		lblOwnername = new Label("Owner Name");
 		lblOwnername.relocate(300, 169);
@@ -119,7 +119,7 @@ public class VetAssign extends Application implements AppSettings {
 
 		txtOwnername = new TextField();
 		txtOwnername.relocate(480, 169);
-		txtOwnername.setPrefSize(textBoxWidth, textBoxHeight);
+		txtOwnername.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 		txtOwnername.setDisable(true);
 		txtOwnername.setFont(font2);
 
@@ -129,7 +129,7 @@ public class VetAssign extends Application implements AppSettings {
 
 		txtContactNo = new TextField();
 		txtContactNo.relocate(480, 238);
-		txtContactNo.setPrefSize(textBoxWidth, textBoxHeight);
+		txtContactNo.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 		txtContactNo.setDisable(true);
 		txtContactNo.setFont(font2);
 
@@ -139,7 +139,7 @@ public class VetAssign extends Application implements AppSettings {
 
 		txtAddress = new TextField();
 		txtAddress.relocate(480, 309);
-		txtAddress.setPrefSize(textBoxWidth, textBoxHeight);
+		txtAddress.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 		txtAddress.setDisable(true);
 		txtAddress.setFont(font2);
 
@@ -153,7 +153,7 @@ public class VetAssign extends Application implements AppSettings {
 
 		txtRemarks = new TextField();
 		txtRemarks.relocate(480, 443);
-		txtRemarks.setPrefSize(textBoxWidth, textBoxHeight);
+		txtRemarks.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 
 		btnSearch.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -192,7 +192,7 @@ public class VetAssign extends Application implements AppSettings {
 
 		btnSubmit = new Button("Submit");
 		btnSubmit.relocate(480, 600);
-		btnSubmit.setStyle(btnPrimary);
+		btnSubmit.setStyle(AppSettings.btnPrimary);
 		btnSubmit.setOnMouseEntered(e -> btnSubmit.setEffect(new DropShadow()));
 		btnSubmit.setOnMouseExited(e -> btnSubmit.setEffect(null));
 
@@ -226,7 +226,7 @@ public class VetAssign extends Application implements AppSettings {
 
 		btnCancel = new Button("Close");
 		btnCancel.relocate(600, 600);
-		btnCancel.setStyle(btnSecondary);
+		btnCancel.setStyle(AppSettings.btnSecondary);
 		btnCancel.setOnMouseEntered(event -> btnCancel.setEffect(new DropShadow()));
 		btnCancel.setOnMouseExited(event -> btnCancel.setEffect(null));
 		btnCancel.setOnAction(event -> primaryStage.close());

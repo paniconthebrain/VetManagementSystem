@@ -80,6 +80,7 @@ public class Dashboard extends Application {
 					btnFieldVisitReport, spacer, btnLogOut);
 		} else {
 			sidebar.getChildren().addAll(spacer, btnLogOut); // Default case: only Logout
+			
 		}
 
 		// Main Content Area (Placeholder)
@@ -202,109 +203,16 @@ public class Dashboard extends Application {
 	    }
 	}
 
-
-//    private void openStaffSetupWindow() {
-//        Stage staffSetupStage = new Stage();
-//        staffSetupStage.setTitle("Staff Setup");
-//
-//        // Initialize the existing StaffSetup page
-//        CreateStaff staffSetupPage = new CreateStaff();
-//        try {
-//            staffSetupPage.start(staffSetupStage); // Start the existing page in the new window
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//
-//    private void openCompanySetup() {
-//        Stage companySetupStage = new Stage();
-//        companySetupStage.setTitle("Company Setup");
-//
-//        // Initialize the existing Company page
-//        CompanySetupPage companySetupPage = new CompanySetupPage();
-//        try {
-//        	companySetupPage.start(companySetupStage); // Start the existing page in the new window
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private void openUserSetup() {
-//        Stage userSetupStage = new Stage();
-//        userSetupStage.setTitle("User Setup");
-//
-//        // Initialize the existing Company page
-//        UserSetup userSetupPage = new UserSetup();
-//        try {
-//        	userSetupPage.start(userSetupStage); // Start the existing page in the new window
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    
-//    private void openOwnerSetup() {
-//        Stage ownerSetupStage = new Stage();
-//        ownerSetupStage.setTitle("Owner Setup");
-//
-//        // Initialize the existing Company page
-//        Ownersetup ownerSetupPage = new Ownersetup();
-//        try {
-//        	ownerSetupPage.start(ownerSetupStage); // Start the existing page in the new window
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    
-//    private void openVetAssignWindow() {
-//        Stage vetAssignStage = new Stage();
-//        vetAssignStage.setTitle("Owner Setup");
-//
-//        // Initialize the existing Company page
-//        VetAssign vetAssignPage = new VetAssign();
-//        try {
-//        	vetAssignPage.start(vetAssignStage); // Start the existing page in the new window
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private void openClientAppointmentWindow() {
-//        Stage clientAppointmentStage = new Stage();
-//        clientAppointmentStage.setTitle("Client Appointment");
-//
-//        // Initialize the existing ClientAppointment page
-//        Appointment clientAppointmentPage = new Appointment();
-//        try {
-//            clientAppointmentPage.start(clientAppointmentStage); // Start the existing page in the new window
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    private void openPetReportWindow() {
-//        Stage petReportStage = new Stage();
-//        petReportStage.setTitle("Client Appointment");
-//
-//        // Initialize the existing ClientAppointment page
-//        PetReport petReportPage = new PetReport();
-//        try {
-//        	petReportPage.start(petReportStage); // Start the existing page in the new window
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-
-	private void logout() {
-		Stage loginStage = new Stage();
-		loginStage.setTitle("Login");
-		Login login = new Login();
-		try {
-			login.start(loginStage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	private void logout() {
+//		Stage loginStage = new Stage();
+//		loginStage.setTitle("Login");
+//		Login login = new Login();
+//		try {
+//			login.start(loginStage);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	public static void main(String[] args) {
 		launch(args);
