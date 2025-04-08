@@ -18,17 +18,18 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import model.UserManagementModel;
 import reports.PetReport;
+import repo.DashboardStatsCRUD;
 
 public class Dashboard extends Application {
-	
+
 	@Override
 	public void start(Stage primaryStage) {
-		
+
 		UserManagementModel session = UserManagementModel.getInstance();
-        String username = session.getUsername();
-        String userType = session.getUserType();
-        int userId = session.getUserId(); // Hidden value
-        
+		String username = session.getUsername();
+		String userType = session.getUserType();
+		int userId = session.getUserId(); // Hidden value
+
 		// Font settings for buttons and labels
 		Font buttonFont = new Font("Arial", 16);
 		Font titleFont = new Font("Arial", 20);
@@ -73,26 +74,40 @@ public class Dashboard extends Application {
 					btnClientAppointment, btnVetAssign, btnPetReport, btnOwnerReport, btnAppointmentReport,
 					btnFieldVisitReport, btnAnalysisReport, spacer, btnLogOut);
 		} else if (userType.equals("Owner")) {
-			sidebar.getChildren().addAll( btnClientAppointment, btnPetReport, btnAnalysisReport, spacer,
-					btnLogOut);
+			sidebar.getChildren().addAll(btnClientAppointment, btnPetReport, btnAnalysisReport, spacer, btnLogOut);
 		} else if (userType.equals("Staff")) {
 			sidebar.getChildren().addAll(btnStaffSetup, btnOwnerSetup, btnClientAppointment, btnOwnerReport,
 					btnFieldVisitReport, spacer, btnLogOut);
 		} else {
 			sidebar.getChildren().addAll(spacer, btnLogOut); // Default case: only Logout
-			
+
 		}
 
-		// Main Content Area (Placeholder)
-		Label lblContent = new Label("");
-		lblContent.setFont(titleFont);
-		lblContent.setAlignment(Pos.CENTER);
+		
+		// Dashboard stats
+		DashboardStatsCRUD stats = new DashboardStatsCRUD();
+
+		Label lblCustomerCount = new Label("Total Customers: " + stats.getCustomerCount());
+		Label lblAppointmentCount = new Label("Total Appointments: " + stats.getAppointmentCount());
+		Label lblStaffCount = new Label("Total Staff: " + stats.getStaffCount());
+
+		lblCustomerCount.setFont(new Font("Arial", 18));
+		lblAppointmentCount.setFont(new Font("Arial", 18));
+		lblStaffCount.setFont(new Font("Arial", 18));
+
+		lblCustomerCount.setTextFill(Color.web("#2ecc71"));
+		lblAppointmentCount.setTextFill(Color.web("#f39c12"));
+		lblStaffCount.setTextFill(Color.web("#e74c3c"));
+
+		VBox dashboardStatsBox = new VBox(20, lblCustomerCount, lblAppointmentCount, lblStaffCount);
+		dashboardStatsBox.setAlignment(Pos.CENTER);
+		dashboardStatsBox.setPadding(new Insets(20));
 
 		// BorderPane Layout
 		BorderPane root = new BorderPane();
 		root.setTop(topBar);
 		root.setLeft(sidebar);
-		root.setCenter(lblContent);
+		root.setCenter(dashboardStatsBox);
 
 		Scene scene = new Scene(root, 1000, 700);
 		primaryStage.setTitle("Dashboard - " + userType);
@@ -103,72 +118,72 @@ public class Dashboard extends Application {
 		// Button Actions
 		btnCompanySetup.setOnAction(e -> openWindow("Company Setup", () -> {
 			CompanySetupPage companySetupPage = new CompanySetupPage();
-		    try {
-		    	companySetupPage.start(new Stage()); // Start the existing page in the new window
-		    } catch (Exception ex) {
-		        ex.printStackTrace();
-		    }
+			try {
+				companySetupPage.start(new Stage()); // Start the existing page in the new window
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}));
-		
+
 		btnStaffSetup.setOnAction(e -> openWindow("Staff Setup", () -> {
-		    CreateStaff staffSetupPage = new CreateStaff();
-		    try {
-		        staffSetupPage.start(new Stage()); // Start the existing page in the new window
-		    } catch (Exception ex) {
-		        ex.printStackTrace();
-		    }
+			CreateStaff staffSetupPage = new CreateStaff();
+			try {
+				staffSetupPage.start(new Stage()); // Start the existing page in the new window
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}));
 		btnUserSetup.setOnAction(e -> openWindow("User Setup", () -> {
-		    UserSetup userSetupPage = new UserSetup();
-		    try {
-		    	userSetupPage.start(new Stage()); // Start the existing page in the new window
-		    } catch (Exception ex) {
-		        ex.printStackTrace();
-		    }
+			UserSetup userSetupPage = new UserSetup();
+			try {
+				userSetupPage.start(new Stage()); // Start the existing page in the new window
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}));
 		btnOwnerSetup.setOnAction(e -> openWindow("Owner Setup", () -> {
-		    Ownersetup ownerSetupPage = new Ownersetup();
-		    try {
-		    	ownerSetupPage.start(new Stage()); // Start the existing page in the new window
-		    } catch (Exception ex) {
-		        ex.printStackTrace();
-		    }
+			Ownersetup ownerSetupPage = new Ownersetup();
+			try {
+				ownerSetupPage.start(new Stage()); // Start the existing page in the new window
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}));
 		btnClientAppointment.setOnAction(e -> openWindow("Appointment", () -> {
 			Appointment appointmentPage = new Appointment();
-		    try {
-		    	appointmentPage.start(new Stage()); // Start the existing page in the new window
-		    } catch (Exception ex) {
-		        ex.printStackTrace();
-		    }
-		}));		
+			try {
+				appointmentPage.start(new Stage()); // Start the existing page in the new window
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}));
 		btnVetAssign.setOnAction(e -> openWindow("Vet Assign", () -> {
 			VetAssign vetAssignPage = new VetAssign();
-		    try {
-		    	vetAssignPage.start(new Stage()); // Start the existing page in the new window
-		    } catch (Exception ex) {
-		        ex.printStackTrace();
-		    }
-		}));		
+			try {
+				vetAssignPage.start(new Stage()); // Start the existing page in the new window
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}));
 		btnPetReport.setOnAction(e -> openWindow("Pet Report", () -> {
 			PetReport petReportPage = new PetReport();
-		    try {
-		    	petReportPage.start(new Stage()); // Start the existing page in the new window
-		    } catch (Exception ex) {
-		        ex.printStackTrace();
-		    }
+			try {
+				petReportPage.start(new Stage()); // Start the existing page in the new window
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}));
 		btnLogOut.setOnAction(e -> openWindow("Log Out", () -> {
 			Login loginPage = new Login();
-		    try {
-		    	loginPage.start(new Stage()); // Start the existing page in the new window
-		    	
-		    } catch (Exception ex) {
-		        ex.printStackTrace();
-		    }
+			try {
+				loginPage.start(new Stage()); // Start the existing page in the new window
+
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}));
 	}
-	
+
 	// Helper method to create styled buttons
 	private Button createStyledButton(String text, Font font) {
 		Button button = new Button(text);
@@ -191,16 +206,17 @@ public class Dashboard extends Application {
 		button.setOnMouseExited(e -> button.setEffect(null));
 		return button;
 	}
-	 // Methods to open new windows with existing pages
-	private void openWindow(String title, Runnable pageSetup) {
-	    Stage newStage = new Stage();
-	    newStage.setTitle(title);
 
-	    try {
-	        pageSetup.run();  // Execute the passed Runnable, which will initialize the respective page
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+	// Methods to open new windows with existing pages
+	private void openWindow(String title, Runnable pageSetup) {
+		Stage newStage = new Stage();
+		newStage.setTitle(title);
+
+		try {
+			pageSetup.run(); // Execute the passed Runnable, which will initialize the respective page
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 //	private void logout() {
