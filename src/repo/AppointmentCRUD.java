@@ -51,6 +51,30 @@ public class AppointmentCRUD extends DbConnection {
         }
         return appointment;
     }
+    
+ // Read or Retrieve all appointments for report
+    public List<AppointmentModel> getAllAppointmentsByDate() {
+        List<AppointmentModel> appointments = new ArrayList<>();
+        String SQL = "SELECT * FROM appointments ORDER BY appointment_date";
+
+        try (Connection conn = connect(); 
+             PreparedStatement pStat = conn.prepareStatement(SQL);
+             ResultSet rs = pStat.executeQuery()) {
+
+            while (rs.next()) {
+                AppointmentModel appointment = new AppointmentModel();
+                appointment.setAppointmentId(rs.getInt("appointment_id"));
+                appointment.setCustomerName(rs.getString("customer_name"));
+                appointment.setAppointmentDate(rs.getDate("appointment_date").toLocalDate());
+                appointment.setRemarks(rs.getString("remarks"));
+                appointments.add(appointment);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+
+        return appointments;
+    }
 
     // Update
     public boolean updateAppointment(AppointmentModel appointment) {
