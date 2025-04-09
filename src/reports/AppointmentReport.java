@@ -1,174 +1,156 @@
 package reports;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import library.AppSettings;
 import library.PDFGeneratorService;
-import model.OwnerModel;
-import repo.OwnerCRUD;
+import model.AppointmentModel;
+import repo.AppointmentCRUD;
 
 public class AppointmentReport extends Application {
 
-	Label lblTitle, lblOwnerid, lblFullName, lblPetName, lblBreed, lblDob;
-	private TextField ownerIdInput, fullNameInput, petNameInput, petBreedInput, dobInput;
-	private Button viewButton, printButton;
+    private TableView<AppointmentModel> appointmentTable;
+    private AppointmentCRUD appointmentCRUD = new AppointmentCRUD();
 
-	@Override
-	public void start(Stage primaryStage) {
-		primaryStage.setTitle("Pet Report");
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setTitle("Appointment Reports");
 
-		Alert alert = new Alert(null);
-		Pane pane = new Pane();
-		Scene scene = new Scene(pane);
+        // Main layout
+        BorderPane mainPane = new BorderPane();
+        Scene scene = new Scene(mainPane, 1000, 700);
 
-		Font font1 = new Font("Arial", 38);
+        // Sidebar
+        VBox sidebar = createSidebar();
+        mainPane.setLeft(sidebar);
 
-		Font font = new Font("Arial", 18);
+        // Center content
+        VBox centerContent = new VBox(20);
+        centerContent.setPadding(new Insets(20));
 
-		// Sidebar Background
-		Rectangle sidebar = new Rectangle(0, 0, 250, 800);
-		sidebar.setFill(Color.BLACK);
+        // Title
+        Label titleLabel = new Label("Appointment Reports");
+        titleLabel.setFont(new Font("Arial", 28));
 
-		// Sidebar Labels
-		Label lblSidebarTitle = new Label(AppSettings.companyName);
-		lblSidebarTitle.setFont(new Font("Arial", 30));
-		lblSidebarTitle.setTextFill(Color.WHITE);
-		lblSidebarTitle.setMaxWidth(200);
-		lblSidebarTitle.relocate(50, 50);
-		lblSidebarTitle.setWrapText(true);
+        // Table
+        appointmentTable = createAppointmentTable();
 
-		// Labels and Text Fields
-		lblTitle = new Label("Pet Report");
-		lblTitle.relocate(300, 50);
-		lblTitle.setFont(font1);
+        // Buttons
+        HBox buttonBox = new HBox(15);
+        Button refreshBtn = new Button("Refresh Data");
+        refreshBtn.setOnAction(e -> refreshTable());
 
-		int labelX = 300, inputX = 450, startY = 200, spacingY = 50;
+        Button printBtn = new Button("Generate Report");
+        printBtn.setOnAction(e -> generateReport());
 
-		lblOwnerid = new Label("Owner ID:");
-		lblOwnerid.relocate(labelX, startY);
-		lblOwnerid.setFont(font);
-		ownerIdInput = new TextField();
-		ownerIdInput.relocate(inputX, startY);
-		ownerIdInput.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
+        buttonBox.getChildren().addAll(refreshBtn, printBtn);
 
-		lblFullName = new Label("Owner Name:");
-		lblFullName.relocate(labelX, startY + spacingY);
-		lblFullName.setFont(font);
-		fullNameInput = new TextField();
-		fullNameInput.relocate(inputX, startY + spacingY);
-		fullNameInput.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
-		fullNameInput.setDisable(true);
+        centerContent.getChildren().addAll(titleLabel, buttonBox, appointmentTable);
+        mainPane.setCenter(centerContent);
 
-		lblPetName = new Label("Pet Name:");
-		lblPetName.relocate(labelX, startY + 2 * spacingY);
-		lblPetName.setFont(font);
-		petNameInput = new TextField();
-		petNameInput.relocate(inputX, startY + 2 * spacingY);
-		petNameInput.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
-		petNameInput.setDisable(true);
+        // Initial data load
+        refreshTable();
 
-		lblBreed = new Label("Breed:");
-		lblBreed.relocate(labelX, startY + 3 * spacingY);
-		lblBreed.setFont(font);
-		petBreedInput = new TextField();
-		petBreedInput.relocate(inputX, startY + 3 * spacingY);
-		petBreedInput.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
-		petBreedInput.setDisable(true);
-		
-		
-		lblDob = new Label("Date Of Birth:");
-		lblDob.relocate(labelX, startY + 4 * spacingY);
-		lblDob.setFont(font);
-		dobInput = new TextField();
-		dobInput.relocate(inputX, startY + 4 * spacingY);
-		dobInput.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
-		dobInput.setDisable(true);
-		
-		// Buttons
-        int btnY = startY + 8 * spacingY;
-		viewButton = new Button("Search");
-		viewButton.relocate(780,200);
-		viewButton.setPrefSize(100, 30);
-		viewButton.setStyle(AppSettings.btnPrimary);
-		viewButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent actionEvent) {
-				int ownerId = Integer.parseInt(ownerIdInput.getText());
-				OwnerModel owner = new OwnerCRUD().getPetById(ownerId);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
 
-				if (owner.getOwnerId() != 0) {
-					fullNameInput.setText(owner.getFullName());
-					petNameInput.setText(owner.getPetNickName());
-					petBreedInput.setText(owner.getPetBreed());
-					dobInput.setText(owner.getDateOfBirth());
+    private VBox createSidebar() {
+        VBox sidebar = new VBox();
+        sidebar.setPrefWidth(250);
+        sidebar.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
-					printButton.setDisable(false);
-				} else {
-					Alert alert = new Alert(Alert.AlertType.WARNING, "No pet found for this Owner ID!");
-					alert.show();
-				}
-			}
-		});
+        Label companyLabel = new Label(AppSettings.companyName);
+        companyLabel.setFont(new Font("Arial", 24));
+        companyLabel.setTextFill(Color.WHITE);
+        companyLabel.setWrapText(true);
+        companyLabel.setPadding(new Insets(20, 10, 40, 10));
 
-		printButton = new Button("Print to PDF");
-		printButton.relocate(300, 480);
-		printButton.setPrefSize(100, 30);
-		printButton.setStyle(AppSettings.btnContent);
-		printButton.setDisable(true);
-		printButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent actionEvent) {
-				int ownerId = Integer.parseInt(ownerIdInput.getText());
-				OwnerModel owner = new OwnerCRUD().getPetById(ownerId);
+        sidebar.getChildren().add(companyLabel);
+        return sidebar;
+    }
 
-				if (owner.getOwnerId() != 0) {
-					Map<String, String> data = Map.of("Owner ID", String.valueOf(owner.getOwnerId()), "Owner Name",
-							owner.getFullName(), "Pet Name", owner.getPetNickName(), "Pet Breed", owner.getPetBreed(),
-							"Date of Birth", owner.getDateOfBirth());
+    private TableView<AppointmentModel> createAppointmentTable() {
+        TableView<AppointmentModel> table = new TableView<>();
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-					PDFGeneratorService.generatePDF(data, "pet_Report_" + ownerId + ".pdf", "Pet Report");
+        TableColumn<AppointmentModel, Integer> idCol = new TableColumn<>("ID");
+        idCol.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
 
-					Alert alert = new Alert(Alert.AlertType.INFORMATION, "PDF Generated!");
-					alert.show();
-				} else {
-					Alert alert = new Alert(Alert.AlertType.WARNING, "No pet found for this Owner ID!");
-					alert.show();
-				}
-			}
-		});
+        TableColumn<AppointmentModel, String> nameCol = new TableColumn<>("Customer");
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
 
-		viewButton.setOnMouseEntered(e -> viewButton.setEffect(new DropShadow()));
-		viewButton.setOnMouseExited(e -> viewButton.setEffect(null));
-		
-		printButton.setOnMouseEntered(e -> viewButton.setEffect(new DropShadow()));
-		printButton.setOnMouseExited(e -> viewButton.setEffect(null));
-		
-		// Adding elements to Pane
-		pane.getChildren().addAll(sidebar,lblSidebarTitle,lblTitle, lblOwnerid, lblFullName, lblPetName, lblBreed, lblDob, ownerIdInput,
-				fullNameInput, petNameInput, petBreedInput, dobInput, viewButton, printButton);
+        TableColumn<AppointmentModel, String> dateCol = new TableColumn<>("Date");
+        dateCol.setCellValueFactory(new PropertyValueFactory<>("appointmentDate"));
 
-		primaryStage.setScene(scene);
-		primaryStage.setWidth(AppSettings.subPageWidth);
-		primaryStage.setHeight(AppSettings.subPageHeight);
-		primaryStage.show();
-	}
-	
-	public static void main(String[] args) {
-		launch(args);
-	}
+        TableColumn<AppointmentModel, String> remarksCol = new TableColumn<>("Remarks");
+        remarksCol.setCellValueFactory(new PropertyValueFactory<>("remarks"));
 
+        table.getColumns().addAll(idCol, nameCol, dateCol, remarksCol);
+        return table;
+    }
+
+    private void refreshTable() {
+        List<AppointmentModel> appointments = appointmentCRUD.getAllAppointments();
+        ObservableList<AppointmentModel> data = FXCollections.observableArrayList(appointments);
+        appointmentTable.setItems(data);
+    }
+
+    private void generateReport() {
+        List<AppointmentModel> appointments = appointmentCRUD.getAllAppointments();
+
+        if (appointments.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "No Data", "No appointments found to generate report!");
+            return;
+        }
+
+        // Prepare data for PDF
+        List<Map<String, String>> reportData = new ArrayList<>();
+        for (AppointmentModel appointment : appointments) {
+            reportData.add(Map.of(
+                    "ID", String.valueOf(appointment.getAppointmentId()),
+                    "Customer", appointment.getCustomerName(),
+                    "Date", appointment.getAppointmentDate().toString(),
+                    "Remarks", appointment.getRemarks()
+            ));
+        }
+
+        boolean success = PDFGeneratorService.generatePDFTable(
+                reportData,
+                "appointments_report.pdf",
+                "Appointments Report",
+                new String[]{"ID", "Customer", "Date", "Remarks"}
+        );
+
+        if (success) {
+            showAlert(Alert.AlertType.INFORMATION, "Success", "PDF Report generated successfully!");
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to generate PDF report!");
+        }
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
