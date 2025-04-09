@@ -16,24 +16,35 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import library.AppSettings;
 import model.UserManagementModel;
 import reports.PetReport;
 import repo.DashboardStatsCRUD;
+
+/**
+* Dashboard.java
+* This is the dashboard of the Veterinary Management System.
+* It dynamically loads the sidebar options based on the user role of the logged-in user (admin, staff, or owner)
+* and displays statistics like total customers, appointments, and staff.
+*
+* The dashboard serves as a centralized point for accessing different modules of the system.
+*/
 
 public class Dashboard extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-
+		// Retrieve the session data of the logged-in user
 		UserManagementModel session = UserManagementModel.getInstance();
 		String username = session.getUsername();
 		String userType = session.getUserType();
-		int userId = session.getUserId(); // Hidden value
+		int userId = session.getUserId(); //  User ID is hidden from display but used internally
 
 		// Font settings for buttons and labels
-		Font buttonFont = new Font("Arial", 16);
-		Font titleFont = new Font("Arial", 20);
-
+		Font buttonFont = new Font(AppSettings.subFont, AppSettings.subFontSize);
+		Font titleFont = new Font(AppSettings.mainFont1, AppSettings.mainFont1Size);
+		
+		// Top bar layout (Header with welcome message)
 		Label lblWelcome = new Label("Welcome, " + username);
 		lblWelcome.setFont(titleFont);
 		lblWelcome.setTextFill(Color.WHITE);
@@ -44,7 +55,7 @@ public class Dashboard extends Application {
 		topBar.setPadding(new Insets(10));
 		topBar.setRight(lblWelcome);
 
-		// Sidebar Buttons
+		// Define sidebar buttons for different features/modules
 		Button btnStaffSetup = createStyledButton("Staff Setup", buttonFont);
 		Button btnOwnerSetup = createStyledButton("Owner Setup", buttonFont);
 		Button btnClientAppointment = createStyledButton("Client Appointment", buttonFont);
@@ -81,10 +92,8 @@ public class Dashboard extends Application {
 		} else {
 			sidebar.getChildren().addAll(spacer, btnLogOut); // Default case: only Logout
 
-		}
-
-		
-		// Dashboard stats
+		}	
+		// Dashboard statistics using helper class DashboardStatsCRUD
 		DashboardStatsCRUD stats = new DashboardStatsCRUD();
 
 		Label lblCustomerCount = new Label("Total Customers: " + stats.getCustomerCount());
@@ -99,6 +108,7 @@ public class Dashboard extends Application {
 		lblAppointmentCount.setTextFill(Color.web("#f39c12"));
 		lblStaffCount.setTextFill(Color.web("#e74c3c"));
 
+		// Display box for dashboard stats
 		VBox dashboardStatsBox = new VBox(20, lblCustomerCount, lblAppointmentCount, lblStaffCount);
 		dashboardStatsBox.setAlignment(Pos.CENTER);
 		dashboardStatsBox.setPadding(new Insets(20));
@@ -109,13 +119,14 @@ public class Dashboard extends Application {
 		root.setLeft(sidebar);
 		root.setCenter(dashboardStatsBox);
 
+		// Create and display the main scene
 		Scene scene = new Scene(root, 1000, 700);
 		primaryStage.setTitle("Dashboard - " + userType);
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);
 		primaryStage.show();
 
-		// Button Actions
+		// Event handlers for sidebar button actions (navigate to respective windows)
 		btnCompanySetup.setOnAction(e -> openWindow("Company Setup", () -> {
 			CompanySetupPage companySetupPage = new CompanySetupPage();
 			try {
@@ -177,14 +188,16 @@ public class Dashboard extends Application {
 			Login loginPage = new Login();
 			try {
 				loginPage.start(new Stage()); // Start the existing page in the new window
-
+				primaryStage.close();
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 		}));
 	}
 
-	// Helper method to create styled buttons
+	/**
+	 * methods to create styled sidebar buttons
+	 */
 	private Button createStyledButton(String text, Font font) {
 		Button button = new Button(text);
 		button.setPrefSize(160, 30);
@@ -195,7 +208,6 @@ public class Dashboard extends Application {
 		button.setOnMouseExited(e -> button.setEffect(null));
 		return button;
 	}
-
 	private Button createLogoutButton(String text, Font font) {
 		Button button = new Button(text);
 		button.setPrefSize(160, 30);
@@ -206,8 +218,9 @@ public class Dashboard extends Application {
 		button.setOnMouseExited(e -> button.setEffect(null));
 		return button;
 	}
-
-	// Methods to open new windows with existing pages
+	/**
+	 * Opens a new window with the corresponding scene/page
+	 */
 	private void openWindow(String title, Runnable pageSetup) {
 		Stage newStage = new Stage();
 		newStage.setTitle(title);
@@ -219,17 +232,7 @@ public class Dashboard extends Application {
 		}
 	}
 
-//	private void logout() {
-//		Stage loginStage = new Stage();
-//		loginStage.setTitle("Login");
-//		Login login = new Login();
-//		try {
-//			login.start(loginStage);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-
+	// Entry point of the application
 	public static void main(String[] args) {
 		launch(args);
 	}

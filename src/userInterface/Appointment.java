@@ -19,21 +19,26 @@ import library.AppSettings;
 import model.AppointmentModel;
 import repo.AppointmentCRUD;
 
+/**
+ * JavaFX UI class for managing client appointment registration in the
+ * Veterinary Management System.
+ */
 public class Appointment extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-
+		// Declare UI components
 		Label lblTitle, lblCustomername, lblAppointmentdate, lblRemarks;
 		TextField txtCustomername, txtRemarks;
 		DatePicker datePicker;
 		Button btnSubmit, btnCancel;
 
+		// Define font styles
 		Font font = new Font("Arial", 25);
 		Font font1 = new Font("Arial", 30);
+		// Create the root pane and scene
 		Pane pane = new Pane();
 		Scene scene = new Scene(pane);
-
 		primaryStage.setScene(scene);
 		primaryStage.setWidth(1440);
 		primaryStage.setHeight(800);
@@ -49,11 +54,12 @@ public class Appointment extends Application {
 		lblSidebarTitle.setFont(new Font("Arial", 24));
 		lblSidebarTitle.setTextFill(Color.WHITE);
 		lblSidebarTitle.relocate(50, 50);
-
+		// Main title of the form
 		lblTitle = new Label("Client Appointment");
 		lblTitle.relocate(409, 21);
 		lblTitle.setFont(font1);
 
+		// Label and text field for customer name
 		lblCustomername = new Label("Customer Name");
 		lblCustomername.relocate(451, 180);
 		lblCustomername.setFont(font1);
@@ -61,7 +67,7 @@ public class Appointment extends Application {
 		txtCustomername = new TextField();
 		txtCustomername.relocate(695, 180);
 		txtCustomername.setPrefSize(311, 40);
-
+		// Label and date picker for appointment date
 		lblAppointmentdate = new Label("Appointment Date");
 		lblAppointmentdate.relocate(451, 244);
 		lblAppointmentdate.setFont(font);
@@ -70,6 +76,7 @@ public class Appointment extends Application {
 		datePicker.relocate(695, 244);
 		datePicker.setPrefSize(311, 40);
 
+		// Label and text field for remarks
 		lblRemarks = new Label("Remarks");
 		lblRemarks.relocate(451, 550);
 		lblRemarks.setFont(font1);
@@ -78,6 +85,7 @@ public class Appointment extends Application {
 		txtRemarks.relocate(695, 550);
 		txtRemarks.setPrefSize(311, 40);
 
+		// Submit button and its functionality
 		btnSubmit = new Button("Submit");
 		btnSubmit.relocate(675, 700);
 
@@ -112,6 +120,7 @@ public class Appointment extends Application {
 			}
 		});
 
+		// Cancel button
 		btnCancel = new Button("Cancel");
 		btnCancel.relocate(768, 700);
 		btnCancel.setStyle(AppSettings.btnSecondary);
@@ -124,10 +133,10 @@ public class Appointment extends Application {
 		pane.getChildren().add(btnCancel);
 		pane.getChildren().add(sidebar);
 		pane.getChildren().add(lblSidebarTitle);
-
 	}
-	
-    public static void main(String[] args) {
-        launch(args);
-    }
+
+	// Entry point to launch the application
+	public static void main(String[] args) {
+		launch(args);
+	}
 }

@@ -21,22 +21,24 @@ import library.AppSettings;
 import model.StaffModel;
 import repo.StaffCRUD;
 
-public class CreateStaff extends Application{
+/**
+ * JavaFX UI class for registering Staff in the Veterinary Management System.
+ */
+public class CreateStaff extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		// Declare UI elements
 		Label lblTitle, lblStaffId, lblFullName, lblGender, lblContactNo, lblStaffType;
 		TextField txtStaffId, txtFullName, txtGender, txtContactNo, txtStaffType;
 		Button btnSubmit, btnDelete, btnUpdate, btnSearch, btnClear;
-		
-		// ComboBox for Staff
 
-		Alert alert = new Alert(null);
-		
+		// ComboBox placeholder (not implemented yet)
 		ComboBox<String> comboStaffNames = new ComboBox<>();
 		Map<String, Integer> staffType = new HashMap<>(); // NEED TO IMPLEMENT COMBO BOX
 
-		Font font = new Font("Arial", 18);
+		Font font = new Font(AppSettings.subFont, AppSettings.subFontSize);
+		Font font1 = new Font(AppSettings.mainFont1, AppSettings.mainFont1Size);
 		Pane pane = new Pane();
 		Scene scene = new Scene(pane);
 
@@ -60,10 +62,11 @@ public class CreateStaff extends Application{
 		// Labels and Text Fields
 		lblTitle = new Label("Staff Setup");
 		lblTitle.relocate(300, 50);
-		lblTitle.setFont(font);
+		lblTitle.setFont(font1);
 
-		int labelX = 300, inputX = 450, startY = 100, spacingY = 50;
+		int labelX = 300, inputX = 450, startY = 150, spacingY = 50;
 
+		// Staff id Label and TextField
 		lblStaffId = new Label("Staff ID:");
 		lblStaffId.relocate(labelX, startY);
 		lblStaffId.setFont(font);
@@ -71,6 +74,7 @@ public class CreateStaff extends Application{
 		txtStaffId.relocate(inputX, startY);
 		txtStaffId.setPrefSize(200, 30);
 
+		// Staff FullName Label and TextField
 		lblFullName = new Label("Full Name:");
 		lblFullName.relocate(labelX, startY + spacingY);
 		lblFullName.setFont(font);
@@ -78,6 +82,7 @@ public class CreateStaff extends Application{
 		txtFullName.relocate(inputX, startY + spacingY);
 		txtFullName.setPrefSize(200, 30);
 
+		// Staff Gender Label and TextField
 		lblGender = new Label("Gender:");
 		lblGender.relocate(labelX, startY + 2 * spacingY);
 		lblGender.setFont(font);
@@ -99,7 +104,7 @@ public class CreateStaff extends Application{
 		txtStaffType.relocate(inputX, startY + 4 * spacingY);
 		txtStaffType.setPrefSize(200, 30);
 
-		// Buttons
+		// Buttons initialization
 		int btnY = startY + 5 * spacingY;
 		btnSubmit = new Button("Insert");
 		btnSubmit.relocate(labelX, btnY);
@@ -126,6 +131,7 @@ public class CreateStaff extends Application{
 		btnClear.setPrefSize(100, 30);
 		btnClear.setStyle(AppSettings.btnStage2);
 
+		// Event handler to clear input fields
 		btnClear.setOnAction(e -> {
 			txtStaffId.clear();
 			txtFullName.clear();
@@ -134,7 +140,7 @@ public class CreateStaff extends Application{
 			txtStaffType.clear();
 		});
 
-		// Event Handlers
+		// Insert staff into database
 		btnSubmit.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -151,9 +157,15 @@ public class CreateStaff extends Application{
 				alert.setHeaderText(result ? "Staff Added Successfully" : "Error Adding Staff");
 				alert.setContentText(result ? "Staff details have been added." : "Please try again.");
 				alert.showAndWait();
+
+				txtStaffId.clear();
+				txtFullName.clear();
+				txtGender.clear();
+				txtContactNo.clear();
+				txtStaffType.clear();
 			}
 		});
-
+		// Delete staff from database
 		btnDelete.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -176,7 +188,7 @@ public class CreateStaff extends Application{
 				}
 			}
 		});
-
+		// Update staff details
 		btnUpdate.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -205,7 +217,7 @@ public class CreateStaff extends Application{
 				}
 			}
 		});
-
+		// Search for a staff by ID
 		btnSearch.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -240,41 +252,43 @@ public class CreateStaff extends Application{
 				}
 			}
 		});
+		// Another clear handler (duplicate, but enhanced with message)
 		btnClear.setOnAction(new EventHandler<ActionEvent>() {
-		    @Override
-		    public void handle(ActionEvent actionEvent) {
-		        try {
-		            // Clear all text fields
-		            txtStaffId.clear();
-		            txtFullName.clear();
-		            txtGender.clear();
-		            txtContactNo.clear();
-		            txtStaffType.clear();
-		            
-		            // Show success message
-		            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-		            alert.setTitle("Success");
-		            alert.setHeaderText("Form Cleared");
-		            alert.setContentText("All fields have been cleared successfully.");
-		            alert.showAndWait();
-		            
-		        } catch (Exception e) {
-		            // Show error message if clearing fails (unlikely, but just in case)
-		            Alert alert = new Alert(Alert.AlertType.ERROR);
-		            alert.setTitle("Error");
-		            alert.setHeaderText("Clear Operation Failed");
-		            alert.setContentText("An error occurred while clearing the form: " + e.getMessage());
-		            alert.showAndWait();
-		        }
-		    }
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				try {
+					// Clear all text fields
+					txtStaffId.clear();
+					txtFullName.clear();
+					txtGender.clear();
+					txtContactNo.clear();
+					txtStaffType.clear();
+
+					// Show success message
+					Alert alert = new Alert(Alert.AlertType.INFORMATION);
+					alert.setTitle("Success");
+					alert.setHeaderText("Form Cleared");
+					alert.setContentText("All fields have been cleared successfully.");
+					alert.showAndWait();
+
+				} catch (Exception e) {
+					// Show error message if clearing fails (unlikely, but just in case)
+					Alert alert = new Alert(Alert.AlertType.ERROR);
+					alert.setTitle("Error");
+					alert.setHeaderText("Clear Operation Failed");
+					alert.setContentText("An error occurred while clearing the form: " + e.getMessage());
+					alert.showAndWait();
+				}
+			}
 		});
 
-		// Add elements to the pane
+		// Add all UI elements to the pane
 		pane.getChildren().addAll(lblTitle, lblStaffId, txtStaffId, lblFullName, txtFullName, lblGender, txtGender,
 				lblContactNo, txtContactNo, lblStaffType, txtStaffType, btnSubmit, btnUpdate, btnDelete, btnSearch,
 				sidebar, lblSidebarTitle, btnClear);
 	}
 
+	// Entry point of the application
 	public static void main(String[] args) {
 		launch(args);
 	}

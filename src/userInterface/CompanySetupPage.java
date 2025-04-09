@@ -29,18 +29,23 @@ import library.AppSettings;
 import model.CompanySetupModel;
 import repo.CompanyCRUD;
 
+/**
+ * JavaFX UI class for registering company details in the Veterinary Management
+ * System.
+ */
 public class CompanySetupPage extends Application {
 
-	private ImageView imgLogo;
-	private String logoPath;
+	private ImageView imgLogo; // Views the uploaded logo
+	private String logoPath; // Stores the path to the uploaded logo image
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		// Declare all UI components
 		Label lblHeading, lblCompanyRegisteredCode, lblCompanyName, lblAddress, lblContactNo, lblRegisteredDate;
 		TextField txtCompanyRegisteredCode, txtCompanyName, txtAddress, txtContactNo;
 		DatePicker dpRegisteredDate;
 		Button btnSubmit, btnCancel, btnChooseLogo;
-
+		// Main pane and scene
 		Pane pane = new Pane();
 		Scene scene = new Scene(pane);
 		primaryStage.setTitle("Company Register");
@@ -48,6 +53,7 @@ public class CompanySetupPage extends Application {
 		primaryStage.setWidth(AppSettings.subPageWidth);
 		primaryStage.setHeight(AppSettings.subPageHeight);
 
+		// Fonts using AppSettings for consistency
 		Font headingFont = new Font(AppSettings.mainFont1, AppSettings.mainFont1Size);
 		Font labelFont = new Font(AppSettings.subFont, AppSettings.subFontSize);
 		Font textFont = new Font(AppSettings.textBoxFont, AppSettings.textBoxFontSize);
@@ -56,17 +62,20 @@ public class CompanySetupPage extends Application {
 		Rectangle sidebar = new Rectangle(0, 0, 250, 800);
 		sidebar.setFill(Color.BLACK);
 
-		Label lblSidebarTitle = new Label("ABC CLINIC");
-		lblSidebarTitle.setFont(new Font(AppSettings.mainFont1, 24));
+		// Sidebar Labels
+		Label lblSidebarTitle = new Label(AppSettings.companyName);
+		lblSidebarTitle.setFont(new Font("Arial", 30));
 		lblSidebarTitle.setTextFill(Color.WHITE);
+		lblSidebarTitle.setMaxWidth(200);
 		lblSidebarTitle.relocate(50, 50);
+		lblSidebarTitle.setWrapText(true);
 
-		// Main components
+		// Heading Label
 		lblHeading = new Label("Company Setup");
 		lblHeading.relocate(346, 44);
 		lblHeading.setFont(headingFont);
 
-		// Company Code
+		// Company Code Label and TextField
 		lblCompanyRegisteredCode = new Label("Company Code");
 		lblCompanyRegisteredCode.relocate(450, 168);
 		lblCompanyRegisteredCode.setFont(labelFont);
@@ -76,7 +85,7 @@ public class CompanySetupPage extends Application {
 		txtCompanyRegisteredCode.setPrefSize(100, AppSettings.textBoxHeight);
 		txtCompanyRegisteredCode.setFont(textFont);
 
-		// Company Name
+		// Company Name Label and TextField
 		lblCompanyName = new Label("Company Name");
 		lblCompanyName.relocate(450, 238);
 		lblCompanyName.setFont(labelFont);
@@ -86,7 +95,7 @@ public class CompanySetupPage extends Application {
 		txtCompanyName.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 		txtCompanyName.setFont(textFont);
 
-		// Address
+		// Address Label and TextField
 		lblAddress = new Label("Office Address");
 		lblAddress.relocate(450, 308);
 		lblAddress.setFont(labelFont);
@@ -96,7 +105,7 @@ public class CompanySetupPage extends Application {
 		txtAddress.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 		txtAddress.setFont(textFont);
 
-		// Contact Number with validation
+		// Contact Number Label and TextField with validation
 		lblContactNo = new Label("Contact No");
 		lblContactNo.relocate(450, 380);
 		lblContactNo.setFont(labelFont);
@@ -105,7 +114,7 @@ public class CompanySetupPage extends Application {
 		txtContactNo.relocate(645, 380);
 		txtContactNo.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 		txtContactNo.setFont(textFont);
-		// Add listener to restrict to 10 digits
+		// Restrict input to digits and max 10 characters
 		txtContactNo.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue.matches("\\d*")) {
 				txtContactNo.setText(newValue.replaceAll("[^\\d]", ""));
@@ -115,7 +124,7 @@ public class CompanySetupPage extends Application {
 			}
 		});
 
-		// Registered Date
+		// Registered Date Label and DatePicker
 		lblRegisteredDate = new Label("Registered Date");
 		lblRegisteredDate.relocate(450, 452);
 		lblRegisteredDate.setFont(labelFont);
@@ -124,7 +133,7 @@ public class CompanySetupPage extends Application {
 		dpRegisteredDate.relocate(645, 452);
 		dpRegisteredDate.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 
-		// Logo
+		// Logo ImageView and upload button
 		imgLogo = new ImageView();
 		imgLogo.setFitWidth(100);
 		imgLogo.setFitHeight(100);
@@ -137,7 +146,7 @@ public class CompanySetupPage extends Application {
 		btnChooseLogo.setOnMouseEntered(e -> btnChooseLogo.setEffect(new DropShadow()));
 		btnChooseLogo.setOnMouseExited(e -> btnChooseLogo.setEffect(null));
 
-		// Submit Button with validation
+		// Submit button with validation and saving to database
 		btnSubmit = new Button("Submit");
 		btnSubmit.relocate(645, 580);
 		btnSubmit.setPrefSize(80, 30);
@@ -147,7 +156,7 @@ public class CompanySetupPage extends Application {
 		btnSubmit.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
-				// Validate inputs
+				// Form validation
 				if (txtCompanyRegisteredCode.getText().isEmpty()) {
 					showAlert(AlertType.ERROR, "Error", "Please enter company code");
 					return;
@@ -169,6 +178,7 @@ public class CompanySetupPage extends Application {
 					return;
 				}
 
+				// Fill the model with values
 				CompanySetupModel companySetup = new CompanySetupModel();
 				companySetup.setCompanyRegisteredCode(txtCompanyRegisteredCode.getText());
 				companySetup.setCompanyName(txtCompanyName.getText());
@@ -177,6 +187,7 @@ public class CompanySetupPage extends Application {
 				companySetup.setCompanyRegisteredDate(dpRegisteredDate.getValue());
 				companySetup.setCompanyLogoPath(logoPath);
 
+				// Save to Database
 				boolean result = new CompanyCRUD().insert(companySetup);
 
 				Alert alert = new Alert(result ? AlertType.INFORMATION : AlertType.ERROR);
@@ -184,7 +195,8 @@ public class CompanySetupPage extends Application {
 				alert.setHeaderText(result ? "Company Registered Successfully" : "Error Registering Company");
 				alert.setContentText(result ? "Company has been registered successfully!" : "Please try again.");
 				alert.showAndWait();
-
+				
+				// Clear form on success
 				if (result) {
 					txtCompanyRegisteredCode.clear();
 					txtCompanyName.clear();
@@ -197,7 +209,7 @@ public class CompanySetupPage extends Application {
 			}
 		});
 
-		// Cancel Button
+		// Cancel button to close the window
 		btnCancel = new Button("Cancel");
 		btnCancel.relocate(768, 580);
 		btnCancel.setPrefSize(80, 30);
@@ -214,22 +226,38 @@ public class CompanySetupPage extends Application {
 		primaryStage.show();
 	}
 
+	/**
+	* Allows the user to select an image file from their system and sets it as the company logo.
+	* The selected image is copied to the local "img/" directory, and its path is stored for later use.
+	*
+	* This method is based on guidance from StackOverflow and ChatGPT assistance.
+	*
+	* @param stage the current Stage used to show the FileChooser dialog
+	*/
 	private void uploadLogo(Stage stage) {
 		FileChooser fileChooser = new FileChooser();
+
+		// Limit file selection to image formats only
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg"));
+
+		// Limit file selection to image formats only
 		File selectedFile = fileChooser.showOpenDialog(stage);
 		if (selectedFile == null)
 			return;
-
+		// Ensure the destination folder exists
 		File destFolder = new File("img/");
 		if (!destFolder.exists())
 			destFolder.mkdir();
+		// Create a new file object in the destination directory with the same name
 		File destFile = new File(destFolder, selectedFile.getName());
 		try {
+			// Copy the selected file to the 'img/' folder, replacing if it already exists
 			Files.copy(selectedFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			// Save the new file path and display the image in the ImageView
 			logoPath = destFile.getPath();
 			imgLogo.setImage(new Image(destFile.toURI().toString()));
 		} catch (IOException e) {
+			// Show an error alert if copying fails
 			showAlert(AlertType.ERROR, "Error", "Failed to upload logo: " + e.getMessage());
 		}
 	}

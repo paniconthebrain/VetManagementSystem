@@ -5,11 +5,15 @@ import model.VetAssignmentModel;
 import library.DbConnection;
 
 public class VetAssignmentCRUD extends DbConnection {
-
+	/**
+     * Insert a new vet assignment record into the database.
+     */
 	public void insert(VetAssignmentModel assignment) {
 		try {
+			// SQL query to insert a new vet assignment record
 			String query = "INSERT INTO vet_staff_assignment (ownerId, staffid, additional_remarks, Assigned_Date) VALUES (?, ?, ?, ?)";
 			PreparedStatement stmt = connect().prepareStatement(query);
+			// Set the parameters for the query from the VetAssignmentModel
 			stmt.setInt(1, assignment.getOwnerId());
 			stmt.setInt(2, assignment.getStaffId());
 			stmt.setString(3, assignment.getAdditionalRemarks());
@@ -19,11 +23,15 @@ public class VetAssignmentCRUD extends DbConnection {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+     * Update an existing vet assignment record.
+     */
 	public boolean update(VetAssignmentModel assignment) {
 		try {
+			// SQL query to update an existing vet assignment record
 			String query = "UPDATE vet_assignment SET staffid = ?, additional_remarks = ? WHERE ownerId = ?";
 			PreparedStatement stmt = connect().prepareStatement(query);
+			// Set the parameters for the query from the VetAssignmentModel
 			stmt.setInt(1, assignment.getOwnerId());
 			stmt.setInt(2, assignment.getStaffId());
 			stmt.setString(3, assignment.getAdditionalRemarks());
@@ -36,6 +44,9 @@ public class VetAssignmentCRUD extends DbConnection {
 		return true;
 	}
 
+	/**
+     * Delete a vet assignment record by owner name.
+     */
 	public boolean delete(String ownerName) {
 		try {
 			String query = "DELETE FROM vet_assignment WHERE ownerName = ?";
@@ -48,5 +59,4 @@ public class VetAssignmentCRUD extends DbConnection {
 			return false;
 		}
 	}
-
 }
