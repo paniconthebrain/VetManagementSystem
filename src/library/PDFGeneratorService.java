@@ -74,6 +74,69 @@ public class PDFGeneratorService {
             e.printStackTrace();
         }
     }
+    
+    public static void generatePDFList(List<Map<String, String>> reportData, String fileName, String screenName) {
+        try {
+            String userHome = System.getProperty("user.home");
+            String directoryPath = userHome + "/Downloads/pdfReport/";
+
+            File directory = new File(directoryPath);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            String filePath = directoryPath + fileName;
+
+            Document document = new Document();
+            PdfWriter.getInstance(document, new FileOutputStream(filePath));
+            document.open();
+
+            // Add Logo
+            String logoPath = System.getProperty("user.dir") + AppSettings.logo;
+            Image logo = Image.getInstance(logoPath);
+            logo.setAlignment(Element.ALIGN_CENTER);
+            logo.scaleToFit(50, 50);
+            document.add(logo);
+
+            // Company name
+            Paragraph companyName = new Paragraph(AppSettings.companyName,
+                    FontFactory.getFont(FontFactory.HELVETICA_BOLD, 22));
+            companyName.setAlignment(Element.ALIGN_CENTER);
+            document.add(companyName);
+
+            document.add(new Paragraph("\n"));
+
+            // Title
+            document.add(new Paragraph(screenName, FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18)));
+            document.add(new Paragraph("\n"));
+
+            // Table with 4 columns: ID, Customer, Date, Remarks
+            PdfPTable table = new PdfPTable(4); // 4 columns
+            table.setWidthPercentage(100);
+
+            // Header
+            table.addCell("ID");
+            table.addCell("Customer");
+            table.addCell("Date");
+            table.addCell("Remarks");
+
+            // Rows
+            for (Map<String, String> row : reportData) {
+                table.addCell(row.getOrDefault("ID", ""));
+                table.addCell(row.getOrDefault("Customer", ""));
+                table.addCell(row.getOrDefault("Date", ""));
+                table.addCell(row.getOrDefault("Remarks", ""));
+            }
+
+            document.add(table);
+            document.close();
+
+            System.out.println("PDF Created: " + filePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 	public static boolean generatePDFTable(List<Map<String, String>> reportData, String string, String string2,
 			String[] strings) {

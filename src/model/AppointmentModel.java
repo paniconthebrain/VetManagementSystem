@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class AppointmentModel {
     private int appointmentId;
+    private int ownerId;
     private String customerName;
     private LocalDate appointmentDate;
     private String remarks;
@@ -17,6 +18,13 @@ public class AppointmentModel {
         this.appointmentId = appointmentId;
     }
 
+    public Integer getownerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Integer ownerId) {
+        this.ownerId = ownerId;
+    }
     public String getCustomerName() {
         return customerName;
     }

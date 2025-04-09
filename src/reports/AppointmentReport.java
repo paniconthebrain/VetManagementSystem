@@ -7,6 +7,8 @@ import java.util.Map;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -54,7 +56,31 @@ public class AppointmentReport extends Application {
         refreshBtn.setOnAction(e -> refreshTable());
 
         Button printBtn = new Button("Generate Report");
-        printBtn.setOnAction(e -> generateReport());
+        printBtn.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				
+				List<AppointmentModel> appointments = appointmentCRUD.getAllAppointments();
+		        if (appointments.isEmpty()) {
+		            showAlert(Alert.AlertType.WARNING, "No Data", "No appointments found to generate report!");
+		            return;
+		        }		
+		        // Prepare data for PDF
+		        List<Map<String, String>> reportData = new ArrayList<>();
+		        for (AppointmentModel appointment : appointments) {
+		            reportData.add(Map.of(
+		                    "ID", String.valueOf(appointment.getAppointmentId()),
+		                    "Customer", appointment.getCustomerName(),
+		                    "Date", appointment.getAppointmentDate().toString(),
+		                    "Remarks", appointment.getRemarks()
+		            ));
+		        }
+		        PDFGeneratorService.generatePDFList(reportData, "" + "Appointment" + ".pdf", "Appointment Report");
+		        Alert alert = new Alert(Alert.AlertType.INFORMATION, "PDF Generated!");
+				alert.show();
+			}
+		});
 
         buttonBox.getChildren().addAll(refreshBtn, printBtn);
 
@@ -85,7 +111,7 @@ public class AppointmentReport extends Application {
 
     private TableView<AppointmentModel> createAppointmentTable() {
         TableView<AppointmentModel> table = new TableView<>();
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        
 
         TableColumn<AppointmentModel, Integer> idCol = new TableColumn<>("ID");
         idCol.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
@@ -108,7 +134,7 @@ public class AppointmentReport extends Application {
         ObservableList<AppointmentModel> data = FXCollections.observableArrayList(appointments);
         appointmentTable.setItems(data);
     }
-
+/*
     private void generateReport() {
         List<AppointmentModel> appointments = appointmentCRUD.getAllAppointments();
 
@@ -141,6 +167,7 @@ public class AppointmentReport extends Application {
             showAlert(Alert.AlertType.ERROR, "Error", "Failed to generate PDF report!");
         }
     }
+    */
 
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
