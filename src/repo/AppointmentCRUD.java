@@ -114,7 +114,7 @@ public class AppointmentCRUD extends DbConnection {
     // List All Appointments
     public List<AppointmentModel> getAllAppointments() {
         List<AppointmentModel> appointments = new ArrayList<>();
-        String SQL = "SELECT * FROM appointments a join owners o o.owner ";
+        String SQL = "SELECT * FROM appointments";
         try (Connection conn = connect(); 
              PreparedStatement pStat = conn.prepareStatement(SQL)) {
 

@@ -29,10 +29,16 @@ import repo.OwnerCRUD;
 import repo.StaffCRUD;
 import repo.VetAssignmentCRUD;
 
+/**
+ * JavaFX application for assigning a veterinary staff to a pet owner. The form
+ * allows searching owner details by ID, selecting a staff from dropdown, adding
+ * remarks, and saving the assignment to the database.
+ */
 public class VetAssign extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		// Declare UI components
 		Label lblTitle, lblOwnerId, lblOwnername, lblContactNo, lblAddress, lblStaff, lblRemarks;
 		TextField txtOwnerId, txtOwnername, txtContactNo, txtAddress, txtRemarks;
 		Button btnSearch, btnSubmit, btnCancel;
@@ -58,6 +64,7 @@ public class VetAssign extends Application {
 		comboStaffNames.setPrefWidth(200);
 		comboStaffNames.relocate(480, 376);
 		StaffModel sm = new StaffModel();
+		// Set selected staff ID into the staff model upon ComboBox selection
 		comboStaffNames.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -72,7 +79,7 @@ public class VetAssign extends Application {
 		});
 		comboStaffNames.setStyle(AppSettings.comboBox);
 
-		// Fonts and Layout
+		// Setting fonts and layout for labels and text fields
 		Font font = new Font(AppSettings.subFont, AppSettings.subFontSize);
 		Font font1 = new Font(AppSettings.mainFont1, AppSettings.mainFont1Size);
 		Font font2 = new Font(AppSettings.textBoxFont, AppSettings.textBoxFontSize);
@@ -89,7 +96,7 @@ public class VetAssign extends Application {
 		Rectangle sidebar = new Rectangle(0, 0, 250, 800);
 		sidebar.setFill(Color.BLACK);
 
-		// Sidebar Labels
+		// Labels and Input Fields for Searched owner details
 		Label lblSidebarTitle = new Label(AppSettings.companyName);
 		lblSidebarTitle.setFont(new Font("Arial", 30));
 		lblSidebarTitle.setTextFill(Color.WHITE);
@@ -154,7 +161,7 @@ public class VetAssign extends Application {
 		txtRemarks = new TextField();
 		txtRemarks.relocate(480, 443);
 		txtRemarks.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
-
+		// Search owner by ID and display information in form
 		btnSearch.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -195,7 +202,7 @@ public class VetAssign extends Application {
 		btnSubmit.setStyle(AppSettings.btnPrimary);
 		btnSubmit.setOnMouseEntered(e -> btnSubmit.setEffect(new DropShadow()));
 		btnSubmit.setOnMouseExited(e -> btnSubmit.setEffect(null));
-
+		// Assign selected vet to owner and store it in database
 		btnSubmit.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -223,7 +230,7 @@ public class VetAssign extends Application {
 				}
 			}
 		});
-
+		// Close the form
 		btnCancel = new Button("Close");
 		btnCancel.relocate(600, 600);
 		btnCancel.setStyle(AppSettings.btnSecondary);
