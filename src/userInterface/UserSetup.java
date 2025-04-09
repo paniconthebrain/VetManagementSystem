@@ -28,18 +28,21 @@ import repo.OwnerCRUD;
 import repo.StaffCRUD;
 import repo.UserCRUD;
 
+/**
+ * JavaFX UI class for registering Users the Veterinary Management System.
+ */
 public class UserSetup extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-
+		// Declare UI elements
 		Label lblTitle, lblUserFor, lblAssignedId, lblName, lblUserName, lblPassword;
 		TextField txtAssignedId, txtName, txtUserName;
 		PasswordField txtPassword;
 		ComboBox<String> cmUserFor = new ComboBox<>();
 		Button btnSearch, btnSubmit, btnClose;
 
-		// Fonts
+		// Load fonts from AppSettings
 		Font font = new Font(AppSettings.subFont, AppSettings.subFontSize);
 		Font font1 = new Font(AppSettings.mainFont1, AppSettings.mainFont1Size);
 
@@ -51,7 +54,7 @@ public class UserSetup extends Application {
 		primaryStage.setHeight(800);
 		primaryStage.show();
 
-		// Sidebar Background
+		// Sidebar setup (branding area)
 		Rectangle sidebar = new Rectangle(0, 0, 250, 800);
 		sidebar.setFill(Color.BLACK);
 
@@ -66,7 +69,7 @@ public class UserSetup extends Application {
 		lblTitle.relocate(346, 42);
 		lblTitle.setFont(font1);
 
-		// User For Label & ComboBox
+		// User For Label & ComboBox for selecting user type (Staff or Owner)
 		lblUserFor = new Label("User For:");
 		lblUserFor.relocate(450, 168);
 		lblUserFor.setFont(font);
@@ -88,7 +91,7 @@ public class UserSetup extends Application {
 		btnSearch.relocate(980, 220);
 		btnSearch.setStyle(AppSettings.btnContent);
 
-		// Username Label & TextField
+		// Name display (disabled field, auto-filled after search)
 		lblName = new Label("Name:");
 		lblName.relocate(450, 270);
 		lblName.setFont(font);
@@ -115,11 +118,13 @@ public class UserSetup extends Application {
 		txtPassword = new PasswordField();
 		txtPassword.relocate(645, 370);
 		txtPassword.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
-		
+
+		// Table to show all users
 		TableView<UserManagementModel> userTable = new TableView<>();
 		userTable.setLayoutX(450);
 		userTable.setLayoutY(480);
 		userTable.setPrefSize(700, 250);
+		// Define table columns
 		TableColumn<UserManagementModel, String> colUsername = new TableColumn<>("Username");
 		colUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
 		colUsername.setPrefWidth(200);
@@ -138,7 +143,8 @@ public class UserSetup extends Application {
 		// Populate table with data
 		ObservableList<UserManagementModel> userList = FXCollections.observableArrayList(new UserCRUD().getAll());
 		userTable.setItems(userList);
-		
+
+		// Search Button Logic
 		btnSearch.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -165,7 +171,7 @@ public class UserSetup extends Application {
 				}
 			}
 		});
-		// Submit Button
+		// Submit Button : Save new user to database
 		btnSubmit = new Button("Submit");
 		btnSubmit.relocate(645, 420);
 		btnSubmit.setPrefWidth(100);
@@ -181,12 +187,12 @@ public class UserSetup extends Application {
 						showAlert(Alert.AlertType.ERROR, "Error", "Owner/Staff not found.");
 						return;
 					}
-					
+
 					umm.setUsername(txtUserName.getText());
 					umm.setPassword(txtPassword.getText());
 					umm.setUserType(cmUserFor.getValue());
 					umm.setAssignedId(Integer.parseInt(txtAssignedId.getText()));
-					
+
 					if (umm.getUsername() == "") {
 						showAlert(Alert.AlertType.ERROR, "Error", "Please enter User Name.");
 						return;
@@ -198,13 +204,13 @@ public class UserSetup extends Application {
 					new UserCRUD().insert(umm);
 					showAlert(Alert.AlertType.INFORMATION, "Success", "User Created Succesfully.");
 					userList.setAll(new UserCRUD().getAll());
-					
-				}catch(Exception ex) {
+
+				} catch (Exception ex) {
 					showAlert(Alert.AlertType.ERROR, "Error", ex.getMessage());
 				}
 			}
 		});
-
+		// Close Button Logic
 		btnClose = new Button("Close");
 		btnClose.relocate(760, 420);
 		btnClose.setPrefWidth(100);
@@ -219,7 +225,7 @@ public class UserSetup extends Application {
 		// Add Elements to Pane
 		pane.getChildren().addAll(sidebar, lblSidebarTitle, lblTitle, lblUserFor, cmUserFor, lblAssignedId,
 				txtAssignedId, btnSearch, lblName, txtName, lblUserName, txtUserName, lblPassword, txtPassword,
-				btnSubmit, btnClose,userTable);
+				btnSubmit, btnClose, userTable);
 	}
 
 	private void showAlert(Alert.AlertType alertType, String title, String message) {
@@ -230,6 +236,7 @@ public class UserSetup extends Application {
 		alert.showAndWait();
 	}
 
+	// Entry point of the application
 	public static void main(String[] args) {
 		launch(args);
 	}

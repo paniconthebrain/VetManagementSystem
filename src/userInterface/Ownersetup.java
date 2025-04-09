@@ -17,20 +17,25 @@ import library.AppSettings;
 import model.OwnerModel;
 import repo.OwnerCRUD;
 
-public class Ownersetup extends Application{
+/**
+ * JavaFX UI class for registering and managing Owners in the Veterinary Management System.
+ */
+public class Ownersetup extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		// Declare UI elements
 		Label lblTitle, lblOwnerID, lblOwnerName, lblContactNo, lblEmail, lblAddress, lblNickname, lblPetBreed,
 				lblDateOfBirth;
 		TextField txtOwnerID, txtOwnerName, txtContactNo, txtEmail, txtAddress, txtNickname, txtPetBreed,
 				txtDateOfBirth;
-		Button btnSubmit, btnDelete, btnUpdate, btnView,btnClear;
+		Button btnSubmit, btnDelete, btnUpdate, btnView, btnClear;
 
 		Font font = new Font("Arial", 18);
+
+		// Create Pane and Scene
 		Pane pane = new Pane();
 		Scene scene = new Scene(pane);
-
 		primaryStage.setScene(scene);
 		primaryStage.setWidth(AppSettings.subPageWidth);
 		primaryStage.setHeight(AppSettings.subPageHeight);
@@ -52,106 +57,106 @@ public class Ownersetup extends Application{
 		lblTitle = new Label("Owner Setup");
 		lblTitle.relocate(300, 50);
 		lblTitle.setFont(font);
-		
+
 		int labelX = 300, inputX = 450, startY = 100, spacingY = 50;
 
 
+		// Labels and Input Fields for Owner details
 		lblOwnerID = new Label("Owner ID:");
-        lblOwnerID.relocate(labelX, startY);
-        lblOwnerID.setFont(font);
-        txtOwnerID = new TextField();
-        txtOwnerID.relocate(inputX, startY);
-        txtOwnerID.setPrefSize(200, 30);
+		lblOwnerID.relocate(labelX, startY);
+		lblOwnerID.setFont(font);
+		txtOwnerID = new TextField();
+		txtOwnerID.relocate(inputX, startY);
+		txtOwnerID.setPrefSize(200, 30);
 
-        lblOwnerName = new Label("Owner Name:");
-        lblOwnerName.relocate(labelX, startY + spacingY);
-        lblOwnerName.setFont(font);
-        txtOwnerName = new TextField();
-        txtOwnerName.relocate(inputX, startY + spacingY);
-        txtOwnerName.setPrefSize(200, 30);
+		lblOwnerName = new Label("Owner Name:");
+		lblOwnerName.relocate(labelX, startY + spacingY);
+		lblOwnerName.setFont(font);
+		txtOwnerName = new TextField();
+		txtOwnerName.relocate(inputX, startY + spacingY);
+		txtOwnerName.setPrefSize(200, 30);
 
-        lblContactNo = new Label("Contact No:");
-        lblContactNo.relocate(labelX, startY + 2 * spacingY);
-        lblContactNo.setFont(font);
-        txtContactNo = new TextField();
-        txtContactNo.relocate(inputX, startY + 2 * spacingY);
-        txtContactNo.setPrefSize(200, 30);
+		lblContactNo = new Label("Contact No:");
+		lblContactNo.relocate(labelX, startY + 2 * spacingY);
+		lblContactNo.setFont(font);
+		txtContactNo = new TextField();
+		txtContactNo.relocate(inputX, startY + 2 * spacingY);
+		txtContactNo.setPrefSize(200, 30);
 
-        lblEmail = new Label("Email:");
-        lblEmail.relocate(labelX, startY + 3 * spacingY);
-        lblEmail.setFont(font);
-        txtEmail = new TextField();
-        txtEmail.relocate(inputX, startY + 3 * spacingY);
-        txtEmail.setPrefSize(200, 30);
+		lblEmail = new Label("Email:");
+		lblEmail.relocate(labelX, startY + 3 * spacingY);
+		lblEmail.setFont(font);
+		txtEmail = new TextField();
+		txtEmail.relocate(inputX, startY + 3 * spacingY);
+		txtEmail.setPrefSize(200, 30);
 
-        lblAddress = new Label("Address:");
-        lblAddress.relocate(labelX, startY + 4 * spacingY);
-        lblAddress.setFont(font);
-        txtAddress = new TextField();
-        txtAddress.relocate(inputX, startY + 4 * spacingY);
-        txtAddress.setPrefSize(200, 30);
+		lblAddress = new Label("Address:");
+		lblAddress.relocate(labelX, startY + 4 * spacingY);
+		lblAddress.setFont(font);
+		txtAddress = new TextField();
+		txtAddress.relocate(inputX, startY + 4 * spacingY);
+		txtAddress.setPrefSize(200, 30);
 
-        lblNickname = new Label("Pet Nickname:");
-        lblNickname.relocate(labelX, startY + 5 * spacingY);
-        lblNickname.setFont(font);
-        txtNickname = new TextField();
-        txtNickname.relocate(inputX, startY + 5 * spacingY);
-        txtNickname.setPrefSize(200, 30);
+		lblNickname = new Label("Pet Nickname:");
+		lblNickname.relocate(labelX, startY + 5 * spacingY);
+		lblNickname.setFont(font);
+		txtNickname = new TextField();
+		txtNickname.relocate(inputX, startY + 5 * spacingY);
+		txtNickname.setPrefSize(200, 30);
 
-        lblPetBreed = new Label("Pet Breed:");
-        lblPetBreed.relocate(labelX, startY + 6 * spacingY);
-        lblPetBreed.setFont(font);
-        txtPetBreed = new TextField();
-        txtPetBreed.relocate(inputX, startY + 6 * spacingY);
-        txtPetBreed.setPrefSize(200, 30);
+		lblPetBreed = new Label("Pet Breed:");
+		lblPetBreed.relocate(labelX, startY + 6 * spacingY);
+		lblPetBreed.setFont(font);
+		txtPetBreed = new TextField();
+		txtPetBreed.relocate(inputX, startY + 6 * spacingY);
+		txtPetBreed.setPrefSize(200, 30);
 
-        lblDateOfBirth = new Label("Date of Birth:");
-        lblDateOfBirth.relocate(labelX, startY + 7 * spacingY);
-        lblDateOfBirth.setFont(font);
-        txtDateOfBirth = new TextField();
-        txtDateOfBirth.relocate(inputX, startY + 7 * spacingY);
-        txtDateOfBirth.setPrefSize(200, 30);
+		lblDateOfBirth = new Label("Date of Birth:");
+		lblDateOfBirth.relocate(labelX, startY + 7 * spacingY);
+		lblDateOfBirth.setFont(font);
+		txtDateOfBirth = new TextField();
+		txtDateOfBirth.relocate(inputX, startY + 7 * spacingY);
+		txtDateOfBirth.setPrefSize(200, 30);
 
-     // Buttons
-        int btnY = startY + 8 * spacingY;
-        btnSubmit = new Button("Insert");
-        btnSubmit.relocate(labelX, btnY);
-        btnSubmit.setPrefSize(100, 30);
-        btnSubmit.setStyle(AppSettings.btnPrimary);
+		// Button Initialization and Placement
+		int btnY = startY + 8 * spacingY;
+		btnSubmit = new Button("Insert");
+		btnSubmit.relocate(labelX, btnY);
+		btnSubmit.setPrefSize(100, 30);
+		btnSubmit.setStyle(AppSettings.btnPrimary);
 
-        btnUpdate = new Button("Update");
-        btnUpdate.relocate(labelX + 110, btnY);
-        btnUpdate.setPrefSize(100, 30);
-        btnUpdate.setStyle(AppSettings.btnPrimary);
+		btnUpdate = new Button("Update");
+		btnUpdate.relocate(labelX + 110, btnY);
+		btnUpdate.setPrefSize(100, 30);
+		btnUpdate.setStyle(AppSettings.btnPrimary);
 
-        btnDelete = new Button("Delete");
-        btnDelete.relocate(labelX + 220, btnY);
-        btnDelete.setPrefSize(100, 30);
-        btnDelete.setStyle(AppSettings.btnSecondary);
+		btnDelete = new Button("Delete");
+		btnDelete.relocate(labelX + 220, btnY);
+		btnDelete.setPrefSize(100, 30);
+		btnDelete.setStyle(AppSettings.btnSecondary);
 
-        btnView = new Button("View");
-        btnView.relocate(labelX + 330, btnY);
-        btnView.setPrefSize(100, 30);
-        btnView.setStyle(AppSettings.btnStage1);
-        
-        btnClear = new Button("Clear");
-        btnClear.relocate(labelX , 600);
-        btnClear.setPrefSize(100, 30);
-        btnClear.setStyle(AppSettings.btnStage2);
-        
-        btnClear.setOnAction(e -> {
-            txtOwnerID.clear();
-            txtOwnerName.clear();
-            txtContactNo.clear();
-            txtEmail.clear();
-            txtAddress.clear();
-            txtNickname.clear();
-            txtPetBreed.clear();
-            txtDateOfBirth.clear();
-        });
+		btnView = new Button("View");
+		btnView.relocate(labelX + 330, btnY);
+		btnView.setPrefSize(100, 30);
+		btnView.setStyle(AppSettings.btnStage1);
 
-		// Event Handlers
-		// Event Handlers
+		btnClear = new Button("Clear");
+		btnClear.relocate(labelX, 600);
+		btnClear.setPrefSize(100, 30);
+		btnClear.setStyle(AppSettings.btnStage2);
+
+		btnClear.setOnAction(e -> {
+			txtOwnerID.clear();
+			txtOwnerName.clear();
+			txtContactNo.clear();
+			txtEmail.clear();
+			txtAddress.clear();
+			txtNickname.clear();
+			txtPetBreed.clear();
+			txtDateOfBirth.clear();
+		});
+
+		// Insert new Owner Record
 		btnSubmit.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -168,12 +173,12 @@ public class Ownersetup extends Application{
 
 				Alert alert = new Alert(result ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
 				alert.setTitle(result ? "Success" : "Error");
-				alert.setHeaderText(result ? "Owner Added Successfully" : "Error Adding Owner");
+				alert.setHeaderText(result ? "Owner Added Successfully" : "Error : Owner Name Cannot Be Empty");
 				alert.setContentText(result ? "Owner details have been added." : "Please try again.");
 				alert.showAndWait();
 			}
 		});
-
+		// Delete existing Owner record
 		btnDelete.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -196,7 +201,7 @@ public class Ownersetup extends Application{
 				}
 			}
 		});
-
+		// Update existing Owner details
 		btnUpdate.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -228,7 +233,7 @@ public class Ownersetup extends Application{
 				}
 			}
 		});
-
+		// View Owner details based on ID
 		btnView.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -272,9 +277,10 @@ public class Ownersetup extends Application{
 		pane.getChildren().addAll(lblTitle, lblOwnerID, txtOwnerID, lblOwnerName, txtOwnerName, lblContactNo,
 				txtContactNo, lblEmail, txtEmail, lblAddress, txtAddress, lblNickname, txtNickname, lblPetBreed,
 				txtPetBreed, lblDateOfBirth, txtDateOfBirth, btnSubmit, btnUpdate, btnDelete, btnView, sidebar,
-				lblSidebarTitle,btnClear);
+				lblSidebarTitle, btnClear);
 	}
 
+	// Entry point of the application
 	public static void main(String[] args) {
 		launch(args);
 	}
