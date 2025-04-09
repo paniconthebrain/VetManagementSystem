@@ -3,8 +3,6 @@ package userInterface;
 import java.util.HashMap;
 import java.util.Map;
 
-import interfaces.AppSettings;
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -132,19 +130,19 @@ public class CreateStaff extends Application{
 		btnSearch.setStyle(AppSettings.btnStage1);
 
 
-		btnSubmit.setStyle(btnPrimary);
+		btnSubmit.setStyle(AppSettings.btnPrimary);
 		btnUpdate = new Button("Update");
 		btnUpdate.relocate(labelX + 110, btnY);
 		btnUpdate.setPrefSize(100, 30);
-		btnUpdate.setStyle(btnPrimary);
+		btnUpdate.setStyle(AppSettings.btnPrimary);
 		btnDelete = new Button("Delete");
 		btnDelete.relocate(labelX + 220, btnY);
 		btnDelete.setPrefSize(100, 30);
-		btnDelete.setStyle(btnSecondary);
+		btnDelete.setStyle(AppSettings.btnSecondary);
 		btnSearch = new Button("Search");
 		btnSearch.relocate(labelX + 330, btnY);
 		btnSearch.setPrefSize(100, 30);
-		btnSearch.setStyle(btnStage1);
+		btnSearch.setStyle(AppSettings.btnStage1);
 
 		btnClear = new Button("Clear");
 		btnClear.relocate(labelX, btnY + spacingY);

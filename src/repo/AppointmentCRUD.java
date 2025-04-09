@@ -19,7 +19,7 @@ public class AppointmentCRUD extends DbConnection {
         try (Connection conn = connect(); 
              PreparedStatement pStat = conn.prepareStatement(SQL)) {
 
-            pStat.setString(1, appointment.getCustomerName());
+            pStat.setInt(1, appointment.getownerId());
             pStat.setDate(2, java.sql.Date.valueOf(appointment.getAppointmentDate()));
             pStat.setString(3, appointment.getRemarks());
             pStat.executeUpdate();
@@ -114,7 +114,7 @@ public class AppointmentCRUD extends DbConnection {
     // List All Appointments
     public List<AppointmentModel> getAllAppointments() {
         List<AppointmentModel> appointments = new ArrayList<>();
-        String SQL = "SELECT * FROM appointments";
+        String SQL = "SELECT * FROM appointments a join owners o o.owner ";
         try (Connection conn = connect(); 
              PreparedStatement pStat = conn.prepareStatement(SQL)) {
 

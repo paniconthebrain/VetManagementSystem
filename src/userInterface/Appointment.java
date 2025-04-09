@@ -2,16 +2,9 @@ package userInterface;
 
 import java.time.LocalDate;
 
-import interfaces.AppSettings;
-
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -19,205 +12,187 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import library.AppSettings;
 import model.AppointmentModel;
+import model.OwnerModel;
 import repo.AppointmentCRUD;
+import repo.OwnerCRUD;
 
+/**
+ * JavaFX UI class for managing client appointment registration in the
+ * Veterinary Management System.
+ */
 public class Appointment extends Application {
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        // UI Components
-        Label lblTitle, lblCustomername, lblAppointmentdate, lblRemarks;
-        TextField txtCustomername, txtRemarks;
-        DatePicker datePicker;
-        Button btnSubmit, btnCancel;
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		// Declare UI components
+		Label lblTitle, lblOwnerId, lblOwnerName, lblAppointmentdate, lblRemarks;
+		TextField txtOwnerId, txtOwnerName, txtRemarks;
+		DatePicker datePicker;
+		Button btnSubmit, btnCancel, btnSearch;
 
-        // Font Setup
-        Font titleFont = new Font("Arial", 30);
-        Font labelFont = new Font("Arial", 18);
-        Font buttonFont = new Font("Arial", 14);
+		// Define font styles
+		Font font = new Font("Arial", 25);
+		Font font1 = new Font("Arial", 30);
 
-        // Layout Setup
-        Pane pane = new Pane();
-        Scene scene = new Scene(pane);
-        primaryStage.setScene(scene);
-        primaryStage.setWidth(subPageWidth);
-        primaryStage.setHeight(subPageHeight);
-        primaryStage.setTitle("Appointment Management");
-        primaryStage.show();
+		// Create the root pane and scene
+		Pane pane = new Pane();
+		Scene scene = new Scene(pane);
+		primaryStage.setScene(scene);
+		primaryStage.setWidth(1440);
+		primaryStage.setHeight(800);
+		primaryStage.show();
 
-        // Sidebar Setup
-        Rectangle sidebar = new Rectangle(0, 0, 250, 800);
-        sidebar.setFill(Color.BLACK);
-        
-        Label lblSidebarTitle = new Label(companyName);
-        lblSidebarTitle.setFont(new Font("Arial", 30));
-        lblSidebarTitle.setTextFill(Color.WHITE);
-        lblSidebarTitle.setMaxWidth(200);
-        lblSidebarTitle.relocate(50, 50);
-        lblSidebarTitle.setWrapText(true);
+		// Sidebar Background
+		Rectangle sidebar = new Rectangle(0, 0, 250, 800);
+		sidebar.setFill(Color.BLACK);
 
-        // Form Layout Parameters
-        int labelX = 300;
-        int inputX = 450;
-        int startY = 100;
-        int spacingY = 50;
-        int fieldWidth = 200;
-        int fieldHeight = 30;
+		// Sidebar Labels
+		Label lblSidebarTitle = new Label(AppSettings.companyName);
+		lblSidebarTitle.setFont(new Font("Arial", 24));
+		lblSidebarTitle.setTextFill(Color.WHITE);
+		lblSidebarTitle.setMaxWidth(200);
+		lblSidebarTitle.relocate(50, 50);
+		lblSidebarTitle.setWrapText(true);
 
-        // Form Title
-        lblTitle = new Label("Client Appointment");
-        lblTitle.setFont(titleFont);
-        lblTitle.relocate(labelX, 50);
+		// Main title of the form
+		lblTitle = new Label("Client Appointment");
+		lblTitle.relocate(409, 21);
+		lblTitle.setFont(font1);
 
-        // Customer Name Field
-        lblCustomername = new Label("Customer Name:");
-        lblCustomername.setFont(labelFont);
-        lblCustomername.relocate(labelX, startY);
-        
-        txtCustomername = new TextField();
-        txtCustomername.setFont(labelFont);
-        txtCustomername.relocate(inputX, startY);
-        txtCustomername.setPrefSize(fieldWidth, fieldHeight);
+		// Label and text field for owner ID
+		lblOwnerId = new Label("Owner ID");
+		lblOwnerId.relocate(451, 150);
+		lblOwnerId.setFont(font);
 
-        // Appointment Date Field
-        lblAppointmentdate = new Label("Appointment Date:");
-        lblAppointmentdate.setFont(labelFont);
-        lblAppointmentdate.relocate(labelX, startY + spacingY);
-        
-        datePicker = new DatePicker();
-        datePicker.setStyle("-fx-font-size: 14px;");
-        datePicker.relocate(inputX, startY + spacingY);
-        datePicker.setPrefSize(fieldWidth, fieldHeight);
+		txtOwnerId = new TextField();
+		txtOwnerId.relocate(695, 150);
+		txtOwnerId.setPrefSize(200, 40);
 
-        // Remarks Field
-        lblRemarks = new Label("Remarks:");
-        lblRemarks.setFont(labelFont);
-        lblRemarks.relocate(labelX, startY + 2 * spacingY);
-        
-        txtRemarks = new TextField();
-        txtRemarks.setFont(labelFont);
-        txtRemarks.relocate(inputX, startY + 2 * spacingY);
-        txtRemarks.setPrefSize(fieldWidth, fieldHeight);
+		// Search button for owner ID
+		btnSearch = new Button("Search");
+		btnSearch.relocate(910, 150);
+		btnSearch.setStyle(AppSettings.btnSecondary);
 
-        // Buttons Setup
-        int btnY = startY + 3 * spacingY + 50;
-        int btnWidth = 100;
-        int btnHeight = 30;
-        int btnSpacing = 110;
+		// Label and disabled text field for auto-filled owner name
+		lblOwnerName = new Label("Owner Name");
+		lblOwnerName.relocate(451, 210);
+		lblOwnerName.setFont(font);
 
-        btnSubmit = new Button("Submit");
-        btnSubmit.setFont(buttonFont);
-        btnSubmit.relocate(labelX, btnY);
-        btnSubmit.setPrefSize(btnWidth, btnHeight);
-        btnSubmit.setStyle(btnPrimary);
-        
-        btnCancel = new Button("Cancel");
-        btnCancel.setFont(buttonFont);
-        btnCancel.relocate(labelX + btnSpacing, btnY);
-        btnCancel.setPrefSize(btnWidth, btnHeight);
-        btnCancel.setStyle(btnSecondary);
+		txtOwnerName = new TextField();
+		txtOwnerName.setDisable(true); // Make this read-only
+		txtOwnerName.relocate(695, 210);
+		txtOwnerName.setPrefSize(311, 40);
 
-        // Event Handlers
-        btnSubmit.setOnAction(event -> handleAppointmentSubmission(
-            txtCustomername, 
-            datePicker, 
-            txtRemarks
-        ));
+		// Label and date picker for appointment date
+		lblAppointmentdate = new Label("Appointment Date");
+		lblAppointmentdate.relocate(451, 280);
+		lblAppointmentdate.setFont(font);
 
-        btnCancel.setOnAction(e -> {
-            txtCustomername.clear();
-            datePicker.setValue(null);
-            txtRemarks.clear();
-        });
+		datePicker = new DatePicker();
+		datePicker.relocate(695, 280);
+		datePicker.setPrefSize(311, 40);
 
-        // Add all components to pane
-        pane.getChildren().addAll(
-            sidebar, lblSidebarTitle,
-            lblTitle, 
-            lblCustomername, txtCustomername,
-            lblAppointmentdate, datePicker,
-            lblRemarks, txtRemarks,
-            btnSubmit, btnCancel
-        );
-    }
+		// Label and text field for remarks
+		lblRemarks = new Label("Remarks");
+		lblRemarks.relocate(451, 350);
+		lblRemarks.setFont(font);
 
-    private void handleAppointmentSubmission(TextField nameField, 
-                                          DatePicker datePicker, 
-                                          TextField remarksField) {
-        try {
-            // Validate required fields
-            if (nameField.getText().trim().isEmpty() || datePicker.getValue() == null) {
-                showAlert(AlertType.WARNING, 
-                         "Missing Information", 
-                         "Required fields are empty", 
-                         "Please fill in customer name and appointment date");
-                return;
-            }
+		txtRemarks = new TextField();
+		txtRemarks.relocate(695, 350);
+		txtRemarks.setPrefSize(311, 40);
 
-            // Validate future date
-            if (datePicker.getValue().isBefore(LocalDate.now())) {
-                showAlert(AlertType.WARNING,
-                         "Invalid Date",
-                         "Date cannot be in the past",
-                         "Please select a current or future date");
-                return;
-            }
+		// Submit button and its functionality
+		btnSubmit = new Button("Submit");
+		btnSubmit.relocate(675, 420);
+		btnSubmit.setStyle(AppSettings.btnPrimary);
 
-            // Create and save appointment
-            AppointmentModel appointment = new AppointmentModel();
-            appointment.setCustomerName(nameField.getText().trim());
-            appointment.setAppointmentDate(datePicker.getValue());
-            appointment.setRemarks(remarksField.getText().trim());
+		btnSubmit.setOnAction(event -> {
+			try {
+				// Get input values from the form
+				int ownerId = Integer.parseInt(txtOwnerId.getText());
+				LocalDate appointmentDate = datePicker.getValue();
+				String remarks = txtRemarks.getText();
 
-            boolean result = new AppointmentCRUD().insertAppointment(appointment);
+				// Validate owner was fetched
+				if (txtOwnerName.getText().isEmpty()) {
+					showAlert(Alert.AlertType.WARNING, "Missing Owner", "Please search and select a valid Owner.");
+					return;
+				}
 
-            if (result) {
-                showAlert(AlertType.INFORMATION,
-                         "Success",
-                         "Appointment Booked",
-                         "Appointment successfully scheduled!");
-                nameField.clear();
-                datePicker.setValue(null);
-                remarksField.clear();
-            } else {
-                showAlert(AlertType.ERROR,
-                         "Error",
-                         "Operation Failed",
-                         "Could not save the appointment. Please try again.");
-            }
+				// Create AppointmentModel object
+				AppointmentModel appointment = new AppointmentModel();
+				appointment.setOwnerId(Integer.parseInt(txtOwnerId.getText())); // or setOwnerId if your model supports it				
+				appointment.setAppointmentDate(appointmentDate);
+				appointment.setRemarks(remarks);
 
+				// Call CRUD insert operation
+				AppointmentCRUD appointmentCRUD = new AppointmentCRUD();
+				boolean result = appointmentCRUD.insertAppointment(appointment);
 
-        btnCancel = new Button("Cancel");
-        btnCancel.relocate(768, 700);
-        btnCancel.setStyle(AppSettings.btnSecondary);
+				// Show an alert based on the result
+				Alert alert = new Alert(result ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
+				alert.setTitle(result ? "Success" : "Error");
+				alert.setHeaderText(null);
+				alert.setContentText(result ? "Appointment successfully inserted!" : "Error inserting appointment.");
+				alert.showAndWait();
 
-        pane.getChildren().add(lblTitle);
-        pane.getChildren().addAll(lblCustomername, txtCustomername);
-        pane.getChildren().addAll(lblAppointmentdate, datePicker);
-        pane.getChildren().addAll(lblRemarks, txtRemarks);
-        pane.getChildren().add(btnSubmit);
-        pane.getChildren().add(btnCancel);
-        pane.getChildren().add(sidebar);
-        pane.getChildren().add(lblSidebarTitle);
+				// Clear the fields if the insertion is successful
+				if (result) {
+					txtOwnerId.clear();
+					txtOwnerName.clear();
+					datePicker.setValue(null);
+					txtRemarks.clear();
+				}
 
-        } catch (Exception ex) {
-            showAlert(AlertType.ERROR,
-                     "Error",
-                     "An error occurred",
-                     ex.getMessage());
-            ex.printStackTrace();
-        }
-    }
+			} catch (NumberFormatException e) {
+				showAlert(Alert.AlertType.ERROR, "Invalid Owner ID", "Please enter a valid number for Owner ID.");
+			}
+		});
 
-    private void showAlert(AlertType type, String title, String header, String content) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
+		// Cancel button
+		btnCancel = new Button("Cancel");
+		btnCancel.relocate(768, 420);
+		btnCancel.setStyle(AppSettings.btnSecondary);
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+		// Search button functionality
+		btnSearch.setOnAction(event -> {
+			try {
+				int ownerId = Integer.parseInt(txtOwnerId.getText());
+				OwnerModel owner = new OwnerCRUD().searchByID(ownerId); // Replace with getOwnerById if that's your method
+				if (owner != null && owner.getOwnerId() != 0) {
+					txtOwnerName.setText(owner.getFullName());
+				} else {
+					txtOwnerName.clear();
+					showAlert(Alert.AlertType.WARNING, "Not Found", "No owner found with that ID.");
+				}
+			} catch (NumberFormatException e) {
+				showAlert(Alert.AlertType.ERROR, "Invalid Input", "Please enter a valid numeric Owner ID.");
+			}
+		});
+
+		// Add components to the pane
+		pane.getChildren().add(lblTitle);
+		pane.getChildren().addAll(lblOwnerId, txtOwnerId, btnSearch);
+		pane.getChildren().addAll(lblOwnerName, txtOwnerName);
+		pane.getChildren().addAll(lblAppointmentdate, datePicker);
+		pane.getChildren().addAll(lblRemarks, txtRemarks);
+		pane.getChildren().add(btnSubmit);
+		pane.getChildren().add(btnCancel);
+		pane.getChildren().add(sidebar);
+		pane.getChildren().add(lblSidebarTitle);
+	}
+
+	// Entry point to launch the application
+	public static void main(String[] args) {
+		launch(args);
+	}
+
+	// Utility method to show alerts
+	private void showAlert(Alert.AlertType type, String title, String message) {
+		Alert alert = new Alert(type);
+		alert.setTitle(title);
+		alert.setHeaderText(null);
+		alert.setContentText(message);
+		alert.showAndWait();
+	}
 }
