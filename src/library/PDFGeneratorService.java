@@ -5,6 +5,7 @@ import com.itextpdf.text.pdf.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
 import java.util.Map;
 
 public class PDFGeneratorService {
@@ -73,4 +74,10 @@ public class PDFGeneratorService {
             e.printStackTrace();
         }
     }
+
+	public static boolean generatePDFTable(List<Map<String, String>> reportData, String string, String string2,
+			String[] strings) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
