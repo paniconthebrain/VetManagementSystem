@@ -11,7 +11,7 @@ public class ClientFollowUpCRUD extends DbConnection {
     // Insert new follow-up
     public boolean insert(ClientFollowUpModel followUp) {
         boolean result = false;
-        String sql = "INSERT INTO client_followup (customer_name, follow_up_type, follow_up_date, remarks) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO client_followup (owner_id, follow_up_type, follow_up_date, remarks) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement pStat = connect().prepareStatement(sql)) {
             pStat.setString(1, followUp.getCustomerName());
@@ -40,7 +40,7 @@ public class ClientFollowUpCRUD extends DbConnection {
             if (rs.next()) {
                 followUp = new ClientFollowUpModel();
                 followUp.setFollowUpId(rs.getInt("follow_up_id"));
-                followUp.setCustomerName(rs.getString("customer_name"));
+                followUp.setOwnerId(rs.getInt("owner_id"));
                 followUp.setFollowUpType(rs.getString("follow_up_type"));
                 followUp.setFollowUpDate(rs.getString("follow_up_date"));
                 followUp.setRemarks(rs.getString("remarks"));
@@ -61,7 +61,7 @@ public class ClientFollowUpCRUD extends DbConnection {
             pStat.setString(1, followUp.getFollowUpType());
             pStat.setString(2, followUp.getFollowUpDate());
             pStat.setString(3, followUp.getRemarks());
-            pStat.setString(4, followUp.getCustomerName());
+            pStat.setInt(4, followUp.getOwnerId());
 
             int rowsUpdated = pStat.executeUpdate();
             result = rowsUpdated > 0;
@@ -92,7 +92,7 @@ public class ClientFollowUpCRUD extends DbConnection {
     // Get all follow-ups
     public List<ClientFollowUpModel> getAll() {
         List<ClientFollowUpModel> followUpList = new ArrayList<>();
-        String sql = "SELECT * FROM client_followup";
+        String sql = "SELECT c.follow_up_id,c.owner_id,o.full_name,c.follow_up_type,c.follow_up_date,c.remarks FROM client_followup c join owners o on o.owner_id=c.owner_id";
 
         try (PreparedStatement pStat = connect().prepareStatement(sql)) {
             ResultSet rs = pStat.executeQuery();
@@ -100,7 +100,8 @@ public class ClientFollowUpCRUD extends DbConnection {
             while (rs.next()) {
                 ClientFollowUpModel followUp = new ClientFollowUpModel();
                 followUp.setFollowUpId(rs.getInt("follow_up_id"));
-                followUp.setCustomerName(rs.getString("customer_name"));
+                followUp.setOwnerId(rs.getInt("owner_id"));
+                followUp.setCustomerName(rs.getString("full_name"));
                 followUp.setFollowUpType(rs.getString("follow_up_type"));
                 followUp.setFollowUpDate(rs.getString("follow_up_date"));
                 followUp.setRemarks(rs.getString("remarks"));

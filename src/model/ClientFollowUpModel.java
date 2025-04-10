@@ -1,49 +1,58 @@
 package model;
 
 public class ClientFollowUpModel {
-    private int followUpId;
-    private String customerName;
-    private String followUpType;
-    private String followUpDate;
-    private String remarks;
+	private int followUpId;
+	private int ownerId;
+	private String customerName;
+	private String followUpType;
+	private String followUpDate;
+	private String remarks;
 
-    public int getFollowUpId() {
-        return followUpId;
-    }
+	public int getFollowUpId() {
+		return followUpId;
+	}
 
-    public void setFollowUpId(int followUpId) {
-        this.followUpId = followUpId;
-    }
+	public void setFollowUpId(int followUpId) {
+		this.followUpId = followUpId;
+	}
 
-    public String getCustomerName() {
-        return customerName;
-    }
+	public int getOwnerId() {
+		return ownerId;
+	}
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
+	public void setOwnerId(int ownerId) {
+		this.ownerId = ownerId;
+	}
 
-    public String getFollowUpType() {
-        return followUpType;
-    }
+	public String getCustomerName() {
+		return customerName;
+	}
 
-    public void setFollowUpType(String followUpType) {
-        this.followUpType = followUpType;
-    }
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
 
-    public String getFollowUpDate() {
-        return followUpDate;
-    }
+	public String getFollowUpType() {
+		return followUpType;
+	}
 
-    public void setFollowUpDate(String followUpDate) {
-        this.followUpDate = followUpDate;
-    }
+	public void setFollowUpType(String followUpType) {
+		this.followUpType = followUpType;
+	}
 
-    public String getRemarks() {
-        return remarks;
-    }
+	public String getFollowUpDate() {
+		return followUpDate;
+	}
 
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
+	public void setFollowUpDate(String followUpDate) {
+		this.followUpDate = followUpDate;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
 }
