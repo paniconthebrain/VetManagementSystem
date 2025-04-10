@@ -132,7 +132,6 @@ public class CompanySetupPage extends Application {
 		dpRegisteredDate = new DatePicker();
 		dpRegisteredDate.relocate(645, 452);
 		dpRegisteredDate.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
-
 		// Logo ImageView and upload button
 		imgLogo = new ImageView();
 		imgLogo.setFitWidth(100);

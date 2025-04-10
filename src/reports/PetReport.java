@@ -101,6 +101,8 @@ public class PetReport extends Application {
 		viewButton.relocate(780, 200);
 		viewButton.setPrefSize(100, 30);
 		viewButton.setStyle(AppSettings.btnPrimary);
+
+		// Action for Search Button - fetches pet data by owner ID
 		viewButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -126,6 +128,7 @@ public class PetReport extends Application {
 		printButton.setPrefSize(100, 30);
 		printButton.setStyle(AppSettings.btnContent);
 		printButton.setDisable(true);
+		// Print to PDF Button
 		printButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -133,6 +136,7 @@ public class PetReport extends Application {
 				OwnerModel owner = new OwnerCRUD().getPetById(ownerId);
 
 				if (owner.getOwnerId() != 0) {
+					// Create key-value data for PDF
 					Map<String, String> data = Map.of("Owner ID", String.valueOf(owner.getOwnerId()), "Owner Name",
 							owner.getFullName(), "Pet Name", owner.getPetNickName(), "Pet Breed", owner.getPetBreed(),
 							"Date of Birth", owner.getDateOfBirth().toString());
@@ -162,6 +166,7 @@ public class PetReport extends Application {
 			}
 		});
 
+		// Hover effects for buttons
 		viewButton.setOnMouseEntered(e -> viewButton.setEffect(new DropShadow()));
 		viewButton.setOnMouseExited(e -> viewButton.setEffect(null));
 

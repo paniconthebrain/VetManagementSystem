@@ -28,13 +28,13 @@ public class LoginModel {
         this.email = email;
     }
 
-    // Constructors
+    // Parameterized Constructors
     public LoginModel(String userName, String password, String email) {
         this.userName = userName;
         this.password = password;
         this.email = email;
     }
-
+    //Default Constructor
     public LoginModel() {
         this.userName = "";
         this.password = "";

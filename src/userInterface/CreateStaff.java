@@ -19,15 +19,19 @@ public class CreateStaff extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
+		// Declare the necessary labels, text fields, buttons, and combo boxes for the
+		// form
 		Label lblTitle, lblStaffId, lblFullName, lblGender, lblContactNo, lblStaffType;
 		TextField txtStaffId, txtFullName, txtContactNo;
 		Button btnSubmit, btnDelete, btnUpdate, btnSearch, btnClear, btnClose;
 		ComboBox<String> comboGender, comboStaffType;
 
+		// Set font style for labels and inputs
 		Font font = new Font("Arial", 18);
 		Pane pane = new Pane();
 		Scene scene = new Scene(pane);
 
+		// Set the scene for the primary stage (window)
 		primaryStage.setScene(scene);
 		primaryStage.setWidth(AppSettings.subPageWidth);
 		primaryStage.setHeight(AppSettings.subPageHeight);
@@ -50,6 +54,7 @@ public class CreateStaff extends Application {
 		lblTitle.relocate(300, 50);
 		lblTitle.setFont(font);
 
+		// Variables to handle the positions and spacing of form elements
 		int labelX = 300, inputX = 450, startY = 100, spacingY = 50;
 
 		lblStaffId = new Label("Staff ID:");
@@ -81,6 +86,7 @@ public class CreateStaff extends Application {
 		txtContactNo.relocate(inputX, startY + 3 * spacingY);
 		txtContactNo.setPrefSize(200, 30);
 
+		// listener to restrict text field to digits and a maximum length of 10
 		txtContactNo.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue.matches("\\d*")) {
 				txtContactNo.setText(newValue.replaceAll("[^\\d]", ""));
@@ -89,7 +95,7 @@ public class CreateStaff extends Application {
 				txtContactNo.setText(oldValue);
 			}
 		});
-
+		// Staff Type label and combo box (dropdown)
 		lblStaffType = new Label("Staff Type:");
 		lblStaffType.relocate(labelX, startY + 4 * spacingY);
 		lblStaffType.setFont(font);
@@ -129,6 +135,7 @@ public class CreateStaff extends Application {
 		btnClose.setPrefSize(100, 30);
 		btnClose.setStyle(AppSettings.btnSecondary);
 
+		// Button actions for searching, clearing, closing, etc.
 		btnSearch.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -166,7 +173,7 @@ public class CreateStaff extends Application {
 
 			}
 		});
-
+		// Delete action to delete staff by ID
 		btnDelete.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -194,7 +201,7 @@ public class CreateStaff extends Application {
 				}
 			}
 		});
-
+		// Clear action to clear all fields
 		btnClear.setOnAction(e -> {
 			txtStaffId.clear();
 			txtFullName.clear();
@@ -202,7 +209,7 @@ public class CreateStaff extends Application {
 			comboGender.getSelectionModel().clearSelection();
 			comboStaffType.getSelectionModel().clearSelection();
 		});
-
+		// Submit action to insert new staff data
 		btnSubmit.setOnAction(e -> {
 			try {
 				if (txtFullName.getText().trim().isEmpty() || comboGender.getValue() == null
@@ -234,12 +241,12 @@ public class CreateStaff extends Application {
 				ex.printStackTrace();
 			}
 		});
-
+		// Add all UI components to the pane
 		pane.getChildren().addAll(lblTitle, lblStaffId, txtStaffId, lblFullName, txtFullName, lblGender, comboGender,
 				lblContactNo, txtContactNo, lblStaffType, comboStaffType, btnSubmit, btnUpdate, btnDelete, btnSearch,
-				sidebar, lblSidebarTitle, btnClear,btnClose);
+				sidebar, lblSidebarTitle, btnClear, btnClose);
 	}
-
+	// Method to display alerts
 	private void showAlert(AlertType type, String title, String header, String content) {
 		Alert alert = new Alert(type);
 		alert.setTitle(title);
@@ -247,7 +254,7 @@ public class CreateStaff extends Application {
 		alert.setContentText(content);
 		alert.showAndWait();
 	}
-
+	// Method to display alerts
 	public static void main(String[] args) {
 		launch(args);
 	}
