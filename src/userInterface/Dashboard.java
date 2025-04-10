@@ -1,7 +1,6 @@
 package userInterface;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -18,17 +17,21 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import library.AppSettings;
 import model.UserManagementModel;
-import reports.PetReport;
 import repo.DashboardStatsCRUD;
+import reports.AnalysisReport;
+import reports.AppointmentReport;
+import reports.FollowUpReport;
+import reports.PetReport;
 
 /**
-* Dashboard.java
-* This is the dashboard of the Veterinary Management System.
-* It dynamically loads the sidebar options based on the user role of the logged-in user (admin, staff, or owner)
-* and displays statistics like total customers, appointments, and staff.
-*
-* The dashboard serves as a centralized point for accessing different modules of the system.
-*/
+ * Dashboard.java This is the dashboard of the Veterinary Management System. It
+ * dynamically loads the sidebar options based on the user role of the logged-in
+ * user (admin, staff, or owner) and displays statistics like total customers,
+ * appointments, and staff.
+ *
+ * The dashboard serves as a centralized point for accessing different modules
+ * of the system.
+ */
 
 public class Dashboard extends Application {
 
@@ -38,12 +41,12 @@ public class Dashboard extends Application {
 		UserManagementModel session = UserManagementModel.getInstance();
 		String username = session.getUsername();
 		String userType = session.getUserType();
-		int userId = session.getUserId(); //  User ID is hidden from display but used internally
+		int userId = session.getUserId(); // User ID is hidden from display but used internally
 
 		// Font settings for buttons and labels
 		Font buttonFont = new Font(AppSettings.subFont, AppSettings.subFontSize);
 		Font titleFont = new Font(AppSettings.mainFont1, AppSettings.mainFont1Size);
-		
+
 		// Top bar layout (Header with welcome message)
 		Label lblWelcome = new Label("Welcome, " + username);
 		lblWelcome.setFont(titleFont);
@@ -62,10 +65,13 @@ public class Dashboard extends Application {
 		Button btnCompanySetup = createStyledButton("Company Setup", buttonFont);
 		Button btnUserSetup = createStyledButton("User Setup", buttonFont);
 		Button btnVetAssign = createStyledButton("Vet Assign", buttonFont);
+		Button btnFollowUp = createStyledButton("Follow Up", buttonFont);
 		Button btnPetReport = createStyledButton("Pet Report", buttonFont);
 		Button btnOwnerReport = createStyledButton("Owner Report", buttonFont);
 		Button btnAppointmentReport = createStyledButton("Appointment Report", buttonFont);
-		Button btnFieldVisitReport = createStyledButton("Field Visit Report", buttonFont);
+		// Button btnFieldVisitReport = createStyledButton("Field Visit
+		// Report",buttonFont);
+		Button btnFollowUpReport = createStyledButton("Follow Up Report", buttonFont);
 		Button btnAnalysisReport = createStyledButton("Analysis Report", buttonFont);
 		Button btnLogOut = createLogoutButton("Logout", buttonFont);
 
@@ -82,17 +88,20 @@ public class Dashboard extends Application {
 		// Add buttons based on user type
 		if (userType.equals("admin")) {
 			sidebar.getChildren().addAll(btnCompanySetup, btnStaffSetup, btnUserSetup, btnOwnerSetup,
-					btnClientAppointment, btnVetAssign, btnPetReport, btnOwnerReport, btnAppointmentReport,
-					btnFieldVisitReport, btnAnalysisReport, spacer, btnLogOut);
+					btnClientAppointment,btnFollowUp, btnVetAssign, btnPetReport, btnOwnerReport, btnAppointmentReport,
+					// btnFieldVisitReport,
+					btnFollowUpReport,
+					btnAnalysisReport, spacer, btnLogOut);
 		} else if (userType.equals("Owner")) {
 			sidebar.getChildren().addAll(btnClientAppointment, btnPetReport, btnAnalysisReport, spacer, btnLogOut);
 		} else if (userType.equals("Staff")) {
-			sidebar.getChildren().addAll(btnStaffSetup, btnOwnerSetup, btnClientAppointment, btnOwnerReport,
-					btnFieldVisitReport, spacer, btnLogOut);
+			sidebar.getChildren().addAll(btnStaffSetup,btnFollowUp,btnFollowUpReport, btnOwnerSetup, btnClientAppointment, btnOwnerReport,
+					// btnFieldVisitReport,
+					spacer, btnLogOut);
 		} else {
 			sidebar.getChildren().addAll(spacer, btnLogOut); // Default case: only Logout
 
-		}	
+		}
 		// Dashboard statistics using helper class DashboardStatsCRUD
 		DashboardStatsCRUD stats = new DashboardStatsCRUD();
 
@@ -176,6 +185,14 @@ public class Dashboard extends Application {
 				ex.printStackTrace();
 			}
 		}));
+		btnFollowUp.setOnAction(e -> openWindow("Follow Up", () -> {
+			ClientFollowUpPage clientFollowUpPage = new ClientFollowUpPage();
+			try {
+				clientFollowUpPage.start(new Stage()); // Start the existing page in the new window
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}));
 		btnPetReport.setOnAction(e -> openWindow("Pet Report", () -> {
 			PetReport petReportPage = new PetReport();
 			try {
@@ -184,6 +201,40 @@ public class Dashboard extends Application {
 				ex.printStackTrace();
 			}
 		}));
+		btnAppointmentReport.setOnAction(e -> openWindow("Appointment Report", () -> {
+			AppointmentReport appointmentReportPage = new AppointmentReport();
+			try {
+				appointmentReportPage.start(new Stage()); // Start the existing page in the new window
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}));
+//		btnFieldVisitReport.setOnAction(e -> openWindow("Field Visit Report", () -> {
+//			FieldVisitReport fieldVisitReportPage = new FieldVisitReport();
+//			try {
+//				fieldVisitReportPage.start(new Stage()); // Start the existing page in the new window
+//			} catch (Exception ex) {
+//				ex.printStackTrace();
+//			}
+//		}));
+
+		btnFollowUpReport.setOnAction(e -> openWindow("Follow Up Report", () -> {
+			FollowUpReport followUpReportPage = new FollowUpReport();
+			try {
+				followUpReportPage.start(new Stage()); // Start the existing page in the new window
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}));
+		btnAnalysisReport.setOnAction(e -> openWindow("Analysis Report", () -> {
+			AnalysisReport analysisReportPage = new AnalysisReport();
+			try {
+				analysisReportPage.start(new Stage()); // Start the existing page in the new window
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}));
+
 		btnLogOut.setOnAction(e -> openWindow("Log Out", () -> {
 			Login loginPage = new Login();
 			try {
@@ -208,6 +259,7 @@ public class Dashboard extends Application {
 		button.setOnMouseExited(e -> button.setEffect(null));
 		return button;
 	}
+
 	private Button createLogoutButton(String text, Font font) {
 		Button button = new Button(text);
 		button.setPrefSize(160, 30);
@@ -218,6 +270,7 @@ public class Dashboard extends Application {
 		button.setOnMouseExited(e -> button.setEffect(null));
 		return button;
 	}
+
 	/**
 	 * Opens a new window with the corresponding scene/page
 	 */

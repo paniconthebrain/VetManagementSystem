@@ -1,13 +1,13 @@
 package userInterface;
 
+import java.time.format.DateTimeFormatter;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -20,20 +20,20 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import library.AppSettings;
 import model.ClientFollowUpModel;
+import model.OwnerModel;
 import repo.ClientFollowUpCRUD;
-import java.time.format.DateTimeFormatter;
+import repo.OwnerCRUD;
 
 public class ClientFollowUpPage extends Application {
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
-		Label lblHeading, lblCustomerName, lblFollowUpType, lblFollowUpDate, lblRemarks;
-		TextField txtCustomerName, txtRemarks;
+	public void start(Stage primaryStage) {
+		Label lblHeading, lblOwnerId, lblCustomerName, lblFollowUpType, lblFollowUpDate, lblRemarks;
+		TextField txtOwnerId, txtCustomerName, txtRemarks;
 		ComboBox<String> cmbFollowUpType;
 		DatePicker dateFollowUpDate;
-		Button btnSubmit, btnCancel;
+		Button btnSearch, btnSubmit, btnCancel;
 
-		// Create Pane and Scene
 		Pane pane = new Pane();
 		Scene scene = new Scene(pane);
 		primaryStage.setTitle("Client FollowUp");
@@ -41,26 +41,35 @@ public class ClientFollowUpPage extends Application {
 		primaryStage.setWidth(1440);
 		primaryStage.setHeight(800);
 
-		// Fonts
 		Font headingFont = new Font(AppSettings.mainFont1, AppSettings.mainFont1Size);
 		Font labelFont = new Font(AppSettings.subFont, AppSettings.subFontSize);
 
-		// Sidebar Background
+		// Sidebar
 		Rectangle sidebar = new Rectangle(0, 0, 250, 800);
 		sidebar.setFill(Color.BLACK);
 
-		// Sidebar Labels
-		Label lblSidebarTitle = new Label("ABC CLINIC");
+		Label lblSidebarTitle = new Label(AppSettings.companyName);
 		lblSidebarTitle.setFont(new Font(AppSettings.mainFont1, 24));
 		lblSidebarTitle.setTextFill(Color.WHITE);
+		lblSidebarTitle.setMaxWidth(200);
 		lblSidebarTitle.relocate(50, 50);
+		lblSidebarTitle.setWrapText(true);
 
-		// Main Heading
+		// Heading
 		lblHeading = new Label("Client Follow Up");
 		lblHeading.relocate(346, 42);
 		lblHeading.setFont(headingFont);
 
-		// Customer Name Field
+		// Owner ID Field
+		lblOwnerId = new Label("Owner ID:");
+		lblOwnerId.relocate(450, 120);
+		lblOwnerId.setFont(labelFont);
+
+		txtOwnerId = new TextField();
+		txtOwnerId.relocate(645, 120);
+		txtOwnerId.setPrefSize(150, AppSettings.textBoxHeight);
+
+		// Customer Name (Read-Only)
 		lblCustomerName = new Label("Customer Name:");
 		lblCustomerName.relocate(450, 168);
 		lblCustomerName.setFont(labelFont);
@@ -68,22 +77,42 @@ public class ClientFollowUpPage extends Application {
 		txtCustomerName = new TextField();
 		txtCustomerName.relocate(645, 168);
 		txtCustomerName.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
+		txtCustomerName.setDisable(true);
+		
+		// Search Button
+		btnSearch = new Button("Search");
+		btnSearch.relocate(805, 120);
+		btnSearch.setStyle(AppSettings.btnPrimary);
+		btnSearch.setOnAction((ActionEvent e) -> {
+			try {
+				int ownerId = Integer.parseInt(txtOwnerId.getText());
+				OwnerModel owner = new OwnerCRUD().searchByID(ownerId);
+				if (owner.getOwnerId() != 0) {
+					txtCustomerName.setText(owner.getFullName());
+				} else {
+					showAlert(Alert.AlertType.WARNING, "Not Found", "Owner not found for ID: " + ownerId);
+					txtCustomerName.clear();
+				}
+			} catch (NumberFormatException ex) {
+				showAlert(Alert.AlertType.ERROR, "Invalid Input", "Owner ID must be a number.");
+			}
+		});
 
-		// Follow Up Type Field - Changed to ComboBox
+
+
+		// Follow Up Type ComboBox
 		lblFollowUpType = new Label("Follow Up Type:");
 		lblFollowUpType.relocate(450, 238);
 		lblFollowUpType.setFont(labelFont);
 
-		// Create options for follow-up types
 		ObservableList<String> followUpTypes = FXCollections.observableArrayList("Post-Treatment Checkup",
 				"Medication Follow-up", "Test Results Review", "General Consultation");
-
 		cmbFollowUpType = new ComboBox<>(followUpTypes);
 		cmbFollowUpType.relocate(645, 238);
 		cmbFollowUpType.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 		cmbFollowUpType.setStyle(AppSettings.comboBox);
 
-		// Follow Up Date Field
+		// Follow Up Date
 		lblFollowUpDate = new Label("Follow Up Date:");
 		lblFollowUpDate.relocate(450, 308);
 		lblFollowUpDate.setFont(labelFont);
@@ -92,7 +121,7 @@ public class ClientFollowUpPage extends Application {
 		dateFollowUpDate.relocate(645, 308);
 		dateFollowUpDate.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 
-		// Remarks Field
+		// Remarks
 		lblRemarks = new Label("Remarks:");
 		lblRemarks.relocate(450, 380);
 		lblRemarks.setFont(labelFont);
@@ -101,60 +130,46 @@ public class ClientFollowUpPage extends Application {
 		txtRemarks.relocate(645, 380);
 		txtRemarks.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 
-		// Submit Button
+		// Submit
 		btnSubmit = new Button("Submit");
 		btnSubmit.relocate(645, 450);
 		btnSubmit.setPrefWidth(100);
 		btnSubmit.setStyle(AppSettings.btnPrimary);
-		btnSubmit.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent actionEvent) {
-				ClientFollowUpModel followUp = new ClientFollowUpModel();
-				followUp.setCustomerName(txtCustomerName.getText());
+		btnSubmit.setOnAction(e -> {
+			ClientFollowUpModel followUp = new ClientFollowUpModel();
+			followUp.setOwnerId(Integer.parseInt(txtOwnerId.getText()));
 
-				// Get selected follow-up type from ComboBox
-				if (cmbFollowUpType.getValue() == null || cmbFollowUpType.getValue().isEmpty()) {
-					showAlert(AlertType.ERROR, "Error", "Please select a follow-up type");
-					return;
-				}
-				followUp.setFollowUpType(cmbFollowUpType.getValue());
-
-				// Get date from DatePicker
-				if (dateFollowUpDate.getValue() == null) {
-					showAlert(AlertType.ERROR, "Error", "Please select a follow-up date");
-					return;
-				}
-				String formattedDate = dateFollowUpDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-				followUp.setFollowUpDate(formattedDate);
-
-				followUp.setRemarks(txtRemarks.getText());
-
-				boolean result = new ClientFollowUpCRUD().insert(followUp);
-
-				Alert alert = new Alert(result ? AlertType.INFORMATION : AlertType.ERROR);
-				alert.setTitle(result ? "Success" : "Error");
-				alert.setHeaderText(result ? "Follow-Up Added Successfully" : "Error Adding Follow-Up");
-				alert.setContentText(result ? "Client follow-up has been added." : "Please try again.");
-				alert.showAndWait();
+			if (cmbFollowUpType.getValue() == null || cmbFollowUpType.getValue().isEmpty()) {
+				showAlert(Alert.AlertType.ERROR, "Error", "Please select a follow-up type");
+				return;
 			}
+			followUp.setFollowUpType(cmbFollowUpType.getValue());
+
+			if (dateFollowUpDate.getValue() == null) {
+				showAlert(Alert.AlertType.ERROR, "Error", "Please select a follow-up date");
+				return;
+			}
+			String formattedDate = dateFollowUpDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			followUp.setFollowUpDate(formattedDate);
+			followUp.setRemarks(txtRemarks.getText());
+
+			boolean result = new ClientFollowUpCRUD().insert(followUp);
+
+			showAlert(result ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR, result ? "Success" : "Error",
+					result ? "Follow-Up added successfully!" : "Failed to add follow-up.");
 		});
 
-		// Cancel Button
+		// Cancel
 		btnCancel = new Button("Cancel");
 		btnCancel.relocate(760, 450);
 		btnCancel.setPrefWidth(100);
 		btnCancel.setStyle(AppSettings.btnSecondary);
-		btnCancel.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent actionEvent) {
-				primaryStage.close();
-			}
-		});
+		btnCancel.setOnAction(e -> primaryStage.close());
 
-		// Add all elements to pane
-		pane.getChildren().addAll(sidebar, lblSidebarTitle, lblHeading, lblCustomerName, txtCustomerName,
-				lblFollowUpType, cmbFollowUpType, lblFollowUpDate, dateFollowUpDate, lblRemarks, txtRemarks, btnSubmit,
-				btnCancel);
+		// Add to pane
+		pane.getChildren().addAll(sidebar, lblSidebarTitle, lblHeading, lblOwnerId, txtOwnerId, btnSearch,
+				lblCustomerName, txtCustomerName, lblFollowUpType, cmbFollowUpType, lblFollowUpDate, dateFollowUpDate,
+				lblRemarks, txtRemarks, btnSubmit, btnCancel);
 
 		primaryStage.show();
 	}
