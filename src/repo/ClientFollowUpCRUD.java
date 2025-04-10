@@ -14,7 +14,7 @@ public class ClientFollowUpCRUD extends DbConnection {
         String sql = "INSERT INTO client_followup (owner_id, follow_up_type, follow_up_date, remarks) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement pStat = connect().prepareStatement(sql)) {
-            pStat.setString(1, followUp.getCustomerName());
+            pStat.setInt(1, followUp.getOwnerId());
             pStat.setString(2, followUp.getFollowUpType());
             pStat.setString(3, followUp.getFollowUpDate());
             pStat.setString(4, followUp.getRemarks());
