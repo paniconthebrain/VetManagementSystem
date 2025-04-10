@@ -1,5 +1,8 @@
 package library;
 
+import model.CompanySetupModel;
+import repo.CompanyCRUD;
+
 /**
  * AppSettings class stores application-wide constants for the Veterinary Management System.
  * This includes UI styles, fonts, dimensions, and branding details.
@@ -9,7 +12,7 @@ public class AppSettings {
 
 	// Application branding and identity
 	public static final String softwareName = "Vetinary Management System"; // Name of the software
-	public static final String companyName = "Mobile Veterinary Consultancy Service"; // Company name
+	public static String companyName ; // Company name
 	public static final String logo = "/img/Vetlogo.jpg"; // Path to the logo image
 
 	// Button styling
@@ -37,5 +40,25 @@ public class AppSettings {
 
 	// TextBox dimensions
 	public static final int textBoxWidth = 310; // Width of input text fields
-	public static final int textBoxHeight = 40; // Height of input text fields	
+	public static final int textBoxHeight = 40; // Height of input text fields
+    
+	static {
+        loadCompanyDetails();
+    }
+
+    private static void loadCompanyDetails() {
+        try {
+            // Assuming companyId 1 is the primary/default company
+            CompanySetupModel company = new CompanyCRUD().getCompanyById(1);
+            if (company != null) {
+                companyName = company.getCompanyName();
+            } else {
+                companyName = ""; // fallback name
+            }
+        } catch (Exception e) {
+            companyName = ""; // fallback if DB fails
+            System.out.println("Error loading company name: " + e.getMessage());
+        }
+    }
+	
 }

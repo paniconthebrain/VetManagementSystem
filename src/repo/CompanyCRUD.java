@@ -47,10 +47,10 @@ public class CompanyCRUD extends DbConnection {
 	// Read (Fetch by ID)
 	public CompanySetupModel getCompanyById(int companyId) {
 		// SQL query to Retrieve Company info from the database
-		String sql = "SELECT * FROM Company WHERE companyId = ?";
+		String sql = "SELECT * FROM Company order by companyId desc limit 1";
 		try (PreparedStatement pStat = connect().prepareStatement(sql)) {
 			 // Set the company ID parameter for the query
-			pStat.setInt(1, companyId);
+			//pStat.setInt(1, companyId);
 			ResultSet rs = pStat.executeQuery();
 			if (rs.next()) {
 				// If a company is found, return a new CompanySetupModel object populated with the data
