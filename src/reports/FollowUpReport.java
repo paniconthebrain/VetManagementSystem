@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 public class FollowUpReport extends Application {
-
+	// TableView to show follow-up records
 	private TableView<ClientFollowUpModel> followUpTable;
 	private ClientFollowUpCRUD followUpCRUD = new ClientFollowUpCRUD();
 
@@ -42,7 +42,7 @@ public class FollowUpReport extends Application {
 		titleLabel.setFont(new Font("Arial", 28));
 
 		followUpTable = createFollowUpTable();
-
+		// Buttons for refreshing and printing
 		HBox buttonBox = new HBox(15);
 		Button refreshBtn = new Button("Refresh Data");
 		refreshBtn.setOnAction(e -> refreshTable());
@@ -75,7 +75,7 @@ public class FollowUpReport extends Application {
 		sidebar.getChildren().add(companyLabel);
 		return sidebar;
 	}
-
+	// Create and configure TableView columns
 	private TableView<ClientFollowUpModel> createFollowUpTable() {
 		TableView<ClientFollowUpModel> table = new TableView<>();
 
@@ -101,30 +101,31 @@ public class FollowUpReport extends Application {
 		return table;
 	}
 
+	// Refresh the table with the latest follow-up data from the DB
 	private void refreshTable() {
 		List<ClientFollowUpModel> followUps = followUpCRUD.getAll();
 		ObservableList<ClientFollowUpModel> data = FXCollections.observableArrayList(followUps);
 		followUpTable.setItems(data);
 	}
-
+	// Generate a PDF report of all follow-ups
 	private void generatePDFReport() {
 		List<ClientFollowUpModel> followUps = followUpCRUD.getAll();
 		if (followUps.isEmpty()) {
 			showAlert(Alert.AlertType.WARNING, "No Data", "No follow-ups found to generate report!");
 			return;
 		}
-
+		// Prepare report data in key-value format
 		List<Map<String, String>> reportData = new ArrayList<>();
 		for (ClientFollowUpModel followUp : followUps) {
 			reportData.add(Map.of("ID", String.valueOf(followUp.getFollowUpId()), "Customer",
 					followUp.getCustomerName(), "Owner ID", String.valueOf(followUp.getOwnerId()), "Follow-Up Type",
 					followUp.getFollowUpType(), "Date", followUp.getFollowUpDate(), "Remarks", followUp.getRemarks()));
 		}
-
+		// Generate the PDF using the report data
 		PDFGeneratorService.generatePDFList(reportData, "ClientFollowUpReport.pdf", "Client Follow-Up Report");
 		showAlert(Alert.AlertType.INFORMATION, "Success", "PDF Report generated successfully!");
 	}
-
+	// Utility method to show alert dialog
 	private void showAlert(Alert.AlertType type, String title, String message) {
 		Alert alert = new Alert(type);
 		alert.setTitle(title);

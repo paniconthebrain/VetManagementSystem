@@ -57,8 +57,8 @@ public class ClientFollowUpPage extends Application {
 
 		// Heading
 		lblHeading = new Label("Client Follow Up");
-		lblHeading.relocate(346, 42);
-		lblHeading.setFont(headingFont);
+		lblHeading.relocate(346, 42);// Set position for label
+		lblHeading.setFont(headingFont);// Set font for label
 
 		// Owner ID Field
 		lblOwnerId = new Label("Owner ID:");
@@ -66,7 +66,7 @@ public class ClientFollowUpPage extends Application {
 		lblOwnerId.setFont(labelFont);
 
 		txtOwnerId = new TextField();
-		txtOwnerId.relocate(645, 120);
+		txtOwnerId.relocate(645, 120); // Set position for text field
 		txtOwnerId.setPrefSize(150, AppSettings.textBoxHeight);
 
 		// Customer Name (Read-Only)
@@ -75,10 +75,10 @@ public class ClientFollowUpPage extends Application {
 		lblCustomerName.setFont(labelFont);
 
 		txtCustomerName = new TextField();
-		txtCustomerName.relocate(645, 168);
-		txtCustomerName.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
-		txtCustomerName.setDisable(true);
-		
+		txtCustomerName.relocate(645, 168);// Set position for text field
+		txtCustomerName.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);// Set size
+		txtCustomerName.setDisable(true); // Make the text field read-only
+
 		// Search Button
 		btnSearch = new Button("Search");
 		btnSearch.relocate(805, 120);
@@ -98,13 +98,12 @@ public class ClientFollowUpPage extends Application {
 			}
 		});
 
-
-
 		// Follow Up Type ComboBox
 		lblFollowUpType = new Label("Follow Up Type:");
 		lblFollowUpType.relocate(450, 238);
 		lblFollowUpType.setFont(labelFont);
 
+		// ComboBox for follow-up types
 		ObservableList<String> followUpTypes = FXCollections.observableArrayList("Post-Treatment Checkup",
 				"Medication Follow-up", "Test Results Review", "General Consultation");
 		cmbFollowUpType = new ComboBox<>(followUpTypes);
@@ -138,13 +137,13 @@ public class ClientFollowUpPage extends Application {
 		btnSubmit.setOnAction(e -> {
 			ClientFollowUpModel followUp = new ClientFollowUpModel();
 			followUp.setOwnerId(Integer.parseInt(txtOwnerId.getText()));
-
+			// Validate Follow-Up Type
 			if (cmbFollowUpType.getValue() == null || cmbFollowUpType.getValue().isEmpty()) {
 				showAlert(Alert.AlertType.ERROR, "Error", "Please select a follow-up type");
 				return;
 			}
 			followUp.setFollowUpType(cmbFollowUpType.getValue());
-
+			// Validate Follow-Up Date
 			if (dateFollowUpDate.getValue() == null) {
 				showAlert(Alert.AlertType.ERROR, "Error", "Please select a follow-up date");
 				return;
@@ -152,12 +151,12 @@ public class ClientFollowUpPage extends Application {
 			String formattedDate = dateFollowUpDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 			followUp.setFollowUpDate(formattedDate);
 			followUp.setRemarks(txtRemarks.getText());
-
+			// Insert the follow-up data
 			boolean result = new ClientFollowUpCRUD().insert(followUp);
-
+			// Show success or failure alert
 			showAlert(result ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR, result ? "Success" : "Error",
 					result ? "Follow-Up added successfully!" : "Failed to add follow-up.");
-			
+			// Clear the fields after submission
 			txtOwnerId.clear();
 			txtCustomerName.clear();
 			txtRemarks.clear();
@@ -177,9 +176,10 @@ public class ClientFollowUpPage extends Application {
 				lblCustomerName, txtCustomerName, lblFollowUpType, cmbFollowUpType, lblFollowUpDate, dateFollowUpDate,
 				lblRemarks, txtRemarks, btnSubmit, btnCancel);
 
-		primaryStage.show();
+		primaryStage.show(); // Show the primary stage
 	}
 
+	// Show an alert with the provided type, title, and message
 	private void showAlert(Alert.AlertType alertType, String title, String message) {
 		Alert alert = new Alert(alertType);
 		alert.setTitle(title);
