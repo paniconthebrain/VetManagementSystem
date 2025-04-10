@@ -28,7 +28,7 @@ public class OwnerCRUD extends DbConnection implements InfOwnerCRUD {
 			pStat.setString(4, ownerModel.getAddress());
 			pStat.setString(5, ownerModel.getPetNickName());
 			pStat.setString(6, ownerModel.getPetBreed());
-			pStat.setString(7, ownerModel.getDateOfBirth());
+			pStat.setDate(7, java.sql.Date.valueOf(ownerModel.getDateOfBirth()));
 			// Execute the query and check if any rows were inserted
 			int rowsInserted = pStat.executeUpdate();
 			result = rowsInserted > 0;
@@ -64,7 +64,7 @@ public class OwnerCRUD extends DbConnection implements InfOwnerCRUD {
 				ownerModel.setAddress(rs.getString("address"));
 				ownerModel.setPetNickName(rs.getString("pet_nickname"));
 				ownerModel.setPetBreed(rs.getString("pet_breed"));
-				ownerModel.setDateOfBirth(rs.getString("date_of_birth"));
+				ownerModel.setDateOfBirth(rs.getDate("date_of_birth").toLocalDate());
 			}
 		} catch (SQLException ex) {
 			System.out.println("Error: " + ex.getMessage());
@@ -97,7 +97,7 @@ public class OwnerCRUD extends DbConnection implements InfOwnerCRUD {
 				ownerModel.setAddress(rs.getString("address"));
 				ownerModel.setPetNickName(rs.getString("pet_nickname"));
 				ownerModel.setPetBreed(rs.getString("pet_breed"));
-				ownerModel.setDateOfBirth(rs.getString("date_of_birth"));
+				ownerModel.setDateOfBirth(rs.getDate("date_of_birth").toLocalDate());
 			}
 		} catch (SQLException ex) {
 			System.out.println("Error: " + ex.getMessage());
@@ -122,7 +122,7 @@ public class OwnerCRUD extends DbConnection implements InfOwnerCRUD {
 			pStat.setString(4, ownerModel.getAddress());
 			pStat.setString(5, ownerModel.getPetNickName());
 			pStat.setString(6, ownerModel.getPetBreed());
-			pStat.setString(7, ownerModel.getDateOfBirth());
+			pStat.setDate(7, java.sql.Date.valueOf(ownerModel.getDateOfBirth()));
 			pStat.setInt(8, ownerModel.getOwnerId());
 			// Execute the update query and check if any rows were updated
 			int rowsUpdated = pStat.executeUpdate();
@@ -176,7 +176,7 @@ public class OwnerCRUD extends DbConnection implements InfOwnerCRUD {
 				ownerModel.setAddress(rs.getString("address"));
 				ownerModel.setPetNickName(rs.getString("pet_nickname"));
 				ownerModel.setPetBreed(rs.getString("pet_breed"));
-				ownerModel.setDateOfBirth(rs.getString("date_of_birth"));
+				ownerModel.setDateOfBirth(rs.getDate("date_of_birth").toLocalDate());
 
 				owners.add(ownerModel); // Add owner to the list
 			}
@@ -227,7 +227,7 @@ public class OwnerCRUD extends DbConnection implements InfOwnerCRUD {
 				owner.setFullName(rs.getString("full_name"));
 				owner.setPetNickName(rs.getString("pet_nickname"));
 				owner.setPetBreed(rs.getString("pet_breed"));
-				owner.setDateOfBirth(rs.getString("date_of_birth"));
+				owner.setDateOfBirth(rs.getDate("date_of_birth").toLocalDate());
 				;
 			}
 		} catch (Exception ex) {

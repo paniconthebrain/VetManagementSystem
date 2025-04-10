@@ -59,10 +59,12 @@ public class UserSetup extends Application {
 		sidebar.setFill(Color.BLACK);
 
 		// Sidebar Labels
-		Label lblSidebarTitle = new Label("ABC CLINIC");
+		Label lblSidebarTitle = new Label(AppSettings.companyName);
 		lblSidebarTitle.setFont(new Font("Arial", 24));
 		lblSidebarTitle.setTextFill(Color.WHITE);
+		lblSidebarTitle.setMaxWidth(200);
 		lblSidebarTitle.relocate(50, 50);
+		lblSidebarTitle.setWrapText(true);
 
 		// Title Label
 		lblTitle = new Label("User Setup Page");
@@ -133,12 +135,8 @@ public class UserSetup extends Application {
 		colUserType.setCellValueFactory(new PropertyValueFactory<>("userType"));
 		colUserType.setPrefWidth(200);
 
-		TableColumn<UserManagementModel, Integer> colAssignedId = new TableColumn<>("Assigned ID");
-		colAssignedId.setCellValueFactory(new PropertyValueFactory<>("assignedId"));
-		colAssignedId.setPrefWidth(150);
-
 		// Add columns to table
-		userTable.getColumns().addAll(colUsername, colUserType, colAssignedId);
+		userTable.getColumns().addAll(colUsername, colUserType);
 
 		// Populate table with data
 		ObservableList<UserManagementModel> userList = FXCollections.observableArrayList(new UserCRUD().getAll());
@@ -204,7 +202,11 @@ public class UserSetup extends Application {
 					new UserCRUD().insert(umm);
 					showAlert(Alert.AlertType.INFORMATION, "Success", "User Created Succesfully.");
 					userList.setAll(new UserCRUD().getAll());
-
+					txtUserName.clear();
+					txtPassword.clear();
+					txtAssignedId.clear();
+					txtName.clear();
+					
 				} catch (Exception ex) {
 					showAlert(Alert.AlertType.ERROR, "Error", ex.getMessage());
 				}

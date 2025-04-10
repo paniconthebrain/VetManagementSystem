@@ -114,7 +114,7 @@ public class FieldVisitReport extends Application {
 					fullNameInput.setText(owner.getFullName());
 					petNameInput.setText(owner.getPetNickName());
 					petBreedInput.setText(owner.getPetBreed());
-					dobInput.setText(owner.getDateOfBirth());
+					dobInput.setText(owner.getDateOfBirth().toString());
 
 					printButton.setDisable(false);
 				} else {
@@ -138,7 +138,7 @@ public class FieldVisitReport extends Application {
 				if (owner.getOwnerId() != 0) {
 					Map<String, String> data = Map.of("Owner ID", String.valueOf(owner.getOwnerId()), "Owner Name",
 							owner.getFullName(), "Pet Name", owner.getPetNickName(), "Pet Breed", owner.getPetBreed(),
-							"Date of Birth", owner.getDateOfBirth());
+							"Date of Birth", owner.getDateOfBirth().toString());
 
 					PDFGeneratorService.generatePDF(data, "pet_Report_" + ownerId + ".pdf", "Pet Report");
 

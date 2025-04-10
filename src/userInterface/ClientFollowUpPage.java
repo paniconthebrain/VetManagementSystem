@@ -157,6 +157,12 @@ public class ClientFollowUpPage extends Application {
 
 			showAlert(result ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR, result ? "Success" : "Error",
 					result ? "Follow-Up added successfully!" : "Failed to add follow-up.");
+			
+			txtOwnerId.clear();
+			txtCustomerName.clear();
+			txtRemarks.clear();
+			cmbFollowUpType.setValue(null);
+			dateFollowUpDate.setValue(null);
 		});
 
 		// Cancel

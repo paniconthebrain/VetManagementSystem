@@ -9,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -18,157 +17,125 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import library.AppSettings;
 import library.PDFGeneratorService;
-import model.OwnerModel;
-import repo.OwnerCRUD;
+import repo.AnalysisReportCRUD; // A new service to fetch company data
 
 public class AnalysisReport extends Application {
 
-	Label lblTitle, lblOwnerid, lblFullName, lblPetName, lblBreed, lblDob;
-	private TextField ownerIdInput, fullNameInput, petNameInput, petBreedInput, dobInput;
-	private Button viewButton, printButton;
+    Label lblTitle, lblTotalOwners, lblTotalPets, lblBreedStats;
+    private Button viewButton, printButton;
 
-	@Override
-	public void start(Stage primaryStage) {
-		primaryStage.setTitle("Pet Report");
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setTitle("Company Analysis Report");
 
-		Alert alert = new Alert(null);
-		Pane pane = new Pane();
-		Scene scene = new Scene(pane);
+        Alert alert = new Alert(null);
+        Pane pane = new Pane();
+        Scene scene = new Scene(pane);
 
-		Font font1 = new Font("Arial", 38);
+        Font font1 = new Font("Arial", 38);
 
-		Font font = new Font("Arial", 18);
+        Font font = new Font("Arial", 18);
 
-		// Sidebar Background
-		Rectangle sidebar = new Rectangle(0, 0, 250, 800);
-		sidebar.setFill(Color.BLACK);
+        // Sidebar Background
+        Rectangle sidebar = new Rectangle(0, 0, 250, 800);
+        sidebar.setFill(Color.BLACK);
 
-		// Sidebar Labels
-		Label lblSidebarTitle = new Label(AppSettings.companyName);
-		lblSidebarTitle.setFont(new Font("Arial", 30));
-		lblSidebarTitle.setTextFill(Color.WHITE);
-		lblSidebarTitle.setMaxWidth(200);
-		lblSidebarTitle.relocate(50, 50);
-		lblSidebarTitle.setWrapText(true);
+        // Sidebar Labels
+        Label lblSidebarTitle = new Label(AppSettings.companyName);
+        lblSidebarTitle.setFont(new Font("Arial", 30));
+        lblSidebarTitle.setTextFill(Color.WHITE);
+        lblSidebarTitle.setMaxWidth(200);
+        lblSidebarTitle.relocate(50, 50);
+        lblSidebarTitle.setWrapText(true);
 
-		// Labels and Text Fields
-		lblTitle = new Label("Pet Report");
-		lblTitle.relocate(300, 50);
-		lblTitle.setFont(font1);
+        // Labels and Buttons
+        lblTitle = new Label("Company Analysis Report");
+        lblTitle.relocate(300, 50);
+        lblTitle.setFont(font1);
 
-		int labelX = 300, inputX = 450, startY = 200, spacingY = 50;
+        int labelX = 300, inputX = 450, startY = 200, spacingY = 50;
 
-		lblOwnerid = new Label("Owner ID:");
-		lblOwnerid.relocate(labelX, startY);
-		lblOwnerid.setFont(font);
-		ownerIdInput = new TextField();
-		ownerIdInput.relocate(inputX, startY);
-		ownerIdInput.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
+        lblTotalOwners = new Label("Total Owners:");
+        lblTotalOwners.relocate(labelX, startY);
+        lblTotalOwners.setFont(font);
 
-		lblFullName = new Label("Owner Name:");
-		lblFullName.relocate(labelX, startY + spacingY);
-		lblFullName.setFont(font);
-		fullNameInput = new TextField();
-		fullNameInput.relocate(inputX, startY + spacingY);
-		fullNameInput.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
-		fullNameInput.setDisable(true);
+        lblTotalPets = new Label("Total Pets:");
+        lblTotalPets.relocate(labelX, startY + spacingY);
+        lblTotalPets.setFont(font);
 
-		lblPetName = new Label("Pet Name:");
-		lblPetName.relocate(labelX, startY + 2 * spacingY);
-		lblPetName.setFont(font);
-		petNameInput = new TextField();
-		petNameInput.relocate(inputX, startY + 2 * spacingY);
-		petNameInput.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
-		petNameInput.setDisable(true);
+        lblBreedStats = new Label("Pet Breed Statistics:");
+        lblBreedStats.relocate(labelX, startY + 2 * spacingY);
+        lblBreedStats.setFont(font);
 
-		lblBreed = new Label("Breed:");
-		lblBreed.relocate(labelX, startY + 3 * spacingY);
-		lblBreed.setFont(font);
-		petBreedInput = new TextField();
-		petBreedInput.relocate(inputX, startY + 3 * spacingY);
-		petBreedInput.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
-		petBreedInput.setDisable(true);
-		
-		
-		lblDob = new Label("Date Of Birth:");
-		lblDob.relocate(labelX, startY + 4 * spacingY);
-		lblDob.setFont(font);
-		dobInput = new TextField();
-		dobInput.relocate(inputX, startY + 4 * spacingY);
-		dobInput.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
-		dobInput.setDisable(true);
-		
-		// Buttons
-        int btnY = startY + 8 * spacingY;
-		viewButton = new Button("Search");
-		viewButton.relocate(780,200);
-		viewButton.setPrefSize(100, 30);
-		viewButton.setStyle(AppSettings.btnPrimary);
-		viewButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent actionEvent) {
-				int ownerId = Integer.parseInt(ownerIdInput.getText());
-				OwnerModel owner = new OwnerCRUD().getPetById(ownerId);
+        // Buttons
+        int btnY = startY + 6 * spacingY;
+        viewButton = new Button("Generate Report");
+        viewButton.relocate(780,200);
+        viewButton.setPrefSize(150, 30);
+        viewButton.setStyle(AppSettings.btnPrimary);
+        viewButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                // Fetching analysis data
+            	AnalysisReportCRUD analysisService = new AnalysisReportCRUD();
+                int totalOwners = analysisService.getTotalOwners();
+                int totalPets = analysisService.getTotalPets();
+                //String breedStats = analysisService.getPetBreedStatistics();
 
-				if (owner.getOwnerId() != 0) {
-					fullNameInput.setText(owner.getFullName());
-					petNameInput.setText(owner.getPetNickName());
-					petBreedInput.setText(owner.getPetBreed());
-					dobInput.setText(owner.getDateOfBirth());
+                // Display the fetched data on the UI
+                lblTotalOwners.setText("Total Owners: " + totalOwners);
+                lblTotalPets.setText("Total Pets: " + totalPets);
+                lblBreedStats.setText("Pet Breed Statistics:\n" );
 
-					printButton.setDisable(false);
-				} else {
-					Alert alert = new Alert(Alert.AlertType.WARNING, "No pet found for this Owner ID!");
-					alert.show();
-				}
-			}
-		});
+                printButton.setDisable(false);
+            }
+        });
 
-		printButton = new Button("Print to PDF");
-		printButton.relocate(300, 480);
-		printButton.setPrefSize(100, 30);
-		printButton.setStyle(AppSettings.btnContent);
-		printButton.setDisable(true);
-		printButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent actionEvent) {
-				int ownerId = Integer.parseInt(ownerIdInput.getText());
-				OwnerModel owner = new OwnerCRUD().getPetById(ownerId);
+        printButton = new Button("Print to PDF");
+        printButton.relocate(300, btnY);
+        printButton.setPrefSize(100, 30);
+        printButton.setStyle(AppSettings.btnContent);
+        printButton.setDisable(true);
+        printButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                // Generate PDF with the collected analysis data
+            	AnalysisReportCRUD analysisService = new AnalysisReportCRUD();
+                int totalOwners = analysisService.getTotalOwners();
+                int totalPets = analysisService.getTotalPets();
+                //String breedStats = analysisService.getPetBreedStatistics();
 
-				if (owner.getOwnerId() != 0) {
-					Map<String, String> data = Map.of("Owner ID", String.valueOf(owner.getOwnerId()), "Owner Name",
-							owner.getFullName(), "Pet Name", owner.getPetNickName(), "Pet Breed", owner.getPetBreed(),
-							"Date of Birth", owner.getDateOfBirth());
+                // Creating a map of the report data
+                Map<String, String> data = Map.of(
+                        "Total Owners", String.valueOf(totalOwners),
+                        "Total Pets", String.valueOf(totalPets)
+                );
 
-					PDFGeneratorService.generatePDF(data, "pet_Report_" + ownerId + ".pdf", "Pet Report");
+                // Generate PDF using PDFGeneratorService
+                PDFGeneratorService.generatePDF(data, "company_analysis_report.pdf", "Company Analysis Report");
 
-					Alert alert = new Alert(Alert.AlertType.INFORMATION, "PDF Generated!");
-					alert.show();
-				} else {
-					Alert alert = new Alert(Alert.AlertType.WARNING, "No pet found for this Owner ID!");
-					alert.show();
-				}
-			}
-		});
+                // Show success alert
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "PDF Generated!");
+                alert.show();
+            }
+        });
 
-		viewButton.setOnMouseEntered(e -> viewButton.setEffect(new DropShadow()));
-		viewButton.setOnMouseExited(e -> viewButton.setEffect(null));
-		
-		printButton.setOnMouseEntered(e -> viewButton.setEffect(new DropShadow()));
-		printButton.setOnMouseExited(e -> viewButton.setEffect(null));
-		
-		// Adding elements to Pane
-		pane.getChildren().addAll(sidebar,lblSidebarTitle,lblTitle, lblOwnerid, lblFullName, lblPetName, lblBreed, lblDob, ownerIdInput,
-				fullNameInput, petNameInput, petBreedInput, dobInput, viewButton, printButton);
+        viewButton.setOnMouseEntered(e -> viewButton.setEffect(new DropShadow()));
+        viewButton.setOnMouseExited(e -> viewButton.setEffect(null));
 
-		primaryStage.setScene(scene);
-		primaryStage.setWidth(AppSettings.subPageWidth);
-		primaryStage.setHeight(AppSettings.subPageHeight);
-		primaryStage.show();
-	}
-	
-	public static void main(String[] args) {
-		launch(args);
-	}
+        printButton.setOnMouseEntered(e -> printButton.setEffect(new DropShadow()));
+        printButton.setOnMouseExited(e -> printButton.setEffect(null));
 
+        // Adding elements to the Pane
+        pane.getChildren().addAll(sidebar, lblSidebarTitle, lblTitle, lblTotalOwners, lblTotalPets, lblBreedStats, viewButton, printButton);
+
+        primaryStage.setScene(scene);
+        primaryStage.setWidth(AppSettings.subPageWidth);
+        primaryStage.setHeight(AppSettings.subPageHeight);
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 }

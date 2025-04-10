@@ -181,6 +181,7 @@ public class VetAssign extends Application {
 							;
 							alert.show();
 						}
+						
 
 					} catch (NumberFormatException e) {
 						alert.setAlertType(AlertType.WARNING);
@@ -223,6 +224,12 @@ public class VetAssign extends Application {
 					alert.setAlertType(AlertType.INFORMATION);
 					alert.setContentText("Vet assigned successfully!");
 					alert.show();
+					txtOwnerId.clear();
+					txtOwnername.clear();
+					txtContactNo.clear();
+					txtAddress.clear();
+					txtRemarks.clear();
+					comboStaffNames.setValue(null);
 				} catch (Exception ex) {
 					alert.setAlertType(AlertType.WARNING);
 					alert.setContentText("Error assigning vet: " + ex.getMessage());

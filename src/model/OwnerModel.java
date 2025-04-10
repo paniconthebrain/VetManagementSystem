@@ -1,5 +1,7 @@
 package model;
 
+import java.time.LocalDate;
+
 public class OwnerModel {
     private int ownerId;           // Unique identifier for each owner (primary key)
     private String fullName;        // Owner's full name
@@ -8,7 +10,7 @@ public class OwnerModel {
     private String address;         // Owner's physical address
     private String petNickName;     // Nickname of the owner's pet
     private String petBreed;        // Breed of the pet
-    private String dateOfBirth;     // Date of birth of the owner or pet (depending on requirement)
+    private LocalDate dateOfBirth;     // Date of birth of the owner or pet (depending on requirement)
 
     // Default constructor
     public OwnerModel() {
@@ -16,7 +18,7 @@ public class OwnerModel {
 
     // Parameterized constructor
     public OwnerModel(int ownerId, String fullName, String contactNo, String email, String address,
-                      String petNickName, String petBreed, String dateOfBirth) {
+                      String petNickName, String petBreed, LocalDate dateOfBirth) {
         this.ownerId = ownerId;
         this.fullName = fullName;
         this.contactNo = contactNo;
@@ -85,11 +87,11 @@ public class OwnerModel {
         this.petBreed = petBreed;
     }
 
-    public String getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

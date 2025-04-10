@@ -12,13 +12,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import library.AppSettings;
+import model.OwnerModel;
 import model.StaffModel;
+import repo.OwnerCRUD;
 import repo.StaffCRUD;
 
 public class CreateStaff extends Application{
@@ -30,7 +33,8 @@ public class CreateStaff extends Application{
 		Button btnSubmit, btnDelete, btnUpdate, btnSearch, btnClear;
 
 		ComboBox<String> comboGender, comboStaffType;
-
+		Alert alert = new Alert(null);
+		
 		Font font = new Font("Arial", 18);
 		Pane pane = new Pane();
 		Scene scene = new Scene(pane);
@@ -143,6 +147,83 @@ public class CreateStaff extends Application{
 		btnSearch.relocate(labelX + 330, btnY);
 		btnSearch.setPrefSize(100, 30);
 		btnSearch.setStyle(AppSettings.btnStage1);
+		
+		btnSearch.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				if (!txtStaffId.getText().isEmpty()) {
+					try {
+						int staffId = Integer.parseInt(txtStaffId.getText()); // Convert text to integer
+						StaffCRUD staffCRUD = new StaffCRUD(); // Use repository class
+						StaffModel staffModel = staffCRUD.search(staffId); // Fetch from DB
+
+						if (staffModel != null && staffModel.getFullName() != null) {
+							txtFullName.setText(staffModel.getFullName()); // Set text field
+							txtContactNo.setText(staffModel.getContactNo());
+							comboGender.setValue(staffModel.getGender());
+							comboStaffType.setValue(staffModel.getStaffType());
+						} else {
+							alert.setAlertType(AlertType.WARNING);
+							alert.setContentText("Staff Not Found in History");
+							;
+							alert.show();
+						}
+
+					} catch (NumberFormatException e) {
+						alert.setAlertType(AlertType.WARNING);
+						alert.setContentText("Invalid owner ID format: " + e.getMessage());
+						;
+						alert.show();
+					}
+				} else {
+					alert.setAlertType(AlertType.WARNING);
+					alert.setContentText("Owner ID cannot be empty.");
+					;
+					alert.show();// System.out.println("")
+				}
+			}
+			
+		});
+		
+		
+		btnDelete.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				if (!txtStaffId.getText().isEmpty()) {
+		            try {
+		                int staffId = Integer.parseInt(txtStaffId.getText());
+		                StaffCRUD staffCRUD = new StaffCRUD();
+		                boolean deleted = staffCRUD.Delete(staffId); // Assuming your method returns true if deleted
+
+		                if (deleted) {
+		                    alert.setAlertType(AlertType.INFORMATION);
+		                    alert.setContentText("Staff deleted successfully.");
+		                    
+		                    // Optionally clear fields
+		                    txtStaffId.clear();
+		                    txtFullName.clear();
+		                    txtContactNo.clear();
+		                    comboGender.setValue(null);
+		                    comboStaffType.setValue(null);
+		                } else {
+		                    alert.setAlertType(AlertType.WARNING);
+		                    alert.setContentText("Staff ID not found. Deletion failed.");
+		                }
+		                alert.show();
+		            } catch (NumberFormatException e) {
+		                alert.setAlertType(AlertType.WARNING);
+		                alert.setContentText("Invalid Staff ID format: " + e.getMessage());
+		                alert.show();
+		            }
+		        } else {
+		            alert.setAlertType(AlertType.WARNING);
+		            alert.setContentText("Staff ID cannot be empty.");
+		            alert.show();
+		        }
+			}
+		});
 
 		btnClear = new Button("Clear");
 		btnClear.relocate(labelX, btnY + spacingY);
@@ -164,7 +245,6 @@ public class CreateStaff extends Application{
 				if (txtFullName.getText().trim().isEmpty() || comboGender.getValue() == null
 						|| txtContactNo.getText().trim().isEmpty() || comboStaffType.getValue() == null) {
 
-					Alert alert = new Alert(Alert.AlertType.WARNING);
 					alert.setTitle("Missing Information");
 					alert.setHeaderText("Required fields are empty");
 					alert.setContentText("Please fill in all fields");
@@ -182,7 +262,6 @@ public class CreateStaff extends Application{
 				// Insert into database
 				boolean result = new StaffCRUD().Insert(staffModel);
 
-				Alert alert = new Alert(result ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
 				alert.setTitle(result ? "Success" : "Error");
 				alert.setHeaderText(result ? "Staff Inserted Successfully" : "Error Inserting Staff");
 				alert.setContentText(result ? "Staff details have been saved." : "Please try again.");
@@ -195,14 +274,12 @@ public class CreateStaff extends Application{
 
 			} catch (IllegalArgumentException ex) {
 				// Handle validation errors from StaffModel
-				Alert alert = new Alert(Alert.AlertType.ERROR);
 				alert.setTitle("Validation Error");
 				alert.setHeaderText("Invalid Input");
 				alert.setContentText(ex.getMessage());
 				alert.showAndWait();
 			} catch (Exception ex) {
 				// Handle other exceptions
-				Alert alert = new Alert(Alert.AlertType.ERROR);
 				alert.setTitle("Error");
 				alert.setHeaderText("An error occurred");
 				alert.setContentText("Please check your input and try again.");

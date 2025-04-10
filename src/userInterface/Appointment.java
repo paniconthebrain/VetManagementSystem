@@ -3,6 +3,8 @@ package userInterface;
 import java.time.LocalDate;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
@@ -71,7 +73,7 @@ public class Appointment extends Application {
 		// Search button for owner ID
 		btnSearch = new Button("Search");
 		btnSearch.relocate(910, 150);
-		btnSearch.setStyle(AppSettings.btnSecondary);
+		btnSearch.setStyle(AppSettings.btnContent);
 
 		// Label and disabled text field for auto-filled owner name
 		lblOwnerName = new Label("Owner Name");
@@ -153,6 +155,13 @@ public class Appointment extends Application {
 		btnCancel = new Button("Cancel");
 		btnCancel.relocate(768, 420);
 		btnCancel.setStyle(AppSettings.btnSecondary);
+		btnCancel.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				primaryStage.close();
+			}
+		});
 
 		// Search button functionality
 		btnSearch.setOnAction(event -> {

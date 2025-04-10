@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -27,8 +28,8 @@ public class Ownersetup extends Application {
 		// Declare UI elements
 		Label lblTitle, lblOwnerID, lblOwnerName, lblContactNo, lblEmail, lblAddress, lblNickname, lblPetBreed,
 				lblDateOfBirth;
-		TextField txtOwnerID, txtOwnerName, txtContactNo, txtEmail, txtAddress, txtNickname, txtPetBreed,
-				txtDateOfBirth;
+		TextField txtOwnerID, txtOwnerName, txtContactNo, txtEmail, txtAddress, txtNickname, txtPetBreed;
+		DatePicker txtDateOfBirth;
 		Button btnSubmit, btnDelete, btnUpdate, btnView, btnClear;
 
 		Font font = new Font("Arial", 18);
@@ -82,6 +83,15 @@ public class Ownersetup extends Application {
 		txtContactNo = new TextField();
 		txtContactNo.relocate(inputX, startY + 2 * spacingY);
 		txtContactNo.setPrefSize(200, 30);
+		// Add input validation for contact number
+		txtContactNo.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (!newValue.matches("\\d*")) {
+				txtContactNo.setText(newValue.replaceAll("[^\\d]", ""));
+			}
+			if (newValue.length() > 10) {
+				txtContactNo.setText(oldValue);
+			}
+		});
 
 		lblEmail = new Label("Email:");
 		lblEmail.relocate(labelX, startY + 3 * spacingY);
@@ -114,7 +124,7 @@ public class Ownersetup extends Application {
 		lblDateOfBirth = new Label("Date of Birth:");
 		lblDateOfBirth.relocate(labelX, startY + 7 * spacingY);
 		lblDateOfBirth.setFont(font);
-		txtDateOfBirth = new TextField();
+		txtDateOfBirth = new DatePicker();
 		txtDateOfBirth.relocate(inputX, startY + 7 * spacingY);
 		txtDateOfBirth.setPrefSize(200, 30);
 
@@ -153,7 +163,7 @@ public class Ownersetup extends Application {
 			txtAddress.clear();
 			txtNickname.clear();
 			txtPetBreed.clear();
-			txtDateOfBirth.clear();
+			txtDateOfBirth.setValue(null);
 		});
 
 		// Insert new Owner Record
@@ -167,7 +177,7 @@ public class Ownersetup extends Application {
 				ownerModel.setAddress(txtAddress.getText());
 				ownerModel.setPetNickName(txtNickname.getText());
 				ownerModel.setPetBreed(txtPetBreed.getText());
-				ownerModel.setDateOfBirth(txtDateOfBirth.getText());
+				ownerModel.setDateOfBirth(txtDateOfBirth.getValue());
 
 				boolean result = new OwnerCRUD().Insert(ownerModel);
 
@@ -176,6 +186,15 @@ public class Ownersetup extends Application {
 				alert.setHeaderText(result ? "Owner Added Successfully" : "Error : Owner Name Cannot Be Empty");
 				alert.setContentText(result ? "Owner details have been added." : "Please try again.");
 				alert.showAndWait();
+				
+				txtOwnerID.clear();
+				txtOwnerName.clear();
+				txtContactNo.clear();
+				txtEmail.clear();
+				txtAddress.clear();
+				txtNickname.clear();
+				txtPetBreed.clear();
+				txtDateOfBirth.setValue(null);
 			}
 		});
 		// Delete existing Owner record
@@ -188,10 +207,20 @@ public class Ownersetup extends Application {
 
 					Alert alert = new Alert(result ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
 					alert.setTitle(result ? "Success" : "Error");
+					
+					
 					alert.setHeaderText(result ? "Owner Deleted Successfully" : "Error Deleting Owner");
 					alert.setContentText(
 							result ? "Owner with ID " + ownerId + " has been deleted." : "Please try again.");
 					alert.showAndWait();
+					txtOwnerID.clear();
+					txtOwnerName.clear();
+					txtContactNo.clear();
+					txtEmail.clear();
+					txtAddress.clear();
+					txtNickname.clear();
+					txtPetBreed.clear();
+					txtDateOfBirth.setValue(null);
 				} catch (NumberFormatException e) {
 					Alert alert = new Alert(Alert.AlertType.ERROR);
 					alert.setTitle("Error");
@@ -215,7 +244,7 @@ public class Ownersetup extends Application {
 					ownerModel.setAddress(txtAddress.getText());
 					ownerModel.setPetNickName(txtNickname.getText());
 					ownerModel.setPetBreed(txtPetBreed.getText());
-					ownerModel.setDateOfBirth(txtDateOfBirth.getText());
+					ownerModel.setDateOfBirth(txtDateOfBirth.getValue());
 
 					boolean result = new OwnerCRUD().Update(ownerModel);
 
@@ -224,6 +253,14 @@ public class Ownersetup extends Application {
 					alert.setHeaderText(result ? "Owner Updated Successfully" : "Error Updating Owner");
 					alert.setContentText(result ? "Owner details have been updated." : "Please try again.");
 					alert.showAndWait();
+					txtOwnerID.clear();
+					txtOwnerName.clear();
+					txtContactNo.clear();
+					txtEmail.clear();
+					txtAddress.clear();
+					txtNickname.clear();
+					txtPetBreed.clear();
+					txtDateOfBirth.setValue(null);
 				} catch (NumberFormatException e) {
 					Alert alert = new Alert(Alert.AlertType.ERROR);
 					alert.setTitle("Error");
@@ -249,7 +286,7 @@ public class Ownersetup extends Application {
 						txtAddress.setText(ownerModel.getAddress());
 						txtNickname.setText(ownerModel.getPetNickName());
 						txtPetBreed.setText(ownerModel.getPetBreed());
-						txtDateOfBirth.setText(ownerModel.getDateOfBirth());
+						txtDateOfBirth.setValue(ownerModel.getDateOfBirth());
 
 						Alert alert = new Alert(Alert.AlertType.INFORMATION);
 						alert.setTitle("Owner Found");
@@ -272,7 +309,8 @@ public class Ownersetup extends Application {
 				}
 			}
 		});
-
+		   // Clear method inside start()
+		
 		// Add elements to the pane
 		pane.getChildren().addAll(lblTitle, lblOwnerID, txtOwnerID, lblOwnerName, txtOwnerName, lblContactNo,
 				txtContactNo, lblEmail, txtEmail, lblAddress, txtAddress, lblNickname, txtNickname, lblPetBreed,
@@ -284,4 +322,5 @@ public class Ownersetup extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+		
 }
