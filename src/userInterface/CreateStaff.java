@@ -21,7 +21,7 @@ public class CreateStaff extends Application {
 	public void start(Stage primaryStage) {
 		Label lblTitle, lblStaffId, lblFullName, lblGender, lblContactNo, lblStaffType;
 		TextField txtStaffId, txtFullName, txtContactNo;
-		Button btnSubmit, btnDelete, btnUpdate, btnSearch, btnClear;
+		Button btnSubmit, btnDelete, btnUpdate, btnSearch, btnClear, btnClose;
 		ComboBox<String> comboGender, comboStaffType;
 
 		Font font = new Font("Arial", 18);
@@ -94,7 +94,7 @@ public class CreateStaff extends Application {
 		lblStaffType.relocate(labelX, startY + 4 * spacingY);
 		lblStaffType.setFont(font);
 		comboStaffType = new ComboBox<>();
-		comboStaffType.getItems().addAll("Manager", "Technician", "Assistant");
+		comboStaffType.getItems().addAll("Manager", "Vet Professional", "Staff");
 		comboStaffType.relocate(inputX, startY + 4 * spacingY);
 		comboStaffType.setPrefSize(200, 30);
 
@@ -124,6 +124,11 @@ public class CreateStaff extends Application {
 		btnClear.setPrefSize(100, 30);
 		btnClear.setStyle(AppSettings.btnStage2);
 
+		btnClose = new Button("Close");
+		btnClose.relocate(labelX + 110, btnY + spacingY);
+		btnClose.setPrefSize(100, 30);
+		btnClose.setStyle(AppSettings.btnSecondary);
+
 		btnSearch.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -150,6 +155,15 @@ public class CreateStaff extends Application {
 					showAlert(AlertType.WARNING, "Empty Field", "Staff ID is Required",
 							"Please enter a Staff ID to search.");
 				}
+			}
+		});
+
+		btnClose.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				primaryStage.close();
+
 			}
 		});
 
@@ -223,7 +237,7 @@ public class CreateStaff extends Application {
 
 		pane.getChildren().addAll(lblTitle, lblStaffId, txtStaffId, lblFullName, txtFullName, lblGender, comboGender,
 				lblContactNo, txtContactNo, lblStaffType, comboStaffType, btnSubmit, btnUpdate, btnDelete, btnSearch,
-				sidebar, lblSidebarTitle, btnClear);
+				sidebar, lblSidebarTitle, btnClear,btnClose);
 	}
 
 	private void showAlert(AlertType type, String title, String header, String content) {

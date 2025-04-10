@@ -25,7 +25,7 @@ public class PetReport extends Application {
 
 	Label lblTitle, lblOwnerid, lblFullName, lblPetName, lblBreed, lblDob;
 	private TextField ownerIdInput, fullNameInput, petNameInput, petBreedInput, dobInput;
-	private Button viewButton, printButton;
+	private Button viewButton, printButton, btnClose;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -87,8 +87,7 @@ public class PetReport extends Application {
 		petBreedInput.relocate(inputX, startY + 3 * spacingY);
 		petBreedInput.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 		petBreedInput.setDisable(true);
-		
-		
+
 		lblDob = new Label("Date Of Birth:");
 		lblDob.relocate(labelX, startY + 4 * spacingY);
 		lblDob.setFont(font);
@@ -96,10 +95,10 @@ public class PetReport extends Application {
 		dobInput.relocate(inputX, startY + 4 * spacingY);
 		dobInput.setPrefSize(AppSettings.textBoxWidth, AppSettings.textBoxHeight);
 		dobInput.setDisable(true);
-		
+
 		// Buttons
 		viewButton = new Button("Search");
-		viewButton.relocate(780,200);
+		viewButton.relocate(780, 200);
 		viewButton.setPrefSize(100, 30);
 		viewButton.setStyle(AppSettings.btnPrimary);
 		viewButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -149,22 +148,37 @@ public class PetReport extends Application {
 			}
 		});
 
+		btnClose = new Button("Close");
+		btnClose.relocate(500, 480);
+		btnClose.setPrefSize(100, 30);
+		btnClose.setStyle(AppSettings.btnSecondary);
+
+		btnClose.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent actionevent) {
+				primaryStage.close();
+
+			}
+		});
+
 		viewButton.setOnMouseEntered(e -> viewButton.setEffect(new DropShadow()));
 		viewButton.setOnMouseExited(e -> viewButton.setEffect(null));
-		
+
 		printButton.setOnMouseEntered(e -> viewButton.setEffect(new DropShadow()));
 		printButton.setOnMouseExited(e -> viewButton.setEffect(null));
-		
+
 		// Adding elements to Pane
-		pane.getChildren().addAll(sidebar,lblSidebarTitle,lblTitle, lblOwnerid, lblFullName, lblPetName, lblBreed, lblDob, ownerIdInput,
-				fullNameInput, petNameInput, petBreedInput, dobInput, viewButton, printButton);
+		pane.getChildren().addAll(sidebar, lblSidebarTitle, lblTitle, lblOwnerid, lblFullName, lblPetName, lblBreed,
+				lblDob, ownerIdInput, fullNameInput, petNameInput, petBreedInput, dobInput, viewButton, printButton,
+				btnClose);
 
 		primaryStage.setScene(scene);
 		primaryStage.setWidth(AppSettings.subPageWidth);
 		primaryStage.setHeight(AppSettings.subPageHeight);
 		primaryStage.show();
 	}
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}

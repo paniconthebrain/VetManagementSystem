@@ -88,7 +88,7 @@ public class Dashboard extends Application {
 		// Add buttons based on user type
 		if (userType.equals("admin")) {
 			sidebar.getChildren().addAll(btnCompanySetup, btnStaffSetup, btnUserSetup, btnOwnerSetup,
-					btnClientAppointment,btnFollowUp, btnVetAssign, btnPetReport, btnOwnerReport, btnAppointmentReport,
+					btnClientAppointment,btnFollowUp, btnVetAssign, btnPetReport, btnAppointmentReport,
 					// btnFieldVisitReport,
 					btnFollowUpReport,
 					btnAnalysisReport, spacer, btnLogOut);
