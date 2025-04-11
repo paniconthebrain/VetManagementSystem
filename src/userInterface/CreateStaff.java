@@ -241,11 +241,53 @@ public class CreateStaff extends Application {
 				ex.printStackTrace();
 			}
 		});
+		// Update action to edit staff details
+		btnUpdate.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				if (!txtStaffId.getText().isEmpty()) {
+					try {
+						int staffId = Integer.parseInt(txtStaffId.getText());
+						String fullName = txtFullName.getText();
+						String contactNo = txtContactNo.getText();
+						String gender = comboGender.getValue();
+						String staffType = comboStaffType.getValue();
+
+						if (fullName.isEmpty() || contactNo.isEmpty() || gender == null || staffType == null) {
+							showAlert(AlertType.WARNING, "Incomplete Data", null, "Please fill in all fields.");
+							return;
+						}
+
+						StaffModel staffModel = new StaffModel();
+						staffModel.setStaffId(staffId);
+						staffModel.setFullName(fullName);
+						staffModel.setContactNo(contactNo);
+						staffModel.setGender(gender);
+						staffModel.setStaffType(staffType);
+
+						StaffCRUD staffCRUD = new StaffCRUD();
+						boolean updated = staffCRUD.Update(staffModel);
+
+						if (updated) {
+							showAlert(AlertType.INFORMATION, "Success", null, "Staff updated successfully.");
+						} else {
+							showAlert(AlertType.WARNING, "Failed", null, "Staff ID not found. Update failed.");
+						}
+					} catch (NumberFormatException e) {
+						showAlert(AlertType.WARNING, "Invalid Input", null, "Invalid Staff ID format.");
+					}
+				} else {
+					showAlert(AlertType.WARNING, "Empty Field", null, "Staff ID cannot be empty.");
+				}
+			}
+		});
+
 		// Add all UI components to the pane
 		pane.getChildren().addAll(lblTitle, lblStaffId, txtStaffId, lblFullName, txtFullName, lblGender, comboGender,
 				lblContactNo, txtContactNo, lblStaffType, comboStaffType, btnSubmit, btnUpdate, btnDelete, btnSearch,
 				sidebar, lblSidebarTitle, btnClear, btnClose);
 	}
+
 	// Method to display alerts
 	private void showAlert(AlertType type, String title, String header, String content) {
 		Alert alert = new Alert(type);
@@ -254,6 +296,7 @@ public class CreateStaff extends Application {
 		alert.setContentText(content);
 		alert.showAndWait();
 	}
+
 	// Method to display alerts
 	public static void main(String[] args) {
 		launch(args);
