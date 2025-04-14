@@ -68,6 +68,6 @@ CREATE TABLE `vet_staff_assignment` (
 
 -- INSERT ADMIN USER (MANDATORY Run)
 INSERT INTO USERS (User_Id, Username, Password, UserType, MainId)
-VALUES ('1','admin', 'admin@123','Admin', NULL)
+VALUES ('1','admin', 'admin@123','admin', NULL)
 
 
